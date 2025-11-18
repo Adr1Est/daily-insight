@@ -5,7 +5,6 @@ export async function GET(){
   try{
     
     const response = await run(insightAgent, prompt);
-    
     return Response.json({output: response.finalOutput});
 
   }catch(error){

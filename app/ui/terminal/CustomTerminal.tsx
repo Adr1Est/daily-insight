@@ -9,11 +9,7 @@ export default async function CustomTerminal(){
   return(
     <div className="w-full">
       <Terminal>
-        <AnimatedSpan delay={0}>$ npm install bug</AnimatedSpan>
-        <TypingAnimation delay={1000} duration={100}>
-          Generando bug del día...
-        </TypingAnimation>
-        <AnimatedSpan delay={2500}>
+        <AnimatedSpan delay={500}>
           {`Bug del día ${info.dia} de ${info.mes} de ${info.año}`}
         </AnimatedSpan>
         <TypingAnimation delay={4000}>{info.dato}</TypingAnimation>
