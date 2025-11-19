@@ -1,4 +1,4 @@
-import { Terminal, AnimatedSpan, TypingAnimation } from "@/components/ui/shadcn-io/terminal"
+import { Terminal, AnimatedSpan, TypingAnimation } from "@/app/ui/shadcn-io/terminal"
 import { PrismaClient } from "@/lib/generated/prisma/client";
 
 export default async function CustomTerminal(){
