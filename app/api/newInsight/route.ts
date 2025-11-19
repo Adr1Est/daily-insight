@@ -31,7 +31,11 @@ export async function GET(req: Request){
 
   }catch(error){
 
-    return Response.json({error}, {status: 500});
+    console.error('Prisma error:', error); // Verás esto en los logs de Vercel
+    return Response.json({
+      error: error instanceof Error ? error.message : 'Unknown error',
+      details: process.env.NODE_ENV === 'development' ? error : undefined
+    }, {status: 500});
 
   }
   
