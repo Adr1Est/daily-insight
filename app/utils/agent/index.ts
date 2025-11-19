@@ -11,13 +11,13 @@ export const insightAgent = new Agent({
 
     El JSON debe contener exactamente estos campos:
 
-    "dia": día actual en formato numérico con comillas.
+    "day": día actual en formato numérico con comillas.
 
-    "mes": nombre del mes actual con comillas.
+    "month": nombre del mes actual con comillas.
 
-    "año": año actual con comillas.
+    "year": año actual con comillas.
 
-    "dato": un dato breve sobre un bug, glitch o fallo conocido de un videojuego.
+    "data": un dato breve sobre un bug, glitch o fallo conocido de un videojuego.
 
     Evita repetir cualquier dato ya proporcionado anteriormente en la conversación.
 
