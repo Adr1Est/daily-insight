@@ -1,9 +1,8 @@
 import { Terminal, AnimatedSpan, TypingAnimation } from "@/app/ui/shadcn-io/terminal"
-import { PrismaClient } from "@/lib/generated/prisma/client";
+import { prisma } from "@/app/utils/database";
 
 export default async function CustomTerminal(){
 
-  const prisma = new PrismaClient();
   const lastInsight = await prisma.insight.findFirst({
     orderBy: {
       createdAt: "desc",

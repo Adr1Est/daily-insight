@@ -1,4 +1,4 @@
-import { PrismaClient } from "@/lib/generated/prisma/client";
+import { prisma } from "@/app/utils/database";
 
 export async function GET(req: Request){
 
@@ -18,7 +18,6 @@ export async function GET(req: Request){
     const { output } = await response.json();
     const { day, month, year, data } = JSON.parse(output);
     
-    const prisma = new PrismaClient();
     const newInsight = await prisma.insight.create({
       data:{
         data: data,
