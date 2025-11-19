@@ -1,4 +1,4 @@
-import { prisma } from "@/app/utils/database";
+import prisma from "@/app/utils/database";
 
 export async function GET(req: Request){
 
