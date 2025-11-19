@@ -1,18 +1,22 @@
 import { Terminal, AnimatedSpan, TypingAnimation } from "@/components/ui/shadcn-io/terminal"
+import { PrismaClient } from "@/lib/generated/prisma/client";
 
 export default async function CustomTerminal(){
 
-  const response: Response = await fetch(`${process.env.API_URL}/api/askAgent`);
-  const { output } = await response.json();
-  const info = JSON.parse(output);
+  const prisma = new PrismaClient();
+  const lastInsight = await prisma.insight.findFirst({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return(
     <div className="w-full">
       <Terminal>
-        <AnimatedSpan delay={500}>
-          {`Bug del día ${info.dia} de ${info.mes} de ${info.año}`}
+        <AnimatedSpan delay={0}>
+          {`Curiosidad del día ${lastInsight?.day} de ${lastInsight?.month} de ${lastInsight?.year}`}
         </AnimatedSpan>
-        <TypingAnimation delay={4000}>{info.dato}</TypingAnimation>
+        <TypingAnimation delay={500}>{`${lastInsight?.data}`}</TypingAnimation>
       </Terminal>
     </div>
     
