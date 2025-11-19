@@ -1,4 +1,4 @@
-import { insightAgent, prompt } from "@/app/config/agent/insightAgent";
+import { insightAgent, prompt } from "@/app/utils/agent";
 import { run } from "@openai/agents";
 
 export async function GET(){

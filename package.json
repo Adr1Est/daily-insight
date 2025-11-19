@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "run:newInsight": ""
   },
   "dependencies": {
     "@openai/agents": "^0.3.2",
@@ -14,6 +15,7 @@
     "@supabase/supabase-js": "^2.83.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.3",
     "lucide-react": "^0.554.0",
     "motion": "^12.23.24",
     "next": "16.0.3",

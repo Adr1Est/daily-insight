@@ -2,7 +2,7 @@ import { Terminal, AnimatedSpan, TypingAnimation } from "@/components/ui/shadcn-
 
 export default async function CustomTerminal(){
 
-  const response: Response = await fetch(`${process.env.API_URL}/api/openai`);
+  const response: Response = await fetch(`${process.env.API_URL}/api/askAgent`);
   const { output } = await response.json();
   const info = JSON.parse(output);
 
