@@ -10,6 +10,14 @@ export default async function CustomTerminal(){
     },
   });
 
+  if(!lastInsight){
+    return(
+      <Terminal>
+        <TypingAnimation delay={500}>No hay datos</TypingAnimation>
+      </Terminal>
+    )
+  }
+
   return(
     <div className="w-full">
       <Terminal>
