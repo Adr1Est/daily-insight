@@ -1,7 +1,13 @@
 import { insightAgent, prompt } from "@/app/utils/agent";
 import { run } from "@openai/agents";
 
-export async function GET(){
+export async function GET(req: Request){
+
+  const authHeader = req.headers.get("authorization");
+  if(authHeader !== `Bearer ${process.env.INTERNAL_TOKEN}`){
+    return Response.json({error: "Unauthorized"}, {status: 401});
+  }
+
   try{
     
     const response = await run(insightAgent, prompt);

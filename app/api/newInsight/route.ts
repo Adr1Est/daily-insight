@@ -1,9 +1,20 @@
 import { PrismaClient } from "@/lib/generated/prisma/client";
 
-export async function GET(){
+export async function GET(req: Request){
+
+  const authHeader = req.headers.get("authorization");
+  if(authHeader !== `Bearer ${process.env.INTERNAL_TOKEN}`){
+    return Response.json({error: "Unauthorized"}, {status: 401});
+  }
+
   try{
 
-    const response = await fetch(`${process.env.API_URL}/api/askAgent`);
+    const response = await fetch(`${process.env.API_URL}/api/askAgent`,{
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${process.env.INTERNAL_TOKEN}`
+      }
+    });
     const { output } = await response.json();
     const { day, month, year, data } = JSON.parse(output);
     
