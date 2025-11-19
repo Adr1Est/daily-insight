@@ -34,6 +34,10 @@ const config: runtime.GetPrismaClientConfig = {
         "fromEnvVar": null,
         "value": "windows",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "rhel-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -47,6 +51,7 @@ const config: runtime.GetPrismaClientConfig = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -55,8 +60,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../lib/generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n  schemas   = [\"daily_insight\"]\n}\n\nmodel Insight {\n  id        Int      @id @default(autoincrement())\n  data      String\n  day       Int\n  month     String\n  year      Int\n  createdAt DateTime @default(now())\n\n  @@schema(\"daily_insight\")\n}\n",
-  "inlineSchemaHash": "8f84b3d9bd028637800ba0b96803bf9593d64b0b655ed36bc1d419647b4b5e40",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client\"\n  binaryTargets = [\"native\", \"rhel-openssl-3.0.x\"]\n  output        = \"../lib/generated/prisma\"\n}\n\ndatasource db {\n  provider  = \"postgresql\"\n  url       = env(\"DATABASE_URL\")\n  directUrl = env(\"DIRECT_URL\")\n  schemas   = [\"daily_insight\"]\n}\n\nmodel Insight {\n  id        Int      @id @default(autoincrement())\n  data      String\n  day       Int\n  month     String\n  year      Int\n  createdAt DateTime @default(now())\n\n  @@schema(\"daily_insight\")\n}\n",
+  "inlineSchemaHash": "cab64ed17b88d9bbf3e546d673dd5ee0e2bbdd007894abb7cd2c18a8c7b68010",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
