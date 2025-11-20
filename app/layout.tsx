@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
+import { Quantico } from "next/font/google";
 import "@/app/globals.css";
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const quantico = Quantico({
+  weight: "400",
+  style: 'normal'
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body
-        className={`${geistMono.className} antialiased`}
+        className={`${quantico.className} antialiased`}
       >
         {children}
       </body>

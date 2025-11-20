@@ -1,0 +1,39 @@
+import { Github, Brain, Linkedin, SquareChartGantt } from 'lucide-react'
+
+export default function FooterMain(){
+  return(
+    <div className="flex flex-col justify-center items-center text-xs">
+      
+      <div className='flex flex-row gap-3'>
+        <p>&copy; 2025 Desarrollado por Adr1Est</p>
+        <a 
+          className='cursor-pointer hover:text-orange-300'
+          href='https://github.com/Adr1Est'
+          target='_blank'
+        >
+          <Github size={15}/>
+        </a>
+        <a 
+          className='cursor-pointer hover:text-orange-300'
+          href='https://www.linkedin.com/in/adrianestevezsalamanca/'
+          target='_blank'
+        >
+          <Linkedin size={15}/>
+        </a>
+        <a 
+          className='cursor-pointer hover:text-orange-300'
+          href='https://www.adrianestevezs.dev'
+          target='_blank'
+        >
+          <SquareChartGantt size={15}/>
+        </a>
+      </div>
+
+      <div className='flex flex-row gap-1'>
+        <Brain size={15}/>
+        <p>Powered by gpt-5-nano</p>
+      </div>
+      
+    </div>
+  )
+}

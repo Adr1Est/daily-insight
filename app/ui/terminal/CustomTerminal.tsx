@@ -25,7 +25,7 @@ export default async function CustomTerminal(){
         <AnimatedSpan delay={0}>
           {`Curiosidad del día ${lastInsight?.day} de ${lastInsight?.month} de ${lastInsight?.year}`}
         </AnimatedSpan>
-        <TypingAnimation delay={500}>{`${lastInsight?.data}`}</TypingAnimation>
+        <TypingAnimation delay={500} duration={20}>{`${lastInsight?.data}`}</TypingAnimation>
       </Terminal>
     </div>
     
