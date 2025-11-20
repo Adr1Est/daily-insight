@@ -8,7 +8,7 @@ export default async function CustomTerminal(){
 
   const lastInsight = await prisma.insight.findFirst({
     orderBy: {
-      createdAt: "desc",
+      id: "desc",
     },
   });
 
