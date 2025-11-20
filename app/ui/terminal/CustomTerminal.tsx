@@ -1,7 +1,6 @@
 import { Terminal, AnimatedSpan, TypingAnimation } from "@/app/ui/shadcn-io/terminal"
 import prisma from "@/lib/prisma";
 
-export const revalidate = 0;
 export const dynamic = 'force-dynamic';
 
 export default async function CustomTerminal(){
