@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import Info from "@/app/ui/info/Info";
 import CustomTerminal from "@/app/ui/terminal/CustomTerminal";
 import { Suspense } from "react";
