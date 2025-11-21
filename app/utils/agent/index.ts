@@ -16,7 +16,7 @@ export const insightAgent = new Agent({
     "year": año actual con comillas.
 
     "data": un dato breve y sin repetir las anteriores respuestas sobre un bug, glitch o fallo conocido de la historia de los videojuegos.
-    
+
   `,
   model: 'gpt-5-nano',
 });
@@ -34,11 +34,10 @@ export const createPrompt = async (): Promise<string> => {
     if(!response.ok) throw new Error("Error fetching context");
     const data = await response.json();
 
-    const lastResponses: string[] = data.map((info: {data: string}, index: number) => `${index}. ${info.data}`);
-    const prompt = `Dada una lista de últimas respuestas:\n
-      ${lastResponses.join("\n")}
-      Dame un dato sobre bugs y fallos conocidos de la historia de los videojuegos evitando repetir datos y videojuegos anteriores.
-    `;
+    const lastResponses: string[] = data.map((info: {data: string}, index: number) => `${index + 1}. ${info.data}`);
+    const prompt = `Dada una lista de últimas respuestas:
+    ${lastResponses.join("\n")}
+    Dame un dato sobre bugs y fallos conocidos de la historia de los videojuegos evitando repetir datos y videojuegos anteriores.`;
 
     return prompt;
 
