@@ -1,5 +1,4 @@
-import { insightAgent, createPrompt } from "@/app/utils/agent";
-import { run } from "@openai/agents";
+import prisma from "@/lib/prisma";
 
 export async function GET(req: Request){
 
@@ -8,15 +7,22 @@ export async function GET(req: Request){
     return Response.json({error: "Unauthorized"}, {status: 401});
   }
 
-  try{
+  try {
+    
+    const data = await prisma.insight.findMany({
+      orderBy: {
+        id: 'desc'
+      },
+      take: 5,
+    });
 
-    const prompt = await createPrompt();
-    const response = await run(insightAgent, prompt);
-    return Response.json({output: response.finalOutput});
+    const aiContext = data.map(info => ({data: info.data}));
 
-  }catch(error){
+    return Response.json(aiContext);
+
+  } catch (error) {
 
     return Response.json({error}, {status: 500});
-    
+
   }
 }
