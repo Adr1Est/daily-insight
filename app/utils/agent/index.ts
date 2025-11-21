@@ -15,6 +15,12 @@ export const insightAgent = new Agent({
 
     "year": año actual con comillas.
 
+    "bugYear": año en el que ocurre el bug, glith o fallo conocido de la historia de los videojuegos.
+
+    "game": videojuego relacionado con el bug, glith o fallo. Si no es un juego, poner "no es un juego".
+
+    "platform": Plataforma en la que ocurrió el bug, glith o fallo. Ejemplo: Nintendo 64, XBOX, PS5, PC...
+
     "data": un dato breve y sin repetir las anteriores respuestas sobre un bug, glitch o fallo conocido de la historia de los videojuegos.
 
   `,

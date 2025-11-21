@@ -17,6 +17,9 @@ datasource db {
 
 model Insight {
   id        Int      @id @default(autoincrement())
+  game      String
+  platform  String
+  bugYear   Int
   data      String 
   day       Int
   month     String

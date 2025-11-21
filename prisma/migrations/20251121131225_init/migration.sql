@@ -4,6 +4,9 @@ CREATE SCHEMA IF NOT EXISTS "daily_insight";
 -- CreateTable
 CREATE TABLE "daily_insight"."Insight" (
     "id" SERIAL NOT NULL,
+    "game" TEXT NOT NULL,
+    "platform" TEXT NOT NULL,
+    "bugYear" INTEGER NOT NULL,
     "data" TEXT NOT NULL,
     "day" INTEGER NOT NULL,
     "month" TEXT NOT NULL,
