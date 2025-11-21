@@ -22,10 +22,20 @@ export default async function CustomTerminal(){
   return(
     <div className="w-full">
       <Terminal>
-        <AnimatedSpan delay={0}>
+        <AnimatedSpan delay={50}>
           {`Curiosidad del día ${lastInsight?.day} de ${lastInsight?.month} de ${lastInsight?.year}`}
         </AnimatedSpan>
-        <TypingAnimation delay={500} duration={20}>{`${lastInsight?.data}`}</TypingAnimation>
+        <AnimatedSpan delay={500}>
+          {`Videojuego:`}
+        </AnimatedSpan>
+        <AnimatedSpan delay={1000}>
+          {`Plataforma:`}
+        </AnimatedSpan>
+        <AnimatedSpan delay={1500}>
+          {`Año:`}
+        </AnimatedSpan>
+        <AnimatedSpan delay={1800}><hr/></AnimatedSpan>
+        <TypingAnimation delay={2000} duration={20}>{`${lastInsight?.data}`}</TypingAnimation>
       </Terminal>
     </div>
     
