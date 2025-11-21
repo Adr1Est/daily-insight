@@ -40,7 +40,7 @@ export const createPrompt = async (): Promise<string> => {
     if(!response.ok) throw new Error("Error fetching context");
     const data = await response.json();
 
-    const lastResponses: string[] = data.map((info: {data: string}, index: number) => `${index + 1}. ${info.data}`);
+    const lastResponses: string[] = data.map((info: {game:string, data: string}, index: number) => `${index + 1}. ${info.game}: ${info.data}`);
     const prompt = `Dada una lista de últimas respuestas:
     ${lastResponses.join("\n")}
     Dame un dato sobre bugs y fallos conocidos de la historia de los videojuegos evitando repetir datos y videojuegos anteriores.`;

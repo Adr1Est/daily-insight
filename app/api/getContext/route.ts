@@ -16,7 +16,7 @@ export async function GET(req: Request){
       take: 5,
     });
 
-    const aiContext = data.map(info => ({data: info.data}));
+    const aiContext = data.map(info => ({game: info.game, data: info.data}));
 
     return Response.json(aiContext);
 
