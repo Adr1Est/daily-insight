@@ -1,4 +1,4 @@
-import { insightAgent, prompt } from "@/app/utils/agent";
+import { insightAgent, createPrompt } from "@/app/utils/agent";
 import { run } from "@openai/agents";
 
 export async function GET(req: Request){
@@ -9,7 +9,8 @@ export async function GET(req: Request){
   }
 
   try{
-    
+
+    const prompt = await createPrompt();
     const response = await run(insightAgent, prompt);
     return Response.json({output: response.finalOutput});
 

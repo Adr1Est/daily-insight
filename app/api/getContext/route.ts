@@ -13,7 +13,7 @@ export async function GET(req: Request){
       orderBy: {
         id: 'desc'
       },
-      take: 10,
+      take: 5,
     });
 
     const aiContext = data.map(info => ({data: info.data}));

@@ -1,5 +1,4 @@
 import { Agent } from "@openai/agents";
-import { getLastResponses } from "@/app/utils/agent/agentTool";
 
 export const insightAgent = new Agent({
   name: "Assistant",
@@ -7,8 +6,6 @@ export const insightAgent = new Agent({
     Debes generar exclusivamente respuestas en JSON válido, sin texto adicional.
 
     Instrucciones obligatorias:
-
-    Responde solo con un objeto JSON: nada de texto fuera del JSON.
 
     El JSON debe contener exactamente estos campos:
 
@@ -18,16 +15,37 @@ export const insightAgent = new Agent({
 
     "year": año actual con comillas.
 
-    "data": un dato breve sobre un bug, glitch o fallo conocido de un videojuego.
-
-    El campo "data" no debe repetirse .
-
-    El JSON debe ser siempre válido y usar comillas dobles en claves y valores.
+    "data": un dato breve y sin repetir las anteriores respuestas sobre un bug, glitch o fallo conocido de la historia de los videojuegos.
+    
   `,
   model: 'gpt-5-nano',
-  tools: [getLastResponses],
-  modelSettings: { toolChoice: "get_last_responses" },
-  toolUseBehavior: "stop_on_first_tool",
 });
 
-export const prompt = `Dame un dato sobre bugs y fallos conocidos de los videojuegos`;
+export const createPrompt = async (): Promise<string> => {
+
+  try{
+
+    const response = await fetch(`${process.env.API_URL}/api/getContext`, {
+      method: 'GET',
+      headers: {
+        "Authorization": `Bearer ${process.env.INTERNAL_TOKEN}`
+      }
+    });
+    if(!response.ok) throw new Error("Error fetching context");
+    const data = await response.json();
+
+    const lastResponses: string[] = data.map((info: {data: string}, index: number) => `${index}. ${info.data}`);
+    const prompt = `Dada una lista de últimas respuestas:\n
+      ${lastResponses.join("\n")}
+      Dame un dato sobre bugs y fallos conocidos de la historia de los videojuegos evitando repetir datos y videojuegos anteriores.
+    `;
+
+    return prompt;
+
+  }catch(error){
+
+    console.error("Error fetching context", error);
+    return "Dame un dato sobre bugs y fallos conocidos de la historia de los videojuegos";
+  }
+  
+};
