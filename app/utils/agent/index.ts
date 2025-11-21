@@ -1,4 +1,5 @@
 import { Agent } from "@openai/agents";
+import { getLastResponses } from "@/app/utils/agent/agentTool";
 
 export const insightAgent = new Agent({
   name: "Assistant",
@@ -19,11 +20,14 @@ export const insightAgent = new Agent({
 
     "data": un dato breve sobre un bug, glitch o fallo conocido de un videojuego.
 
-    Evita repetir cualquier dato ya proporcionado anteriormente en la conversación.
+    El campo "data" no debe repetirse .
 
     El JSON debe ser siempre válido y usar comillas dobles en claves y valores.
   `,
-  model: 'gpt-5-nano'
+  model: 'gpt-5-nano',
+  tools: [getLastResponses],
+  modelSettings: { toolChoice: "get_last_responses" },
+  toolUseBehavior: "stop_on_first_tool",
 });
 
 export const prompt = `Dame un dato sobre bugs y fallos conocidos de los videojuegos`;
