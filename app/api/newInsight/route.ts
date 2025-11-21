@@ -16,7 +16,7 @@ export async function GET(req: Request){
       }
     });
     const { output } = await response.json();
-    const { day, month, year, data } = JSON.parse(output);
+    const { game, platform, bugYear, day, month, year, data } = JSON.parse(output);
     
     const newInsight = await prisma.insight.create({
       data:{
@@ -24,6 +24,9 @@ export async function GET(req: Request){
         day: Number(day),
         month: month,
         year: Number(year),
+        game: game,
+        platform: platform,
+        bugYear: Number(bugYear),
       }
     });
 

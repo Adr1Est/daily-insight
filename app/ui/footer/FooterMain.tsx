@@ -1,11 +1,11 @@
-import { Github, Brain, Linkedin, SquareChartGantt } from 'lucide-react'
+import { Github, Bot, Linkedin, SquareChartGantt } from 'lucide-react'
 
 export default function FooterMain(){
   return(
-    <div className="flex flex-col justify-center items-center text-xs">
+    <div className="flex flex-col justify-center items-center text-xs opacity-50">
       
       <div className='flex flex-row gap-3'>
-        <p>&copy; 2025 Desarrollado por Adr1Est</p>
+        <p>&copy; 2025 Desarrollado por Adrián Estévez</p>
         <a 
           className='cursor-pointer hover:text-orange-300'
           href='https://github.com/Adr1Est'
@@ -30,8 +30,8 @@ export default function FooterMain(){
       </div>
 
       <div className='flex flex-row gap-1'>
-        <Brain size={15}/>
-        <p>Powered by gpt-5-nano</p>
+        <Bot size={15}/>
+        <p className='italic'>Powered by gpt-5-nano</p>
       </div>
       
     </div>
