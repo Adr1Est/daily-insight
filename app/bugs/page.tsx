@@ -1,7 +1,17 @@
-import styles from '@/app/bugs/bugs.module.css'
-import CustomTableRow from '../ui/bugs/CustomTableRow'
+export const dynamic = 'force-dynamic';
 
-export default function BugsList(){
+import styles from '@/app/bugs/bugs.module.css';
+import CustomTableRow from '../ui/bugs/CustomTableRow';
+import prisma from '@/lib/prisma';
+
+export default async function BugsList(){
+
+  const bugs = await prisma.insight.findMany({
+    orderBy: {
+      id: "desc"
+    }
+  });
+
   return(
     <table className={`${styles.table} `}>
       <thead className='text-xl'>
@@ -14,13 +24,25 @@ export default function BugsList(){
         </tr>
       </thead>
       <tbody>
-        <CustomTableRow
-          date="21 de noviembre de 2025"
-          game="Pokemon"
-          platform='Game Boy'
-          bug="El glitch MissingNo. en Pokémon Rojo/Azul permite duplicar objetos del inventario al encontrar a MissingNo. tras el truco del Viejo y Surf en la costa, causando corrupción de datos y efectos variados."
-          bugYear={1986}
-        />
+        {bugs
+          ? bugs.map(bug => (
+              <CustomTableRow
+                key={bug.id}
+                date={`${bug.day} de ${bug.month} de ${bug.year}`}
+                game={bug.game}
+                platform={bug.platform}
+                bug={bug.data}
+                bugYear={bug.bugYear}
+              />
+            ))
+          : (<CustomTableRow
+                date="Sin datos"
+                game="Sin datos"
+                platform="Sin datos"
+                bug="Sin datos"
+                bugYear={0}
+              />)}
+        
       </tbody>
       
     </table>
