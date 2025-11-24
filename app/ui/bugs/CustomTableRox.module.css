@@ -1,0 +1,5 @@
+.td{
+  border: 1px solid var(--foreground);
+  padding: 5px;
+  text-wrap: wrap;
+}

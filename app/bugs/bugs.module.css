@@ -1,0 +1,10 @@
+.table{
+  border-collapse: collapse;
+}
+
+.th{
+  border: 1px solid var(--foreground);
+  padding: 5px;
+  text-wrap: wrap;
+  background-color: #e7d0ab1c;
+}
