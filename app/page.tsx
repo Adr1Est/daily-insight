@@ -4,7 +4,7 @@ import Info from "@/app/ui/info/Info";
 import CustomTerminal from "@/app/ui/terminal/CustomTerminal";
 import { Suspense } from "react";
 import Loader from "@/app/ui/loaders/Loader";
-import FooterMain from "./ui/footer/FooterMain";
+import FooterMain from "@/app/ui/footer/FooterMain";
 
 export default function Home() {
   return (
