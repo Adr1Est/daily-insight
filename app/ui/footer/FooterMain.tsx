@@ -35,7 +35,7 @@ export default function FooterMain(){
             href={"/bugs"}
             className='hover:text-orange-300'
           >
-            <p>Bugs</p>
+            <p className='underline'>Todos los Bugs</p>
           </Link>
 
         </div>
@@ -44,7 +44,15 @@ export default function FooterMain(){
 
       <div className='flex flex-row gap-1'>
         <Bot size={15}/>
-        <p className='italic'>Powered by gpt-5-nano</p>
+        <p className='italic'>
+          Powered by <a 
+            href='https://platform.openai.com/docs/models/gpt-5-nano'
+            target='_blank'
+            className='underline hover:text-orange-300'
+          >
+            gpt-5-nano
+          </a>
+        </p>
       </div>
       
     </div>
