@@ -11,7 +11,7 @@ export default function BugsMain({ children }: { children: React.ReactNode }){
       </div>
       <Link
         href={'/'}
-        className="p-2 bg-green-800 rounded-full hover:text-orange-300 fixed bottom-20 right-10 sm:relative opacity-80"
+        className="p-2 bg-green-800 rounded-full hover:text-orange-300 fixed bottom-20 sm:bottom-0 right-10 sm:right-0 sm:relative opacity-80"
       >
         <Home size={18}/>
       </Link>
