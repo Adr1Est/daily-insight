@@ -42,9 +42,7 @@ export default async function BugsList(){
                 bug="Sin datos"
                 bugYear={0}
               />)}
-        
       </tbody>
-      
     </table>
   )
 }
