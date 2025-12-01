@@ -11,7 +11,7 @@ export const insightAgent = new Agent({
 
     "day": día actual en formato numérico con comillas.
 
-    "month": nombre del mes actual con comillas.
+    "month": nombre del mes actual en español y la primera letra en mayúscula con comillas.
 
     "year": año actual con comillas.
 
