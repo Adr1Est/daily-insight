@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 import { Home } from "lucide-react";
 import Link from "next/link";
 
