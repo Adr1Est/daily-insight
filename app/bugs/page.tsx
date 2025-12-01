@@ -19,10 +19,11 @@ export default function BugsList(){
 
   const filteredBugList = useMemo(() => {
     if(!filter) return bugList;
-    return bugList.filter(bug => (bug.game.toLowerCase().includes(filter.toLowerCase()) 
-      || bug.data.toLowerCase().includes(filter.toLowerCase())
-      || bug.platform.toLowerCase().includes(filter.toLowerCase())
-    ));
+    return bugList.filter(bug => bug.game.toLowerCase().includes(filter.toLowerCase()) ||
+      bug.data.toLowerCase().includes(filter.toLowerCase()) ||
+      bug.platform.toLowerCase().includes(filter.toLowerCase()) ||
+      String(bug.bugYear).includes(String(filter))
+    );
   }, [filter, bugList]);
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function BugsList(){
         type="text" 
         id="searchFilterInput" 
         className='w-full border mb-1 p-1 sticky top-0 bg-emerald-950' 
-        placeholder='Busca por bug...' 
+        placeholder='Busca tu bug favorito...' 
         onChange={handleFilter}
         value={filter}
       />
@@ -61,7 +62,7 @@ export default function BugsList(){
           </tr>
         </thead>
         <tbody>
-          {filteredBugList && !error
+          {filteredBugList.length !== 0 && !error
             ? filteredBugList.map((bug: BugType) => (
                 <CustomTableRow
                   key={bug.id}
