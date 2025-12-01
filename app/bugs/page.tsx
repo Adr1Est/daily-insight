@@ -11,12 +11,7 @@ export default function BugsList(){
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch('/api/getBugs', {
-      method: 'GET',
-      headers: {
-        "Authorization": `Bearer ${process.env.INTERNAL_TOKEN}`
-      }
-    })
+    fetch('/api/getBugs')
       .then(response => {
         if(!response.ok) throw new Error(`Error HTTP: ${response.status}`);
         return response.json();
