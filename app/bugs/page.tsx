@@ -1,16 +1,32 @@
-export const dynamic = 'force-dynamic';
+'use client';
 
 import styles from '@/app/bugs/bugs.module.css';
 import CustomTableRow from '../ui/bugs/CustomTableRow';
-import prisma from '@/lib/prisma';
+import { useEffect, useState } from 'react';
+import { BugType } from '@/app/types/bug.types';
 
-export default async function BugsList(){
+export default function BugsList(){
 
-  const bugs = await prisma.insight.findMany({
-    orderBy: {
-      id: "desc"
-    }
-  });
+  const [bugList, setBugList] = useState<BugType[]>([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    fetch('/api/getBugs', {
+      method: 'GET',
+      headers: {
+        "Authorization": `Bearer ${process.env.INTERNAL_TOKEN}`
+      }
+    })
+      .then(response => {
+        if(!response.ok) throw new Error(`Error HTTP: ${response.status}`);
+        return response.json();
+      })
+      .then(data => setBugList(data))
+      .catch(error => {
+        console.error(`Error al cargar bugList: ${error}`);
+        setError(error);
+      });
+  }, []);
 
   return(
     <table className={`${styles.table} `}>
@@ -24,8 +40,8 @@ export default async function BugsList(){
         </tr>
       </thead>
       <tbody>
-        {bugs
-          ? bugs.map(bug => (
+        {bugList && !error
+          ? bugList.map((bug: BugType) => (
               <CustomTableRow
                 key={bug.id}
                 date={`${bug.day} de ${bug.month} de ${bug.year}`}
@@ -41,7 +57,8 @@ export default async function BugsList(){
                 platform="Sin datos"
                 bug="Sin datos"
                 bugYear={0}
-              />)}
+              />)
+        }
       </tbody>
     </table>
   )
