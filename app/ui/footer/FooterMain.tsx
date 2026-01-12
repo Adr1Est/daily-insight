@@ -1,3 +1,4 @@
+import { getYear } from '@/app/utils/getYear';
 import { Github, Bot, Linkedin, SquareChartGantt } from 'lucide-react'
 import Link from 'next/link';
 
@@ -6,7 +7,7 @@ export default function FooterMain(){
     <div className="flex flex-col justify-center items-center text-xs opacity-50">
       
       <div className='flex flex-col sm:flex-row gap-3'>
-        <p>&copy; 2025 Desarrollado por Adrián Estévez</p>
+        <p>&copy; {getYear()} Desarrollado por Adrián Estévez</p>
 
         <div className='flex flex-row gap-1'>
           <a 
