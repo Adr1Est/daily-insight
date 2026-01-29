@@ -21,7 +21,7 @@ export const insightAgent = new Agent({
 
     "platform": Plataforma en la que ocurrió el bug, glith o fallo. Ejemplo: Nintendo 64, XBOX, PS5, PC...
 
-    "data": un dato breve y sin repetir las anteriores respuestas sobre un bug, glitch o fallo conocido de la historia de los videojuegos.
+    "data": sin repetir las anteriores respuestas dame datos sobre un bug, glitch o fallo conocido de la historia de los videojuegos, la respuesta debe ser detallada, pero nunca alargarse más de 10 líneas.
 
   `,
   model: 'gpt-5-nano',
