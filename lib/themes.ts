@@ -3,7 +3,7 @@
 // - components/site/ThemePicker.tsx (selector),
 // - lib/themes.test.ts (fechas y contraste).
 
-export type ThemeId = "videoclub" | "neon" | "gameboy" | "halloween" | "navidad";
+export type ThemeId = "videoclub" | "neon" | "lcd" | "halloween" | "navidad";
 
 interface MonthDay {
   m: number;
@@ -127,8 +127,8 @@ export const THEMES: Theme[] = [
     },
   },
   {
-    id: "gameboy",
-    name: "Game Boy",
+    id: "lcd",
+    name: "Verde LCD",
     tokens: {
       wall: "#0f380f",
       "wall-slat": "#123f12",

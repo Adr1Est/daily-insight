@@ -253,7 +253,7 @@ Por debajo de 720 px el lomo de la caja pasa a ser una banda horizontal superior
 
 ## Elevation & Depth
 
-La profundidad es de cartón sobre una balda: sombras duras, desplazadas y sin desenfoque. Por defecto son negras translúcidas (valores en `lib/themes.ts`); Neón y Game Boy las tiñen con su paleta y acortan la de la caja a 8 px. No hay tonos de superficie elevada, brillos ni sombras difusas.
+La profundidad es de cartón sobre una balda: sombras duras, desplazadas y sin desenfoque. Por defecto son negras translúcidas (valores en `lib/themes.ts`); Neón y Verde LCD las tiñen con su paleta y acortan la de la caja a 8 px. No hay tonos de superficie elevada, brillos ni sombras difusas.
 
 ### Shadow Vocabulary
 - **Caja** (`box-shadow: 10px 10px 0 rgb(0 0 0 / 0.4)`): la caja y las tarjetas de estado.
@@ -321,7 +321,7 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 |---|---|---|---|---|---|---|---|
 | Videoclub (por defecto) | todo el año | #1d1b19 | #f2efe6 | #d1281b | #ffd23f | #2ec4d6 | — |
 | Neón | todo el año | #0b0a1a | #15122e (tinta clara) | #ff2e88 | #f8f32b | #35f2ff | `--glow` cian, sombra de caja magenta de 8 px, líneas horizontales cian cada 32 px en la pared |
-| Game Boy | todo el año | #0f380f | #9bbc0f | #0f380f | #9bbc0f | #8bac0f | rejilla de píxeles de 4 px, sombras de caja (8 px) y pegatina en verde medio |
+| Verde LCD | todo el año | #0f380f | #9bbc0f | #0f380f | #9bbc0f | #8bac0f | rejilla de píxeles de 4 px, sombras de caja (8 px) y pegatina en verde medio |
 | Halloween | 1 oct – 1 nov | #160d1f | #f3e6cf | #6b2fa3 | #ff8a1f | #7bd13a | telarañas SVG en las esquinas superiores de la pared |
 | Navidad | 1 nov – 9 ene | #0d2418 | #fbf6ec | #c8102e | #f2c14e | #2f8f5b | puntos de nieve sobre la pared |
 

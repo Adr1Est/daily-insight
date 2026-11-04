@@ -29,9 +29,7 @@ describe("disponibilidad de temas de temporada", () => {
 
   it("los temas fijos están siempre disponibles", () => {
     for (const date of [day(2026, 3, 15), day(2026, 10, 15), day(2026, 12, 25)]) {
-      expect(engine.available(date)).toEqual(
-        expect.arrayContaining(["videoclub", "neon", "gameboy"]),
-      );
+      expect(engine.available(date)).toEqual(expect.arrayContaining(["videoclub", "neon", "lcd"]));
     }
   });
 
@@ -111,7 +109,7 @@ describe("themeInitScript", () => {
   });
 
   it("respeta la elección guardada fuera de temporada", () => {
-    expect(runScript(day(2026, 3, 1), { [STORAGE_THEME]: "gameboy" }).theme).toBe("gameboy");
+    expect(runScript(day(2026, 3, 1), { [STORAGE_THEME]: "lcd" }).theme).toBe("lcd");
   });
 
   it("no rompe si el almacenamiento está corrupto", () => {
