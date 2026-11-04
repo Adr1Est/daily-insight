@@ -14,8 +14,8 @@
   line-height: 1;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--yellow);
-  text-shadow: 3px 3px 0 var(--red);
+  color: var(--highlight);
+  text-shadow: 3px 3px 0 var(--sticker), var(--glow);
   text-decoration: none;
 }
 
@@ -47,7 +47,125 @@
 /* La página actual lleva una tira de cinta roja, no un cambio de color. */
 .navLink[aria-current="page"] {
   color: var(--wall-ink);
-  border-bottom-color: var(--red);
+  border-bottom-color: var(--sticker);
+}
+
+.headerEnd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--u) calc(var(--u) * 3);
+}
+
+/* Selector de tema: etiqueta de cartón con la muestra de color del tema actual. */
+.themeButton {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--u);
+  padding: var(--u) calc(var(--u) * 1.5);
+  border: 0;
+  border-top: 4px solid var(--band);
+  background: var(--card);
+  color: var(--card-ink);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.themeButton:hover {
+  border-top-color: var(--sticker);
+}
+
+.swatch {
+  display: inline-flex;
+  border: 2px solid var(--card-ink);
+}
+
+.swatch span {
+  width: 12px;
+  height: 16px;
+}
+
+/* El panel es un popover (capa superior); ThemePicker fija top/right bajo el botón. */
+.themePanel {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  padding: calc(var(--u) * 2);
+  min-width: 240px;
+  border: 0;
+  border-top: calc(var(--u) * 2) solid var(--band);
+  background: var(--card);
+  color: var(--card-ink);
+  box-shadow: var(--shadow-box);
+}
+
+.themeList {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.themeLegend {
+  margin-bottom: var(--u);
+  padding: 0;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--card-ink-soft);
+}
+
+.themeOption {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.5);
+  padding: var(--u);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.themeOption:hover {
+  background: color-mix(in srgb, var(--card-ink) 8%, transparent);
+}
+
+/* El tema elegido se marca invirtiendo la fila, como la celda negra de la ficha. */
+.themeOption:has(input:checked) {
+  background: var(--spine);
+  color: var(--highlight);
+}
+
+.themeOption:has(input:focus-visible) {
+  outline: 3px solid var(--highlight);
+  outline-offset: 2px;
+}
+
+.themeOption input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.themeName {
+  flex: 1;
+}
+
+.themeNew {
+  padding: 2px var(--u);
+  background: var(--sticker);
+  color: var(--on-sticker);
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  transform: rotate(-4deg);
 }
 
 .footer {
@@ -67,7 +185,7 @@
 }
 
 .footer a:hover {
-  color: var(--yellow);
+  color: var(--highlight);
 }
 
 .social {

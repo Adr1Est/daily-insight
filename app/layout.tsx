@@ -3,6 +3,7 @@ import { Bungee, Barlow, Barlow_Condensed } from "next/font/google";
 import "@/app/globals.css";
 import SiteHeader from "@/components/site/SiteHeader";
 import SiteFooter from "@/components/site/SiteFooter";
+import { themeCss, themeInitScript } from "@/lib/themes";
 
 const bungee = Bungee({ weight: "400", subsets: ["latin"], variable: "--font-bungee" });
 const barlow = Barlow({ weight: ["400", "600"], subsets: ["latin"], variable: "--font-barlow" });
@@ -19,7 +20,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es" className={`${bungee.variable} ${barlow.variable} ${barlowCondensed.variable}`}>
+    // suppressHydrationWarning: el script de tema fija data-theme en <html> antes de hidratar.
+    <html lang="es" className={`${bungee.variable} ${barlow.variable} ${barlowCondensed.variable}`} suppressHydrationWarning>
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
+      </head>
       <body>
         <SiteHeader />
         {children}

@@ -71,6 +71,13 @@ Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSche
 - Sin shadcn ni Tailwind: estilos con CSS Modules junto a cada componente y tokens globales (colores, fuentes, módulo `--u` de 8 px) en `app/globals.css`, que incluye un reset mínimo. Fuentes vía `next/font` (Bungee, Barlow, Barlow Condensed). Iconos con `lucide-react`.
 - Mundo visual «estantería de videoclub»: el sistema está en `DESIGN.md`, el contexto de producto en `PRODUCT.md` y el contrato de la superficie en `.impeccable/surfaces/`. Respeta ese sistema al tocar la UI.
 
+### Temas
+
+- `lib/themes.ts` es la fuente única de los temas: Videoclub (por defecto), Neón y Game Boy todo el año; Halloween del 1 de octubre al 1 de noviembre; Navidad del 1 de noviembre al 9 de enero. Para añadir un tema, añade una entrada a `THEMES` con los 15 roles de `ThemeTokens` (y `season` si es de temporada). Los tests de contraste lo comprueban solos.
+- `app/layout.tsx` inserta `themeCss()` (un bloque `:root[data-theme]` por tema) y `themeInitScript()` en `<head>`. El script fija `data-theme` antes del primer pintado y por eso `<html>` lleva `suppressHydrationWarning`. Ese script incrusta `themeEngine.toString()`, así que `themeEngine` no puede usar nada definido fuera de su cuerpo.
+- `components/site/ThemePicker.tsx` es el selector de la cabecera (`popover` nativo). Guarda en `localStorage` las claves `daily-bug:theme` y `daily-bug:seasons-seen`. Un tema de temporada se aplica solo la primera vez dentro de su temporada.
+- En CSS usa solo los roles (`var(--card-ink)`, `var(--sticker)`…), nunca colores literales.
+
 ### Base de datos
 
 - Prisma 7 con el generador `prisma-client` y salida en `prisma/generated` (ignorado por git): importar desde `@/prisma/generated/client`, nunca desde `@prisma/client`. Usa siempre `getPrisma()` de `lib/db.ts`, que es un singleton perezoso.

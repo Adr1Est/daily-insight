@@ -44,8 +44,8 @@
   z-index: 1;
   width: calc(100% + clamp(32px, 8vw, 96px));
   height: calc(var(--u) * 5);
-  background: var(--wood);
-  border-top: var(--u) solid var(--wood-edge);
+  background: var(--shelf);
+  border-top: var(--u) solid var(--shelf-edge);
   box-shadow: var(--shadow-board);
 }
 

@@ -45,12 +45,12 @@
   max-width: 560px;
   padding: 0 calc(var(--u) * 2);
   background: var(--card);
-  color: var(--ink);
-  border-top: var(--u) solid var(--yellow);
+  color: var(--card-ink);
+  border-top: var(--u) solid var(--highlight);
 }
 
 .searchField:focus-within {
-  outline: 3px solid var(--yellow);
+  outline: 3px solid var(--highlight);
   outline-offset: 3px;
 }
 
@@ -60,7 +60,7 @@
   padding: calc(var(--u) * 1.5) 0;
   border: 0;
   background: transparent;
-  color: var(--ink);
+  color: var(--card-ink);
   font-family: var(--font-body);
   font-size: 1.125rem;
 }
@@ -110,14 +110,14 @@
   background: repeating-linear-gradient(
     to bottom,
     transparent 0 var(--spine-h),
-    var(--wood-edge) var(--spine-h) calc(var(--spine-h) + 4px),
-    var(--wood) calc(var(--spine-h) + 4px) calc(var(--spine-h) + var(--board))
+    var(--shelf-edge) var(--spine-h) calc(var(--spine-h) + 4px),
+    var(--shelf) calc(var(--spine-h) + 4px) calc(var(--spine-h) + var(--board))
   );
 }
 
 /* Lomo de caja. Un solo tamaño de letra: el rango lo dan peso, mayúsculas e inversión. */
 .spine {
-  --accent: var(--cyan);
+  --accent: var(--band);
   position: relative;
   display: flex;
   flex-direction: column;
@@ -128,7 +128,7 @@
   padding: calc(var(--u) * 4) 0 var(--u); /* hueco arriba para la pegatina «Hoy» */
   border: 0;
   border-top: calc(var(--u) * 2) solid var(--accent);
-  background: var(--ink);
+  background: var(--spine);
   color: var(--wall-ink);
   font-family: var(--font-label);
   font-size: 1rem;
@@ -173,7 +173,7 @@
   min-height: 0;
   font-weight: 800;
   letter-spacing: 0.04em;
-  color: var(--yellow);
+  color: var(--highlight);
   text-align: start; /* anclado abajo, junto al año, como en un lomo real */
 }
 
@@ -184,7 +184,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   background: var(--card);
-  color: var(--ink);
+  color: var(--card-ink);
 }
 
 /* Marcas: pegatina «Hoy» arriba y cinta «Fuera» cruzada cuando la caja está abierta. */
@@ -202,15 +202,15 @@
 /* «Hoy» va sobre la banda de color y «Fuera» sobre el año: el título del lomo nunca queda tapado. */
 .spineToday {
   top: var(--u);
-  background: var(--yellow);
-  color: var(--ink);
+  background: var(--highlight);
+  color: var(--on-highlight);
   transform: rotate(-6deg);
 }
 
 .spineOut {
   bottom: calc(var(--u) * 2);
-  background: var(--red);
-  color: #fff;
+  background: var(--sticker);
+  color: var(--on-sticker);
   transform: rotate(-6deg);
 }
 
@@ -225,8 +225,8 @@
   max-width: 560px;
   padding: calc(var(--u) * 4);
   background: var(--card);
-  color: var(--ink);
-  border-top: calc(var(--u) * 2) solid var(--red);
+  color: var(--card-ink);
+  border-top: calc(var(--u) * 2) solid var(--sticker);
   box-shadow: var(--shadow-box);
 }
 
@@ -246,8 +246,8 @@
 .statusButton {
   padding: calc(var(--u) * 1.5) calc(var(--u) * 3);
   border: 0;
-  background: var(--ink);
-  color: var(--yellow);
+  background: var(--spine);
+  color: var(--highlight);
   font-family: var(--font-display);
   font-size: 1rem;
   text-transform: uppercase;
@@ -255,8 +255,8 @@
 }
 
 .statusButton:hover {
-  background: var(--red);
-  color: #fff;
+  background: var(--sticker);
+  color: var(--on-sticker);
 }
 
 @media (max-width: 720px) {

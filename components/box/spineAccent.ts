@@ -1,5 +1,6 @@
 // Color de la banda del lomo: fijo por plataforma, como en las colecciones de cajas de una misma consola.
-const ACCENTS = ["var(--cyan)", "var(--red)", "var(--yellow)"];
+// --sticker-band solo lo definen los temas cuyo color de pegatina coincide con el lomo (Game Boy).
+const ACCENTS = ["var(--band)", "var(--sticker-band, var(--sticker))", "var(--highlight)"];
 
 export function spineAccent(platform: string): string {
   let hash = 0;

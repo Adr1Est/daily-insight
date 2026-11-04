@@ -1,19 +1,8 @@
-/* Daily Bug: estantería de videoclub. Módulo base de 8 px. */
+/* Daily Bug: estantería de videoclub. Módulo base de 8 px.
+   Los colores (roles: --wall, --card, --spine, --sticker...) y el ambiente de cada tema
+   se generan desde lib/themes.ts (themeCss) en app/layout.tsx; aquí no hay colores literales. */
 :root {
   --u: 8px;
-
-  --wall: #1d1b19;
-  --wall-slat: #252220;
-  --wood: #4a3422;
-  --wood-edge: #6b4a2e;
-  --ink: #141414;
-  --card: #f2efe6;
-  --card-ink-soft: #4a463f;
-  --wall-ink: #f2efe6;
-  --wall-ink-soft: #bdb6a8;
-  --red: #d1281b;
-  --yellow: #ffd23f;
-  --cyan: #2ec4d6;
 
   --font-display: var(--font-bungee), "Arial Black", sans-serif;
   --font-label: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
@@ -23,6 +12,10 @@
   --shadow-box: 10px 10px 0 rgb(0 0 0 / 0.4);
   --shadow-sticker: 3px 3px 0 rgb(0 0 0 / 0.35);
   --shadow-board: 0 12px 0 rgb(0 0 0 / 0.35);
+
+  /* Ambiente por tema: brillo añadido a logo, títulos y caja, y capa extra sobre la pared. */
+  --glow: 0 0 0 transparent;
+  --wall-pattern: none;
 
   color-scheme: dark;
 }
@@ -63,7 +56,7 @@
 @layer base {
   html {
     background: var(--wall);
-    scrollbar-color: var(--wood-edge) var(--wall);
+    scrollbar-color: var(--shelf-edge) var(--wall);
   }
 
   body {
@@ -74,14 +67,16 @@
     font-family: var(--font-body);
     font-size: 1rem;
     line-height: 1.5;
-    /* Pared de listones verticales del videoclub. */
-    background: repeating-linear-gradient(90deg, var(--wall-slat) 0 calc(var(--u) * 6), var(--wall) calc(var(--u) * 6) calc(var(--u) * 12));
+    /* Pared de listones verticales, con la capa de ambiente del tema por encima. */
+    background:
+      var(--wall-pattern),
+      repeating-linear-gradient(90deg, var(--wall-slat) 0 calc(var(--u) * 6), var(--wall) calc(var(--u) * 6) calc(var(--u) * 12));
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background: var(--yellow);
-    color: var(--ink);
+    background: var(--highlight);
+    color: var(--on-highlight);
   }
 
   a {
@@ -91,11 +86,11 @@
   }
 
   :focus-visible {
-    outline: 3px solid var(--yellow);
+    outline: 3px solid var(--highlight);
     outline-offset: 3px;
   }
 
   input {
-    caret-color: var(--red);
+    caret-color: var(--sticker);
   }
 }
