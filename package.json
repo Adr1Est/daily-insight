@@ -17,6 +17,7 @@
     "@openai/agents": "^0.21.0",
     "@prisma/adapter-pg": "^7.10.1",
     "@prisma/client": "^7.10.1",
+    "@vercel/analytics": "^2.0.1",
     "dotenv": "^17.2.3",
     "lucide-react": "^0.554.0",
     "next": "16.4.5",

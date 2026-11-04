@@ -71,6 +71,7 @@ Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSche
 - `GET /api/bugs?limit&cursor&q` devuelve `{ items, nextCursor, total, matching }`: `total` es el número de bugs en la BD y `matching` los que cumplen la búsqueda. `GET /api/bugs/:id` devuelve un bug. Ambas son dinámicas y se cachean en la CDN por URL (`Cache-Control: s-maxage`). Parámetros inválidos → 400.
 - `app/page.tsx` y `app/bugs/page.tsx` son estáticas con `revalidate = 3600`; el cron las invalida al publicar. `/bugs` renderiza solo la primera página; `components/shelf/Shelf.tsx` (cliente) pide el resto con «Cargar más» y busca con 300 ms de espera, cancelando peticiones obsoletas. `/bugs#bug-N` abre esa caja aunque no esté cargada (la pide a `/api/bugs/:id`).
 - `next.config.ts` añade cabeceras de seguridad y desactiva `X-Powered-By`.
+- `app/layout.tsx` monta `<Analytics />` de `@vercel/analytics` (Vercel Web Analytics). Solo envía datos desplegado en Vercel con Analytics activado en el panel; en local no registra nada.
 
 ### Diseño
 
