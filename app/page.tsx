@@ -1,25 +1,55 @@
-export const dynamic = 'force-dynamic';
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
-import Info from "@/app/ui/info/Info";
-import CustomTerminal from "@/app/ui/terminal/CustomTerminal";
-import { Suspense } from "react";
-import Loader from "@/app/ui/loaders/Loader";
-import FooterMain from "@/app/ui/footer/FooterMain";
+import styles from "@/app/home.module.css";
+import boxStyles from "@/components/box/box.module.css";
+import BoxCover from "@/components/box/BoxCover";
+import EmptyShelf from "@/components/shelf/EmptyShelf";
+import Spine from "@/components/shelf/Spine";
+import { getLatestInsights, isMockMode } from "@/lib/data";
 
-export default function Home() {
-  return (
-    <div className="min-h-dvh min-w-dvw flex flex-col justify-center items-center ">
-      <main className="flex flex-col gap-3 w-full md:w-2/5 justify-center items-center">
+// Los datos cambian una vez al día: página estática que el cron invalida al publicar (y cada hora como red de seguridad).
+export const revalidate = 3600;
 
-        <Info/>
-              
-        <Suspense fallback={<Loader/>}>
-          <CustomTerminal/>
-        </Suspense>
+export default async function Home() {
+  const [today, ...previous] = await getLatestInsights(5);
 
-        <FooterMain/>
-
+  if (!today) {
+    return (
+      <main className={styles.main}>
+        <EmptyShelf />
       </main>
-    </div>
+    );
+  }
+
+  return (
+    <main className={styles.main}>
+      <div className={styles.stage}>
+        <BoxCover
+          bug={today}
+          isToday
+          isSample={isMockMode()}
+          headingId="bug-de-hoy"
+          action={
+            <Link href="/bugs" className={boxStyles.action}>
+              Ver toda la estantería <ArrowRight size={20} aria-hidden="true" />
+            </Link>
+          }
+        />
+
+        {previous.length > 0 && (
+          <nav className={styles.peek} aria-label="Bugs anteriores">
+            <ul>
+              {previous.map((bug) => (
+                <li key={bug.id}>
+                  <Spine bug={bug} href={`/bugs#bug-${bug.id}`} />
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </div>
+      <div className={styles.shelf} aria-hidden="true" />
+    </main>
   );
 }

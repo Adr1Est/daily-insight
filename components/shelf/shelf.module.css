@@ -1,0 +1,298 @@
+.main {
+  --spine-w: 64px;
+  --spine-h: 296px;
+  --board: calc(var(--u) * 2);
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: calc(var(--u) * 3) clamp(16px, 4vw, 48px) calc(var(--u) * 4);
+}
+
+.heading {
+  margin: 0 0 calc(var(--u) * 3);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--wall-ink);
+}
+
+/* Buscador: etiqueta de catálogo pegada en la pared. */
+.search {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--u) calc(var(--u) * 3);
+  margin-bottom: calc(var(--u) * 5);
+}
+
+.searchLabel {
+  flex-basis: 100%;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--wall-ink-soft);
+}
+
+.searchField {
+  display: flex;
+  align-items: center;
+  gap: var(--u);
+  flex: 1 1 320px;
+  max-width: 560px;
+  padding: 0 calc(var(--u) * 2);
+  background: var(--card);
+  color: var(--card-ink);
+  border-top: var(--u) solid var(--highlight);
+}
+
+.searchField:focus-within {
+  outline: 3px solid var(--highlight);
+  outline-offset: 3px;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+  padding: calc(var(--u) * 1.5) 0;
+  border: 0;
+  background: transparent;
+  color: var(--card-ink);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+}
+
+.searchInput:focus-visible {
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: var(--card-ink-soft);
+}
+
+.searchCount {
+  margin: 0;
+  padding-bottom: calc(var(--u) * 1.5);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--wall-ink-soft);
+}
+
+/* La caja que se ha sacado de la estantería. */
+.pulled {
+  display: flex;
+  justify-content: center;
+  margin-bottom: calc(var(--u) * 7);
+  padding-top: calc(var(--u) * 3);
+  scroll-margin-top: calc(var(--u) * 2);
+}
+
+/* El foco se mueve aquí para lectores de pantalla; la caja ya es la señal visual. */
+.pulled:focus {
+  outline: none;
+}
+
+/* Baldas: un degradado repetido del alto exacto de un lomo más el grosor de la balda. */
+.rack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--board) calc(var(--u) / 2);
+  margin: 0;
+  padding: 0 0 var(--board);
+  list-style: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 var(--spine-h),
+    var(--shelf-edge) var(--spine-h) calc(var(--spine-h) + 4px),
+    var(--shelf) calc(var(--spine-h) + 4px) calc(var(--spine-h) + var(--board))
+  );
+}
+
+/* Lomo de caja. Un solo tamaño de letra: el rango lo dan peso, mayúsculas e inversión. */
+.spine {
+  --accent: var(--band);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--u);
+  width: var(--spine-w);
+  height: var(--spine-h);
+  padding: calc(var(--u) * 4) 0 var(--u); /* hueco arriba para la pegatina «Hoy» */
+  border: 0;
+  border-top: calc(var(--u) * 2) solid var(--accent);
+  background: var(--spine);
+  color: var(--wall-ink);
+  font-family: var(--font-label);
+  font-size: 1rem;
+  line-height: 1;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+/* Hover seco, sin transición: la banda crece y el título se aclara. */
+.spine:hover {
+  border-top-width: calc(var(--u) * 3);
+}
+
+.spine:hover .spineTitle {
+  color: var(--wall-ink);
+}
+
+.spine[data-thick] {
+  width: calc(var(--spine-w) * 1.5);
+}
+
+.spineTitle,
+.spineMeta {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Lomo grueso: el título cabe en dos columnas en lugar de cortarse. */
+.spine[data-thick] .spineTitle {
+  white-space: normal;
+  line-height: 1.25;
+  text-overflow: clip;
+}
+
+.spineTitle {
+  flex: 1;
+  min-height: 0;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--highlight);
+  text-align: start; /* anclado abajo, junto al año, como en un lomo real */
+}
+
+.spineMeta {
+  flex-shrink: 0;
+  max-height: 45%;
+  padding: var(--u) calc(var(--u) / 2);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  background: var(--card);
+  color: var(--card-ink);
+}
+
+/* Marcas: pegatina «Hoy» arriba y cinta «Fuera» cruzada cuando la caja está abierta. */
+.spineToday,
+.spineOut {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: calc(var(--u) / 2) 0;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
+
+/* «Hoy» va sobre la banda de color y «Fuera» sobre el año: el título del lomo nunca queda tapado. */
+.spineToday {
+  top: var(--u);
+  background: var(--highlight);
+  color: var(--on-highlight);
+  transform: rotate(-6deg);
+}
+
+.spineOut {
+  bottom: calc(var(--u) * 2);
+  background: var(--sticker);
+  color: var(--on-sticker);
+  transform: rotate(-6deg);
+}
+
+/* Mensajes de estado: tarjeta de cartón sobre la pared. */
+.statusMain {
+  display: flex;
+  justify-content: center;
+  padding: calc(var(--u) * 6) clamp(16px, 4vw, 48px);
+}
+
+.status {
+  max-width: 560px;
+  padding: calc(var(--u) * 4);
+  background: var(--card);
+  color: var(--card-ink);
+  border-top: calc(var(--u) * 2) solid var(--sticker);
+  box-shadow: var(--shadow-box);
+}
+
+.status p {
+  margin: 0 0 calc(var(--u) * 2);
+  font-size: 1.125rem;
+}
+
+.status .statusTitle {
+  margin-bottom: var(--u);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.statusButton {
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 3);
+  border: 0;
+  background: var(--spine);
+  color: var(--highlight);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.statusButton:hover {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+@media (max-width: 720px) {
+  .main {
+    --spine-w: 48px;
+    --spine-h: 240px;
+  }
+
+  .spine,
+  .spineToday,
+  .spineOut {
+    font-size: 0.875rem;
+  }
+}
+
+.statusButton:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+/* «Cargar más»: bajo la última balda, como pedir otra caja al almacén. */
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--u) calc(var(--u) * 3);
+  margin-top: calc(var(--u) * 4);
+}
+
+.moreCount {
+  margin: 0;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--wall-ink-soft);
+}

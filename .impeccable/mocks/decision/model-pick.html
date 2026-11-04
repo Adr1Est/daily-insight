@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Chakra+Petch:wght@400;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1440px;height:900px;overflow:hidden}
+body{background:#0b0820;color:#e9e6ff;font-family:'Chakra Petch',sans-serif;
+ background-image:linear-gradient(135deg,#ff2e88 0 6%,transparent 6% 94%,#35f2ff 94%)}
+.cab{position:absolute;left:200px;right:200px;top:0;bottom:0;background:#150f33;border-left:24px solid #ff2e88;border-right:24px solid #35f2ff}
+.marquee{height:168px;background:#ffe14d;color:#0b0820;display:flex;align-items:center;justify-content:center;flex-direction:column;
+ border-bottom:12px solid #0b0820;box-shadow:inset 0 0 0 8px #ff2e88}
+.marquee h1{font-family:'Press Start 2P';font-size:64px;letter-spacing:4px;text-shadow:6px 6px 0 #ff2e88}
+.marquee p{font-family:'Press Start 2P';font-size:12px;margin-top:16px;letter-spacing:2px}
+.bezel{position:absolute;left:48px;right:48px;top:208px;bottom:120px;background:#0b0820;border:16px solid #2a2155;border-radius:24px;padding:40px 56px;
+ background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 2px,transparent 2px 4px)}
+.hud{display:flex;justify-content:space-between;font-family:'Press Start 2P';font-size:14px;color:#35f2ff}
+.hud b{color:#ffe14d}
+.grid{display:grid;grid-template-columns:1fr 280px;gap:48px;margin-top:32px}
+.kick{font-family:'Press Start 2P';font-size:12px;color:#ff2e88;letter-spacing:2px}
+h2{font-family:'Press Start 2P';font-size:40px;line-height:1.3;color:#fff;margin:16px 0 24px}
+p.body{font-size:21px;line-height:1.6;max-width:62ch;color:#e9e6ff}
+.card{border:4px solid #35f2ff;padding:24px;font-family:'Press Start 2P';font-size:12px;line-height:2.2}
+.card dt{color:#35f2ff}.card dd{color:#ffe14d;font-size:16px;margin-bottom:16px}
+.panel{position:absolute;left:0;right:0;bottom:0;height:104px;background:#2a2155;display:flex;align-items:center;justify-content:center;gap:48px;border-top:8px solid #0b0820}
+.btn{font-family:'Press Start 2P';font-size:14px;background:#ff2e88;color:#fff;padding:20px 28px;box-shadow:0 8px 0 #8a0f45;text-decoration:none}
+.stick{width:56px;height:56px;border-radius:50%;background:#ff2e88;box-shadow:0 8px 0 #8a0f45}
+.small{font-family:'Press Start 2P';font-size:10px;color:#9d97c9}
+</style></head><body>
+<div class="cab">
+ <div class="marquee"><h1>DAILY BUG</h1><p>UN BUG DE LA HISTORIA DEL VIDEOJUEGO CADA DÍA</p></div>
+ <div class="bezel">
+  <div class="hud"><span>BUG <b>Nº 213</b></span><span>04 · NOV · 2026</span><span>CRÉDITO <b>01</b></span></div>
+  <div class="grid">
+   <div>
+    <div class="kick">▶ CURIOSIDAD DEL DÍA</div>
+    <h2>MISSINGNO.</h2>
+    <p class="body">Hablando con el anciano de Ciudad Verde y volando después a la Isla Canela, los datos del nombre del jugador quedaban en la tabla de encuentros. Surfeando por la costa este aparecía MissingNo., un Pokémon fantasma que corrompía el Salón de la Fama y multiplicaba el sexto objeto de la mochila.</p>
+   </div>
+   <dl class="card"><dt>JUEGO</dt><dd>POKÉMON ROJO</dd><dt>PLATAFORMA</dt><dd>GAME BOY</dd><dt>AÑO</dt><dd>1996</dd></dl>
+  </div>
+ </div>
+ <div class="panel"><div class="stick"></div><a class="btn" href="#">TABLA DE BUGS ▶</a><span class="small">IA · GPT-5-NANO · © 2026 ADRIÁN ESTÉVEZ</span></div>
+</div>
+</body></html>

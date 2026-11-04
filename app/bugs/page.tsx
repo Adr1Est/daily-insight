@@ -1,88 +1,29 @@
-'use client';
+import EmptyShelf from "@/components/shelf/EmptyShelf";
+import Shelf from "@/components/shelf/Shelf";
+import styles from "@/components/shelf/shelf.module.css";
+import { getInsightsPage, isMockMode } from "@/lib/data";
+import { PAGE_SIZE } from "@/lib/pagination";
 
-import styles from '@/app/bugs/bugs.module.css';
-import CustomTableRow from '../ui/bugs/CustomTableRow';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { BugType } from '@/app/types/bug.types';
+// Los datos cambian una vez al día: página estática que el cron invalida al publicar (y cada hora como red de seguridad).
+// Solo se renderiza la primera página; el resto (y la búsqueda) llega paginado desde /api/bugs.
+export const revalidate = 3600;
 
-export default function BugsList(){
+export const metadata = {
+  title: "La estantería · Daily Bug",
+  description: "Todos los bugs de la historia de los videojuegos publicados en Daily Bug.",
+};
 
-  const [bugList, setBugList] = useState<BugType[]>([]);
-  const [error, setError] = useState("");
-  const [filter, setFilter] = useState("");
+export default async function BugsList() {
+  const firstPage = await getInsightsPage({ limit: PAGE_SIZE });
 
-  const handleFilter = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    setFilter(value);
-    console.log(value);
-  }
-
-  const filteredBugList = useMemo(() => {
-    if(!filter) return bugList;
-    return bugList.filter(bug => bug.game.toLowerCase().includes(filter.toLowerCase()) ||
-      bug.data.toLowerCase().includes(filter.toLowerCase()) ||
-      bug.platform.toLowerCase().includes(filter.toLowerCase()) ||
-      String(bug.bugYear).includes(String(filter))
-    );
-  }, [filter, bugList]);
-
-  useEffect(() => {
-    fetch('/api/getBugs')
-      .then(response => {
-        if(!response.ok) throw new Error(`Error HTTP: ${response.status}`);
-        return response.json();
-      })
-      .then(data => setBugList(data))
-      .catch(error => {
-        console.error(`Error al cargar bugList: ${error}`);
-        setError(error);
-      });
-  }, []);
-
-  return(
-    <div className='relative'>
-
-      <input 
-        type="text" 
-        id="searchFilterInput" 
-        className='w-full border mb-1 p-1 sticky top-0 bg-emerald-950' 
-        placeholder='Busca tu bug favorito...' 
-        onChange={handleFilter}
-        value={filter}
-      />
-
-      <table className={`${styles.table} `}>
-        <thead className='text-xl'>
-          <tr>
-            <th className={styles.th}>Fecha</th>
-            <th className={styles.th}>Videojuego</th>
-            <th className={styles.th}>Plataforma</th>
-            <th className={styles.th}>Bug</th>
-            <th className={styles.th}>Año</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredBugList.length !== 0 && !error
-            ? filteredBugList.map((bug: BugType) => (
-                <CustomTableRow
-                  key={bug.id}
-                  date={`${bug.day} de ${bug.month} de ${bug.year}`}
-                  game={bug.game}
-                  platform={bug.platform}
-                  bug={bug.data}
-                  bugYear={bug.bugYear}
-                />
-              ))
-            : (<CustomTableRow
-                  date="Sin datos"
-                  game="Sin datos"
-                  platform="Sin datos"
-                  bug="Sin datos"
-                  bugYear={0}
-                />)
-          }
-        </tbody>
-      </table>
-    </div>
-  )
+  return (
+    <main className={styles.main}>
+      <h1 className={styles.heading}>La estantería</h1>
+      {firstPage.total > 0 ? (
+        <Shelf initialPage={firstPage} isSample={isMockMode()} />
+      ) : (
+        <EmptyShelf />
+      )}
+    </main>
+  );
 }

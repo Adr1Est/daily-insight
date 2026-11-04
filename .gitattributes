@@ -1,0 +1,2 @@
+# Finales de línea LF en todo el repo (lo que espera Prettier), aunque Git use CRLF en Windows.
+* text=auto eol=lf

@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+# Solo lectura del repositorio: la CI no necesita escribir nada.
+permissions:
+  contents: read
+
+# Un push nuevo a la misma PR o rama cancela la ejecución anterior.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # La CI no usa base de datos ni OpenAI: la lectura sale de los mocks (DATA_SOURCE=mock).
+  # DATABASE_URL es un valor ficticio para que `prisma generate` cargue prisma.config.ts; nunca se conecta.
+  DATA_SOURCE: mock
+  DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+  DIRECT_URL: postgresql://ci:ci@localhost:5432/ci
+  NEXT_TELEMETRY_DISABLED: 1
+
+jobs:
+  checks:
+    name: Lint, tipos, formato, tests y build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+
+      - name: Instalar Node 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      # postinstall ejecuta `prisma generate` (genera el cliente en prisma/generated).
+      - name: Instalar dependencias
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Tipos
+        run: pnpm exec tsc --noEmit
+
+      - name: Formato (Prettier)
+        run: pnpm format:check
+
+      - name: Tests
+        run: pnpm test
+
+      - name: Build (modo mock)
+        run: pnpm build
+
+      # Solo avisa: las vulnerabilidades aparecen como anotación, pero no bloquean la CI.
+      - name: Auditoría de dependencias
+        run: |
+          if ! pnpm audit --prod; then
+            echo "::warning title=pnpm audit::Hay vulnerabilidades en dependencias de producción. Revisa el log de este paso."
+          fi

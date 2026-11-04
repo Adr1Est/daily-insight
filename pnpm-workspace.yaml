@@ -1,0 +1,30 @@
+minimumReleaseAgeExclude:
+  - "@next/env@16.4.5"
+  - "@next/swc-darwin-arm64@16.4.5"
+  - "@next/swc-darwin-x64@16.4.5"
+  - "@next/swc-linux-arm64-gnu@16.4.5"
+  - "@next/swc-linux-arm64-musl@16.4.5"
+  - "@next/swc-linux-x64-gnu@16.4.5"
+  - "@next/swc-linux-x64-musl@16.4.5"
+  - "@next/swc-win32-arm64-msvc@16.4.5"
+  - "@next/swc-win32-x64-msvc@16.4.5"
+  - next@16.4.5
+  - "@next/eslint-plugin-next@16.4.5"
+  - eslint-config-next@16.4.5
+
+# Parches de seguridad en dependencias transitivas de herramientas de desarrollo
+# (Prisma Studio / prisma dev y Babel de styled-jsx). Mismo major, solo versiones corregidas.
+overrides:
+  "ajv@>=7.0.0 <8.18.0": ^8.18.0
+  "fast-uri@>=3.0.0 <3.1.9": ^3.1.9
+  "lodash@<4.17.24": ^4.17.24
+  "@babel/core@<7.29.1": ^7.29.1
+  "browserslist@<4.28.7": ^4.28.7
+
+# Scripts de instalación de dependencias revisados (pnpm 11 bloquea los no revisados).
+# - prisma / @prisma/engines: descargan los motores que necesita `pnpm db:migrate`.
+# - unrs-resolver: binario nativo opcional del resolver de ESLint; el lint funciona sin él.
+allowBuilds:
+  prisma: true
+  "@prisma/engines": true
+  unrs-resolver: false

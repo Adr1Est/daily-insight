@@ -1,0 +1,11 @@
+# Generado o de terceros
+.next/
+node_modules/
+prisma/generated/
+prisma/migrations/
+pnpm-lock.yaml
+next-env.d.ts
+
+# Artefactos de diseño (impeccable) y documentación en Markdown
+.impeccable/
+*.md

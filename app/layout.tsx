@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
-import { Quantico } from "next/font/google";
+import { Barlow, Barlow_Condensed, Bungee } from "next/font/google";
+
 import "@/app/globals.css";
 
-const quantico = Quantico({
-  weight: "400",
-  style: 'normal'
+import SiteFooter from "@/components/site/SiteFooter";
+import SiteHeader from "@/components/site/SiteHeader";
+import { themeCss, themeInitScript } from "@/lib/themes";
+
+const bungee = Bungee({ weight: "400", subsets: ["latin"], variable: "--font-bungee" });
+const barlow = Barlow({ weight: ["400", "600"], subsets: ["latin"], variable: "--font-barlow" });
+const barlowCondensed = Barlow_Condensed({
+  weight: ["600", "800"],
+  subsets: ["latin"],
+  variable: "--font-barlow-condensed",
 });
 
 export const metadata: Metadata = {
@@ -18,11 +26,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body
-        className={`${quantico.className} antialiased`}
-      >
+    // suppressHydrationWarning: el script de tema fija data-theme en <html> antes de hidratar.
+    <html
+      lang="es"
+      className={`${bungee.variable} ${barlow.variable} ${barlowCondensed.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
+      </head>
+      <body>
+        <SiteHeader />
         {children}
+        <SiteFooter />
       </body>
     </html>
   );
