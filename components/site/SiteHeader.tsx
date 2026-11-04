@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import styles from "@/app/ui/site/site.module.css";
+import styles from "@/components/site/site.module.css";
 
 const LINKS = [
   { href: "/", label: "Hoy" },

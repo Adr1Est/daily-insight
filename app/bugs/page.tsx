@@ -1,9 +1,10 @@
-export const dynamic = 'force-dynamic';
+// Los datos cambian una vez al día: página estática que el cron invalida al publicar (y cada hora como red de seguridad).
+export const revalidate = 3600;
 
 import { getAllInsights, isMockMode } from "@/lib/data";
-import Shelf from "@/app/ui/shelf/Shelf";
-import EmptyShelf from "@/app/ui/shelf/EmptyShelf";
-import styles from "@/app/ui/shelf/shelf.module.css";
+import Shelf from "@/components/shelf/Shelf";
+import EmptyShelf from "@/components/shelf/EmptyShelf";
+import styles from "@/components/shelf/shelf.module.css";
 
 export const metadata = {
   title: "La estantería · Daily Bug",

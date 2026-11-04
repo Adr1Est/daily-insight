@@ -1,6 +1,6 @@
 'use client';
 
-import styles from "@/app/ui/shelf/shelf.module.css";
+import styles from "@/components/shelf/shelf.module.css";
 
 export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }){
   return (

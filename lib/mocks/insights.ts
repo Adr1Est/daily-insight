@@ -1,4 +1,4 @@
-import type { BugType } from "@/app/types/bug.types";
+import type { BugType } from "@/types/bug";
 
 // Bugs reales y documentados, para desarrollar la UI sin base de datos (DATA_SOURCE=mock).
 // Ordenados del más antiguo (id 1) al más reciente (id 12).

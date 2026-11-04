@@ -20,7 +20,7 @@ Una única dosis diaria, breve (máx. ~10 líneas), centrada exclusivamente en b
 
 ## Operating Context
 
-- Un cron diario (GitHub Actions, 00:00 UTC) genera e inserta el insight; la portada siempre muestra el último.
+- Un cron diario de Vercel (00:00 UTC) genera e inserta el insight, con la fecha calculada en el servidor y como máximo uno por día; la portada siempre muestra el último.
 - Cada insight tiene: fecha (día, mes en español, año), videojuego, plataforma, año del bug y texto descriptivo.
 - `/bugs` lista todos los insights con buscador por juego, texto, plataforma o año.
 

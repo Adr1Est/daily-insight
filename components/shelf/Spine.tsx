@@ -1,7 +1,7 @@
 import Link from "next/link";
-import type { BugType } from "@/app/types/bug.types";
-import { spineAccent } from "@/app/ui/box/spineAccent";
-import styles from "@/app/ui/shelf/shelf.module.css";
+import type { BugType } from "@/types/bug";
+import { spineAccent } from "@/components/box/spineAccent";
+import styles from "@/components/shelf/shelf.module.css";
 
 interface SpineProps {
   bug: BugType;

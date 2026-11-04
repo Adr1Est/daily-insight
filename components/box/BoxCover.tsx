@@ -1,6 +1,6 @@
-import type { BugType } from "@/app/types/bug.types";
-import { spineAccent } from "@/app/ui/box/spineAccent";
-import styles from "@/app/ui/box/box.module.css";
+import type { BugType } from "@/types/bug";
+import { spineAccent } from "@/components/box/spineAccent";
+import styles from "@/components/box/box.module.css";
 
 interface BoxCoverProps {
   bug: BugType;

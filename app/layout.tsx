@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Bungee, Barlow, Barlow_Condensed } from "next/font/google";
 import "@/app/globals.css";
-import SiteHeader from "@/app/ui/site/SiteHeader";
-import SiteFooter from "@/app/ui/site/SiteFooter";
+import SiteHeader from "@/components/site/SiteHeader";
+import SiteFooter from "@/components/site/SiteFooter";
 
 const bungee = Bungee({ weight: "400", subsets: ["latin"], variable: "--font-bungee" });
 const barlow = Barlow({ weight: ["400", "600"], subsets: ["latin"], variable: "--font-barlow" });

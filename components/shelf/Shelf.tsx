@@ -2,11 +2,11 @@
 
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
-import type { BugType } from "@/app/types/bug.types";
-import BoxCover from "@/app/ui/box/BoxCover";
-import Spine from "@/app/ui/shelf/Spine";
-import boxStyles from "@/app/ui/box/box.module.css";
-import styles from "@/app/ui/shelf/shelf.module.css";
+import type { BugType } from "@/types/bug";
+import BoxCover from "@/components/box/BoxCover";
+import Spine from "@/components/shelf/Spine";
+import boxStyles from "@/components/box/box.module.css";
+import styles from "@/components/shelf/shelf.module.css";
 
 const PULLED_ID = "caja-abierta";
 

@@ -1,4 +1,4 @@
-import styles from "@/app/ui/shelf/shelf.module.css";
+import styles from "@/components/shelf/shelf.module.css";
 
 export default function EmptyShelf(){
   return (

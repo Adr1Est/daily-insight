@@ -11,3 +11,12 @@ minimumReleaseAgeExclude:
   - next@16.4.5
   - '@next/eslint-plugin-next@16.4.5'
   - eslint-config-next@16.4.5
+
+# Parches de seguridad en dependencias transitivas de herramientas de desarrollo
+# (Prisma Studio / prisma dev y Babel de styled-jsx). Mismo major, solo versiones corregidas.
+overrides:
+  'ajv@>=7.0.0 <8.18.0': ^8.18.0
+  'fast-uri@>=3.0.0 <3.1.9': ^3.1.9
+  'lodash@<4.17.24': ^4.17.24
+  '@babel/core@<7.29.1': ^7.29.1
+  'browserslist@<4.28.7': ^4.28.7

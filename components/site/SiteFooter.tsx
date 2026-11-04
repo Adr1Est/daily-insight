@@ -1,7 +1,6 @@
-import { getYear } from "@/app/utils/getYear";
 import { isMockMode } from "@/lib/data";
 import { Github, Linkedin, Globe } from "lucide-react";
-import styles from "@/app/ui/site/site.module.css";
+import styles from "@/components/site/site.module.css";
 
 const LINKS = [
   { href: "https://github.com/Adr1Est", label: "GitHub", Icon: Github },
@@ -12,7 +11,7 @@ const LINKS = [
 export default function SiteFooter(){
   return(
     <footer className={styles.footer}>
-      <p>&copy; {getYear()} Desarrollado por Adrián Estévez</p>
+      <p>&copy; {new Date().getFullYear()} Desarrollado por Adrián Estévez</p>
       <ul className={styles.social}>
         {LINKS.map(({ href, label, Icon }) => (
           <li key={href}>

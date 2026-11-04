@@ -1,12 +1,13 @@
-export const dynamic = 'force-dynamic';
+// Los datos cambian una vez al día: página estática que el cron invalida al publicar (y cada hora como red de seguridad).
+export const revalidate = 3600;
 
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { getLatestInsights, isMockMode } from "@/lib/data";
-import BoxCover from "@/app/ui/box/BoxCover";
-import Spine from "@/app/ui/shelf/Spine";
-import EmptyShelf from "@/app/ui/shelf/EmptyShelf";
-import boxStyles from "@/app/ui/box/box.module.css";
+import BoxCover from "@/components/box/BoxCover";
+import Spine from "@/components/shelf/Spine";
+import EmptyShelf from "@/components/shelf/EmptyShelf";
+import boxStyles from "@/components/box/box.module.css";
 import styles from "@/app/home.module.css";
 
 export default async function Home() {
