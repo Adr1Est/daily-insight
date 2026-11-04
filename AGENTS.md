@@ -22,6 +22,8 @@ pnpm test -- lib/auth.test.ts   # un solo fichero
 pnpm db:migrate       # prisma migrate deploy, a mano al desplegar cambios de esquema
 ```
 
+CI (`.github/workflows/ci.yml`, en PR y push a `main`, Node 24 + pnpm 11): `install --frozen-lockfile`, lint, `tsc`, `format:check`, tests y build en modo mock (sin BD ni secretos). `pnpm audit --prod` solo avisa.
+
 Nuevas migraciones: `pnpm dlx prisma migrate dev --name <nombre>` (usa `DIRECT_URL` como shadow DB, ver `prisma.config.ts`).
 
 Desarrollar la UI sin base de datos: `DATA_SOURCE=mock pnpm dev` (en PowerShell, `$env:DATA_SOURCE="mock"; pnpm dev`).
