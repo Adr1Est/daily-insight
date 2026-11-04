@@ -20,3 +20,11 @@ overrides:
   "lodash@<4.17.24": ^4.17.24
   "@babel/core@<7.29.1": ^7.29.1
   "browserslist@<4.28.7": ^4.28.7
+
+# Scripts de instalación de dependencias revisados (pnpm 11 bloquea los no revisados).
+# - prisma / @prisma/engines: descargan los motores que necesita `pnpm db:migrate`.
+# - unrs-resolver: binario nativo opcional del resolver de ESLint; el lint funciona sin él.
+allowBuilds:
+  prisma: true
+  "@prisma/engines": true
+  unrs-resolver: false
