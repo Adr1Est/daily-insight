@@ -1,4 +1,5 @@
 import { isMockMode } from "@/lib/data";
+import { AI_MODEL, AI_MODEL_URL } from "@/lib/insights/model";
 import { Github, Linkedin, Globe } from "lucide-react";
 import styles from "@/components/site/site.module.css";
 
@@ -26,8 +27,8 @@ export default function SiteFooter(){
       ) : (
         <p>
           Bugs escritos por IA con{" "}
-          <a href="https://platform.openai.com/docs/models/gpt-5-nano" target="_blank" rel="noopener noreferrer">
-            gpt-5-nano
+          <a href={AI_MODEL_URL} target="_blank" rel="noopener noreferrer">
+            {AI_MODEL}
           </a>
         </p>
       )}

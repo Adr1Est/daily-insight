@@ -2,10 +2,10 @@ import { z } from "zod";
 
 /** Forma que se pide al modelo (salida estructurada). Sin restricciones extra para que el esquema sea compatible. */
 export const agentOutputSchema = z.object({
-  game: z.string().describe("Videojuego del bug. Si no es un juego, «no es un juego»."),
-  platform: z.string().describe("Plataforma donde ocurrió. Ej.: Nintendo 64, Xbox, PS5, PC."),
-  bugYear: z.number().int().describe("Año en que ocurrió el bug."),
-  data: z.string().describe("Explicación detallada del bug en español, como máximo 10 líneas."),
+  game: z.string().describe("Título oficial del juego en España, o nombre del producto si es hardware o un servicio."),
+  platform: z.string().describe("Plataforma o plataformas donde ocurría, separadas por comas (máximo 3)."),
+  bugYear: z.number().int().describe("Año en que el fallo llegó al público."),
+  data: z.string().describe("Explicación breve en español de España: 2 a 4 frases, 250 a 500 caracteres, texto plano."),
 });
 
 /** Validación propia antes de guardar: lo que no cumpla no llega a la base de datos. */

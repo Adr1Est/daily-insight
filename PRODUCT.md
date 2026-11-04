@@ -12,7 +12,7 @@ Gamers curiosos: aficionados a los videojuegos que entran a leer la curiosidad d
 
 ## Product Purpose
 
-Daily Bug publica cada día, generada con IA (gpt-5-nano), una curiosidad sobre un bug/glitch/fallo conocido de la historia de los videojuegos, y guarda el archivo completo para consultarlo. El éxito es que el visitante lea el bug del día y le apetezca volver o bucear en el archivo.
+Daily Bug publica cada día, generada con IA (modelo actual: gpt-6-luna), una curiosidad sobre un bug/glitch/fallo conocido de la historia de los videojuegos, y guarda el archivo completo para consultarlo. El éxito es que el visitante lea el bug del día y le apetezca volver o bucear en el archivo.
 
 ## Positioning
 
@@ -36,7 +36,7 @@ Una única dosis diaria, breve (máx. ~10 líneas), centrada exclusivamente en b
 ## Brand Commitments
 
 - Nombre visible: **Daily Bug**.
-- Autoría visible: Adrián Estévez, con enlaces a GitHub, LinkedIn y web personal; crédito "Powered by gpt-5-nano".
+- Autoría visible: Adrián Estévez, con enlaces a GitHub, LinkedIn y web personal; crédito del modelo de IA en el pie («Bugs escritos por IA con <modelo>»).
 
 ## Evidence on Hand
 

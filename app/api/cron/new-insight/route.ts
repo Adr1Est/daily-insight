@@ -15,7 +15,13 @@ export async function GET(req: Request){
 
   try {
 
-    const result = await generateDailyInsight();
+    // ?dryRun=1 genera y valida sin guardar, para revisar la calidad del prompt.
+    const dryRun = new URL(req.url).searchParams.get("dryRun") === "1";
+    const result = await generateDailyInsight({ dryRun });
+
+    if(result.status === "preview"){
+      return Response.json({ status: result.status, insight: result.insight });
+    }
 
     if(result.status === "created"){
       revalidatePath("/");

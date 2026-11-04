@@ -59,7 +59,7 @@ export default function BoxCover({ bug, isToday = false, headingLevel = "h1", he
 
         <footer className={styles.foot}>
           <p className={styles.credit}>
-            {isSample ? "Datos de ejemplo · no generados por la IA" : "Texto generado con IA · gpt-5-nano"}
+            {isSample ? "Datos de ejemplo · no generados por la IA" : "Texto generado con IA"}
           </p>
           {action}
         </footer>
