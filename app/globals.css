@@ -8,10 +8,7 @@
   --font-label: var(--font-barlow-condensed), "Arial Narrow", sans-serif;
   --font-body: var(--font-barlow), system-ui, sans-serif;
 
-  /* Sombras duras, sin desenfoque: cartón impreso sobre una balda. */
-  --shadow-box: 10px 10px 0 rgb(0 0 0 / 0.4);
-  --shadow-sticker: 3px 3px 0 rgb(0 0 0 / 0.35);
-  --shadow-board: 0 12px 0 rgb(0 0 0 / 0.35);
+  /* Las sombras (--shadow-box, --shadow-sticker, --shadow-board) también vienen de lib/themes.ts. */
 
   /* Ambiente por tema: brillo añadido a logo, títulos y caja, y capa extra sobre la pared. */
   --glow: 0 0 0 transparent;

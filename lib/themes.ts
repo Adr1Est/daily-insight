@@ -91,6 +91,13 @@ export const THEMES: Theme[] = [
       "on-sticker": "#ffffff",
       band: "#2ec4d6",
     },
+    // Sombras duras por defecto. Este tema también se emite como :root, así que valen para
+    // cualquier tema que no las redefina.
+    extra: {
+      "shadow-box": "10px 10px 0 rgb(0 0 0 / 0.4)",
+      "shadow-sticker": "3px 3px 0 rgb(0 0 0 / 0.35)",
+      "shadow-board": "0 12px 0 rgb(0 0 0 / 0.35)",
+    },
   },
   {
     id: "neon",

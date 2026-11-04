@@ -76,6 +76,26 @@ typography:
     fontSize: "0.875rem"
     fontWeight: 600
     letterSpacing: "0.12em"
+  credit:
+    fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
+    fontSize: "0.9375rem"
+    fontWeight: 600
+    letterSpacing: "0.06em"
+  label-xs:
+    fontFamily: "Barlow Condensed, Arial Narrow, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 800
+    letterSpacing: "0.08em"
+  spine-title:
+    fontFamily: "Bungee, Arial Black, sans-serif"
+    fontSize: "2.25rem"
+    fontWeight: 400
+    lineHeight: 1
+  spine-title-long:
+    fontFamily: "Bungee, Arial Black, sans-serif"
+    fontSize: "1.5rem"
+    fontWeight: 400
+    lineHeight: 1.1
 rounded:
   none: "0px"
   sticker: "50%"
@@ -213,7 +233,10 @@ Pared y madera oscuras y cálidas como escenario; cartón crema y tinta negra pa
 - **Body** (Barlow 400, 1rem, 1.5): texto base, campo de búsqueda (1.125rem), tarjetas de estado (1.125rem).
 - **Data** (Barlow Condensed 800, 1.375rem, 1.2, mayúsculas, cifras tabulares): valores de la ficha técnica.
 - **Label** (Barlow Condensed 800, 1–1.25rem, 0.08–0.16em, mayúsculas): navegación, lomos, plataforma del lomo, contadores.
-- **Label small** (Barlow Condensed 600, 0.875–0.9375rem, 0.06–0.12em, mayúsculas): rótulos de la ficha y crédito.
+- **Label small** (Barlow Condensed 600, 0.875rem, 0.12em, mayúsculas): rótulos de la ficha.
+- **Credit** (Barlow Condensed 600, 0.9375rem, 0.06em, mayúsculas): crédito al pie de la caja.
+- **Label extra small** (Barlow Condensed 800, 0.75rem, 0.08em, mayúsculas): «Bug nº» y fecha de la pegatina en móvil.
+- **Spine title** (Bungee 400, 2.25rem; 1.5rem si el título pasa de 16 caracteres): título vertical del lomo de la caja y número de la pegatina en móvil.
 
 ### Named Rules
 **The One Size Spine Rule.** En los lomos del archivo hay un solo tamaño de letra; el rango se da con peso (800/600), mayúsculas e inversión (amarillo sobre negro frente a negro sobre cartón).
@@ -222,7 +245,7 @@ Pared y madera oscuras y cálidas como escenario; cartón crema y tinta negra pa
 
 ## Layout
 
-Todo el espaciado sale del módulo `--u` (8 px) en múltiplos (1, 1.5, 2, 3, 4, 5, 6, 7); 4 px solo como hueco entre lomos y grosor de canto. El margen lateral de página es `clamp(16px, 4vw, 48px)` y el ancho máximo del escenario, 1360 px; la caja mide hasta 1040 px.
+Todo el espaciado (padding, margin, gap) sale del módulo `--u` (8 px) en múltiplos (0.5, 1, 1.5, 2, 3, 4, 5, 6, 7); medio módulo (4 px) es para ajustes finos: hueco entre lomos y entre opciones, relleno de chapas. Las posiciones y desplazamientos (pegatinas que sobresalen de la caja, hueco reservado junto al título) usan cualquier múltiplo entero de `--u` (p. ej. `calc(var(--u) * -9)`). Los grosores de línea y del anillo de foco (2–4 px) no son espaciado y van en px. El margen lateral de página es `clamp(16px, 4vw, 48px)` y el ancho máximo del escenario, 1360 px; la caja mide hasta 1040 px.
 
 La portada centra la caja de hoy de canto, con los lomos de días anteriores (56 px de ancho) a su derecha, a la misma altura, y una balda de madera de 40 px debajo que tapa la sombra de la caja. Por debajo de 1240 px los lomos bajan a una fila de 260 px de alto. El archivo es una pared de lomos (64 × 296 px) en filas con `flex-wrap`, sobre baldas dibujadas con un degradado repetido del alto exacto del lomo más 16 px de balda. Los lomos con título largo se ensanchan 1,5×.
 
@@ -230,7 +253,7 @@ Por debajo de 720 px el lomo de la caja pasa a ser una banda horizontal superior
 
 ## Elevation & Depth
 
-La profundidad es de cartón sobre una balda: sombras duras, desplazadas y sin desenfoque, siempre negras translúcidas. No hay tonos de superficie elevada, brillos ni sombras difusas.
+La profundidad es de cartón sobre una balda: sombras duras, desplazadas y sin desenfoque. Por defecto son negras translúcidas (valores en `lib/themes.ts`); Neón y Game Boy las tiñen con su paleta y acortan la de la caja a 8 px. No hay tonos de superficie elevada, brillos ni sombras difusas.
 
 ### Shadow Vocabulary
 - **Caja** (`box-shadow: 10px 10px 0 rgb(0 0 0 / 0.4)`): la caja y las tarjetas de estado.
@@ -246,7 +269,7 @@ La profundidad es de cartón sobre una balda: sombras duras, desplazadas y sin d
 
 ## Shapes
 
-Esquinas rectas en todo: cajas, lomos, botones, campos, celdas y tarjetas. La única curva es la pegatina del número (círculo de 184 px). Los bordes son filetes de tinta (3 px negro en la ficha y el pie de la caja) o bandas superiores gruesas de color (16 px en lomo y contraportada, 8 px en el buscador). Las pegatinas y cintas se giran (10°, −6°); el texto de los lomos va en vertical (`writing-mode: vertical-rl` girado 180°).
+Esquinas rectas en todo: cajas, lomos, botones, campos, celdas y tarjetas. La única curva es la pegatina del número (círculo de 184 px). Los bordes son filetes de tinta (3 px negro en la ficha y el pie de la caja) o bandas superiores gruesas de color (16 px en lomo y contraportada, 8 px en el buscador). Las pegatinas y cintas se giran (10°, −6°; −4° la chapa «Nuevo» del selector); el texto de los lomos va en vertical (`writing-mode: vertical-rl` girado 180°).
 
 ### Named Rules
 **The Square Cardboard Rule.** Nada lleva `border-radius` salvo una pegatina redonda.
@@ -259,7 +282,7 @@ Táctiles, impresos y secos: cada estado cambia de golpe, sin `transition`.
 
 ### Buttons
 - **Shape:** rectángulo sin redondeo (0).
-- **Botón de caja:** bloque de tinta negra con rotulación amarilla en Bungee 1.125rem mayúsculas; relleno 16 × 24 px; icono lucide opcional a la derecha con 8 px de separación.
+- **Botón de caja:** bloque de tinta negra con rotulación amarilla en Bungee 1.125rem mayúsculas; relleno 16 × 24 px; icono lucide opcional con 8 px de separación: a la derecha en acciones de avance («Ver toda la estantería →») y a la izquierda en las de cierre («× Devolver a la estantería»).
 - **Hover:** fondo rojo pegatina y texto blanco, al instante.
 - **Focus:** anillo global amarillo de 3 px con 3 px de separación.
 - **Botón de estado:** misma receta con relleno 12 × 24 px y Bungee 1rem.
@@ -277,6 +300,7 @@ Táctiles, impresos y secos: cada estado cambia de golpe, sin `transition`.
 ### Navigation
 - **Cabecera:** logotipo a la izquierda, enlaces Hoy / Estantería a la derecha en Barlow Condensed 800 1.25rem mayúsculas, `wall-ink-soft` en reposo, `wall-ink` en hover.
 - **Activo:** tira de cinta roja de 4 px debajo; la página actual se marca con la cinta, no con un color nuevo.
+- **Selector de tema:** botón de cartón con banda superior de 4 px (`band`, `sticker` en hover), icono de paleta, «Tema» en Label y una muestra de 3 colores del tema actual. Abre un panel de cartón (popover) con banda de 16 px: cada tema es una fila con muestra y nombre en Label; la fila elegida va invertida (`highlight` sobre `spine`); los temas de temporada llevan la chapa «Nuevo» (pegatina rectangular `sticker`, girada −4°).
 - **Pie:** Barlow 0.875rem `wall-ink-soft`, iconos sociales de lucide en áreas de 40 × 40 px; hover amarillo.
 
 ### Ficha técnica
@@ -296,8 +320,8 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 | Tema | Disponible | Pared | Cartón | Pegatina | Highlight | Banda | Ambiente |
 |---|---|---|---|---|---|---|---|
 | Videoclub (por defecto) | todo el año | #1d1b19 | #f2efe6 | #d1281b | #ffd23f | #2ec4d6 | — |
-| Neón | todo el año | #0b0a1a | #15122e (tinta clara) | #ff2e88 | #f8f32b | #35f2ff | `--glow` cian, sombra de caja magenta, rejilla de líneas cian en la pared |
-| Game Boy | todo el año | #0f380f | #9bbc0f | #0f380f | #9bbc0f | #8bac0f | rejilla de píxeles de 4 px, sombras en verde medio |
+| Neón | todo el año | #0b0a1a | #15122e (tinta clara) | #ff2e88 | #f8f32b | #35f2ff | `--glow` cian, sombra de caja magenta de 8 px, líneas horizontales cian cada 32 px en la pared |
+| Game Boy | todo el año | #0f380f | #9bbc0f | #0f380f | #9bbc0f | #8bac0f | rejilla de píxeles de 4 px, sombras de caja (8 px) y pegatina en verde medio |
 | Halloween | 1 oct – 1 nov | #160d1f | #f3e6cf | #6b2fa3 | #ff8a1f | #7bd13a | telarañas SVG en las esquinas superiores de la pared |
 | Navidad | 1 nov – 9 ene | #0d2418 | #fbf6ec | #c8102e | #f2c14e | #2f8f5b | puntos de nieve sobre la pared |
 

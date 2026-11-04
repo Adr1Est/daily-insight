@@ -103,7 +103,7 @@
 .rack {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--board) 4px;
+  gap: var(--board) calc(var(--u) / 2);
   margin: 0;
   padding: 0 0 var(--board);
   list-style: none;
@@ -180,7 +180,7 @@
 .spineMeta {
   flex-shrink: 0;
   max-height: 45%;
-  padding: var(--u) 2px;
+  padding: var(--u) calc(var(--u) / 2);
   font-weight: 600;
   letter-spacing: 0.08em;
   background: var(--card);
@@ -193,7 +193,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  padding: 4px 0;
+  padding: calc(var(--u) / 2) 0;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-align: center;

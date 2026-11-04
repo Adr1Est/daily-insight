@@ -126,7 +126,7 @@
 
 .themeList {
   display: grid;
-  gap: 4px;
+  gap: calc(var(--u) / 2);
   margin: 0;
   padding: 0;
   border: 0;
@@ -167,7 +167,7 @@
 
 .themeOption:has(input:focus-visible) {
   outline: 3px solid var(--highlight);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 
 .themeOption input {
@@ -181,7 +181,7 @@
 }
 
 .themeNew {
-  padding: 2px var(--u);
+  padding: calc(var(--u) / 2) var(--u);
   background: var(--sticker);
   color: var(--on-sticker);
   font-size: 0.875rem;

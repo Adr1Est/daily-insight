@@ -49,8 +49,10 @@ export default function ThemePicker() {
     // El panel vive en la capa superior: se coloca bajo el botón, alineado a su borde derecho.
     const rect = buttonRef.current?.getBoundingClientRect();
     if (rect && panelRef.current) {
-      panelRef.current.style.top = `${rect.bottom + 8}px`;
-      panelRef.current.style.right = `${Math.max(16, window.innerWidth - rect.right)}px`;
+      // Separaciones en el módulo --u del sistema (8 px), leído del CSS.
+      const u = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--u")) || 8;
+      panelRef.current.style.top = `${rect.bottom + u}px`;
+      panelRef.current.style.right = `${Math.max(u * 2, window.innerWidth - rect.right)}px`;
     }
   };
 

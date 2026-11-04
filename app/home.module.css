@@ -32,7 +32,7 @@
 .peek ul {
   display: flex;
   align-items: flex-end;
-  gap: 4px;
+  gap: calc(var(--u) / 2);
   margin: 0;
   padding: 0;
   list-style: none;

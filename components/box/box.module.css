@@ -120,7 +120,7 @@
 .today {
   position: absolute;
   z-index: 1;
-  left: -72px;
+  left: calc(var(--u) * -9);
   top: calc(var(--u) * 2);
   padding: var(--u) calc(var(--u) * 2);
   background: var(--highlight);
@@ -135,7 +135,7 @@
 .title {
   text-shadow: var(--glow);
   margin: 0;
-  padding-right: 160px;
+  padding-right: calc(var(--u) * 20);
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(2rem, 1.2rem + 3.2vw, 4.25rem);
@@ -149,7 +149,7 @@
 .facts {
   display: grid;
   grid-template-columns: repeat(3, auto);
-  gap: 3px;
+  gap: 3px; /* el hueco es el filete entre celdas: grosor de línea, no espaciado */
   margin: 0;
   border: 3px solid var(--card-ink);
   width: fit-content;
@@ -158,7 +158,7 @@
 }
 
 .facts div {
-  padding: var(--u) calc(var(--u) * 2.5);
+  padding: var(--u) calc(var(--u) * 3);
   background: var(--card);
 }
 
@@ -282,13 +282,13 @@
   }
 
   .today {
-    left: -56px;
+    left: calc(var(--u) * -7);
     top: var(--u);
     font-size: 1.125rem;
   }
 
   .title {
-    padding-right: 72px;
+    padding-right: calc(var(--u) * 9);
   }
 
   .facts {

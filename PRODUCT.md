@@ -12,7 +12,7 @@ Gamers curiosos: aficionados a los videojuegos que entran a leer la curiosidad d
 
 ## Product Purpose
 
-Daily Bug publica cada día, generada con IA (modelo actual: gpt-6-luna), una curiosidad sobre un bug/glitch/fallo conocido de la historia de los videojuegos, y guarda el archivo completo para consultarlo. El éxito es que el visitante lea el bug del día y le apetezca volver o bucear en el archivo.
+Daily Bug publica cada día, generada con IA (el modelo actual está en `lib/insights/model.ts`), una curiosidad sobre un bug/glitch/fallo conocido de la historia de los videojuegos, y guarda el archivo completo para consultarlo. El éxito es que el visitante lea el bug del día y le apetezca volver o bucear en el archivo.
 
 ## Positioning
 

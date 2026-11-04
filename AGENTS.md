@@ -54,7 +54,7 @@ Se validan en `lib/env.ts` (bajo demanda, no al importar).
    1. Calcula la fecha de publicación en el servidor (`lib/insights/date.ts`, hora de Madrid, mes en español con mayúscula inicial).
    2. Si ya existe un bug con esa fecha, devuelve `skipped`, así que es idempotente.
    3. Lee los últimos 30 bugs de la BD para el prompt.
-   4. Ejecuta `insightAgent` (`@openai/agents`, modelo `AI_MODEL` de `lib/insights/model.ts`, ahora `gpt-6-luna`, con razonamiento `low` y `outputType: agentOutputSchema`). El system prompt es `INSTRUCTIONS`. El prompt de usuario (`buildPrompt`) incluye todos los títulos ya publicados (todo el historial, no solo los últimos) y un enfoque del día al azar (`FOCUSES`). Si el modelo propone un título ya usado (comparado con `normalizeTitle`), se reintenta hasta 3 veces indicándole cuál evitar.
+   4. Ejecuta `insightAgent` (`@openai/agents`, modelo `AI_MODEL` de `lib/insights/model.ts` (fuente única del nombre; no lo copies en documentos), con razonamiento `low` y `outputType: agentOutputSchema`). El system prompt es `INSTRUCTIONS`. El prompt de usuario (`buildPrompt`) incluye todos los títulos ya publicados (todo el historial, no solo los últimos) y un enfoque del día al azar (`FOCUSES`). Si el modelo propone un título ya usado (comparado con `normalizeTitle`), se le vuelve a pedir indicándole cuál evitar, hasta `MAX_ATTEMPTS` (3) intentos en total; si el último también se repite, se publica igualmente para no dejar el día sin bug.
    5. Valida el resultado con `insightSchema` (`lib/insights/schema.ts`) e inserta.
 4. Tras insertar, la ruta llama a `revalidatePath('/')`, `'/bugs'` y `'/api/bugs'`. Los errores se registran con `console.error` y la respuesta es genérica.
 
