@@ -1,0 +1,422 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-04T18:43:08.662Z",
+  "title": "Design System: Daily Bug",
+  "extensions": {
+    "colorMeta": {
+      "wall": {
+        "role": "neutral",
+        "displayName": "Pared de Listones",
+        "canonical": "oklch(22.4% 0.005 67.6)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252423",
+          "#413f3d",
+          "#5f5d5b",
+          "#82807d",
+          "#a6a4a1",
+          "#cccac9",
+          "#efeeee"
+        ]
+      },
+      "wall-slat": {
+        "role": "neutral",
+        "displayName": "Listón",
+        "canonical": "oklch(25.5% 0.006 56.1)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#252423",
+          "#423f3d",
+          "#605d5a",
+          "#837f7d",
+          "#a7a4a1",
+          "#cccac8",
+          "#efeeee"
+        ]
+      },
+      "wood": {
+        "role": "neutral",
+        "displayName": "Madera de Balda",
+        "canonical": "oklch(34.6% 0.043 60.0)",
+        "tonalRamp": [
+          "#0d0a08",
+          "#2c2119",
+          "#4f3b2b",
+          "#705845",
+          "#947b67",
+          "#b89f8c",
+          "#d6c7bc",
+          "#f2edea"
+        ]
+      },
+      "wood-edge": {
+        "role": "neutral",
+        "displayName": "Canto de Balda",
+        "canonical": "oklch(43.9% 0.061 60.5)",
+        "tonalRamp": [
+          "#0e0a07",
+          "#302013",
+          "#553920",
+          "#775539",
+          "#9c785b",
+          "#c09d81",
+          "#dbc6b6",
+          "#f4ede8"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Tinta de Lomo",
+        "canonical": "oklch(19.1% 0.000 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a4a4a4",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Cartón",
+        "canonical": "oklch(95.2% 0.012 91.5)",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#252420",
+          "#424039",
+          "#605d56",
+          "#838078",
+          "#a7a49d",
+          "#cccac6",
+          "#efeeed"
+        ]
+      },
+      "card-ink-soft": {
+        "role": "neutral",
+        "displayName": "Tinta Gastada",
+        "canonical": "oklch(39.6% 0.013 81.8)",
+        "tonalRamp": [
+          "#0c0b0a",
+          "#262420",
+          "#433f39",
+          "#615d56",
+          "#848078",
+          "#a8a49c",
+          "#cdcac6",
+          "#efeeed"
+        ]
+      },
+      "wall-ink": {
+        "role": "neutral",
+        "displayName": "Tinta de Pared",
+        "canonical": "oklch(95.2% 0.012 91.5)",
+        "tonalRamp": [
+          "#0b0b0a",
+          "#252420",
+          "#424039",
+          "#605d56",
+          "#838078",
+          "#a7a49d",
+          "#cccac6",
+          "#efeeed"
+        ]
+      },
+      "wall-ink-soft": {
+        "role": "neutral",
+        "displayName": "Tinta de Pared Suave",
+        "canonical": "oklch(77.8% 0.021 84.6)",
+        "tonalRamp": [
+          "#0c0b09",
+          "#27241e",
+          "#443f35",
+          "#635d50",
+          "#867f72",
+          "#aaa497",
+          "#cecac2",
+          "#efeeec"
+        ]
+      },
+      "red": {
+        "role": "secondary",
+        "displayName": "Rojo Pegatina",
+        "canonical": "oklch(55.8% 0.205 29.6)",
+        "tonalRamp": [
+          "#170504",
+          "#4c0000",
+          "#880000",
+          "#b50000",
+          "#e03a2b",
+          "#ff6b58",
+          "#ffafa1",
+          "#ffe7e1"
+        ]
+      },
+      "yellow": {
+        "role": "primary",
+        "displayName": "Amarillo Rotulador",
+        "canonical": "oklch(87.9% 0.162 90.9)",
+        "tonalRamp": [
+          "#0f0b01",
+          "#342000",
+          "#5c3800",
+          "#805600",
+          "#a47900",
+          "#c89f00",
+          "#dfc989",
+          "#f5eedb"
+        ]
+      },
+      "cyan": {
+        "role": "tertiary",
+        "displayName": "Cian de Banda",
+        "canonical": "oklch(75.4% 0.120 207.4)",
+        "tonalRamp": [
+          "#020e0f",
+          "#002c34",
+          "#004e5d",
+          "#006f80",
+          "#0093a5",
+          "#32b8c9",
+          "#99d7e0",
+          "#e0f3f5"
+        ]
+      },
+      "print-white": {
+        "role": "neutral",
+        "displayName": "Blanco de Imprenta",
+        "canonical": "oklch(100.0% 0.000 0)",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#242424",
+          "#404040",
+          "#5d5d5d",
+          "#808080",
+          "#a4a4a4",
+          "#cacaca",
+          "#eeeeee"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Título del juego en la contraportada."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Título de página del archivo."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Títulos de tarjetas de estado."
+      },
+      "logo": {
+        "displayName": "Logotipo",
+        "purpose": "Solo DAILY BUG, con desregistro rojo."
+      },
+      "button": {
+        "displayName": "Botón",
+        "purpose": "Rotulación de botones de caja."
+      },
+      "body-lead": {
+        "displayName": "Lectura",
+        "purpose": "Texto del bug, máx. 64ch."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Texto base, campo de búsqueda y tarjetas de estado."
+      },
+      "body-sm": {
+        "displayName": "Body small",
+        "purpose": "Pie de página."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Valores de la ficha técnica, cifras tabulares."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Navegación, lomos y contadores en mayúsculas."
+      },
+      "label-sm": {
+        "displayName": "Label small",
+        "purpose": "Rótulos de la ficha y crédito de IA."
+      }
+    },
+    "shadows": [
+      {
+        "name": "shadow-box",
+        "value": "10px 10px 0 rgb(0 0 0 / 0.4)",
+        "purpose": "La caja y las tarjetas de estado."
+      },
+      {
+        "name": "shadow-sticker",
+        "value": "3px 3px 0 rgb(0 0 0 / 0.35)",
+        "purpose": "Pegatinas sobre la contraportada."
+      },
+      {
+        "name": "shadow-board",
+        "value": "0 12px 0 rgb(0 0 0 / 0.35)",
+        "purpose": "La balda de madera de la portada."
+      },
+      {
+        "name": "logo-misregister",
+        "value": "text-shadow: 3px 3px 0 var(--red)",
+        "purpose": "Solo el logotipo: segunda tinta desregistrada."
+      }
+    ],
+    "motion": [
+      {
+        "name": "none",
+        "value": "0s",
+        "purpose": "Sin transiciones ni animaciones: todos los cambios de estado son secos."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile",
+        "value": "720px"
+      },
+      {
+        "name": "stage-stack",
+        "value": "1240px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botón de caja",
+      "kind": "button",
+      "refersTo": "button-box",
+      "description": "Acción principal al pie de la contraportada: bloque negro rotulado en amarillo; hover rojo seco, sin transición.",
+      "html": "<a class=\"ds-btn-box\" href=\"#\">Ver toda la estantería <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
+      "css": ".ds-btn-box { --font-display: Bungee, 'Arial Black', sans-serif; --font-label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --font-body: Barlow, system-ui, sans-serif; display: inline-flex; align-items: center; gap: 8px; padding: 16px 24px; border: 0; border-radius: 0; background: var(--ink, #141414); color: var(--yellow, #ffd23f); font-family: var(--font-display); font-size: 1.125rem; line-height: 1.1; text-transform: uppercase; text-decoration: none; cursor: pointer; } .ds-btn-box:hover { background: var(--red, #d1281b); color: #fff; } .ds-btn-box:focus-visible { outline: 3px solid var(--yellow, #ffd23f); outline-offset: 3px; }"
+    },
+    {
+      "name": "Navegación de cabecera",
+      "kind": "nav",
+      "refersTo": "nav-link",
+      "description": "Logotipo impreso con desregistro rojo y enlaces en Barlow Condensed; la página actual lleva cinta roja.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-logo\" href=\"#\">Daily Bug</a><nav><ul class=\"ds-nav\"><li><a class=\"ds-nav-link\" href=\"#\" aria-current=\"page\">Hoy</a></li><li><a class=\"ds-nav-link\" href=\"#\">Estantería</a></li></ul></nav></header>",
+      "css": ".ds-header { --font-display: Bungee, 'Arial Black', sans-serif; --font-label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --font-body: Barlow, system-ui, sans-serif; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; padding: 24px; background: var(--wall, #1d1b19); } .ds-logo { font-family: var(--font-display); font-size: 2.5rem; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; color: var(--yellow, #ffd23f); text-shadow: 3px 3px 0 var(--red, #d1281b); text-decoration: none; } .ds-nav { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; } .ds-nav-link { display: inline-block; padding: 8px 0; font-family: var(--font-label); font-weight: 800; font-size: 1.25rem; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; color: var(--wall-ink-soft, #bdb6a8); border-bottom: 4px solid transparent; } .ds-nav-link:hover { color: var(--wall-ink, #f2efe6); } .ds-nav-link[aria-current=\"page\"] { color: var(--wall-ink, #f2efe6); border-bottom-color: var(--red, #d1281b); } .ds-nav-link:focus-visible, .ds-logo:focus-visible { outline: 3px solid var(--yellow, #ffd23f); outline-offset: 3px; }"
+    },
+    {
+      "name": "Buscador de catálogo",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "Etiqueta de cartón con banda amarilla; el anillo de foco rodea todo el campo.",
+      "html": "<div class=\"ds-search\"><label class=\"ds-search-label\" for=\"ds-q\">Buscar en la estantería</label><div class=\"ds-search-field\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input id=\"ds-q\" class=\"ds-search-input\" type=\"search\" placeholder=\"Juego, plataforma, año…\"></div></div>",
+      "css": ".ds-search { --font-display: Bungee, 'Arial Black', sans-serif; --font-label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --font-body: Barlow, system-ui, sans-serif; display: flex; flex-direction: column; gap: 8px; padding: 24px; background: var(--wall, #1d1b19); } .ds-search-label { font-family: var(--font-label); font-weight: 800; font-size: 1rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--wall-ink-soft, #bdb6a8); } .ds-search-field { display: flex; align-items: center; gap: 8px; max-width: 560px; padding: 0 16px; background: var(--card, #f2efe6); color: var(--ink, #141414); border-top: 8px solid var(--yellow, #ffd23f); } .ds-search-field:focus-within { outline: 3px solid var(--yellow, #ffd23f); outline-offset: 3px; } .ds-search-input { flex: 1; min-width: 0; padding: 12px 0; border: 0; background: transparent; color: var(--ink, #141414); font-family: var(--font-body); font-size: 1.125rem; caret-color: var(--red, #d1281b); } .ds-search-input:focus-visible { outline: none; } .ds-search-input::placeholder { color: var(--card-ink-soft, #4a463f); }"
+    },
+    {
+      "name": "Ficha técnica",
+      "kind": "card",
+      "refersTo": "facts-cell",
+      "description": "Tres celdas de cartón con filete negro de 3 px; la última, invertida.",
+      "html": "<dl class=\"ds-facts\"><div><dt>Plataforma</dt><dd>PC, PS4</dd></div><div><dt>Año del bug</dt><dd>2014</dd></div><div><dt>En la estantería</dt><dd>4 de noviembre de 2026</dd></div></dl>",
+      "css": ".ds-facts { --font-display: Bungee, 'Arial Black', sans-serif; --font-label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --font-body: Barlow, system-ui, sans-serif; display: grid; grid-template-columns: repeat(3, auto); gap: 3px; width: fit-content; margin: 0; border: 3px solid var(--ink, #141414); background: var(--ink, #141414); color: var(--ink, #141414); } .ds-facts div { padding: 8px 20px; background: var(--card, #f2efe6); } .ds-facts div:last-child { background: var(--ink, #141414); color: var(--yellow, #ffd23f); } .ds-facts dt { font-family: var(--font-label); font-weight: 600; font-size: 0.875rem; letter-spacing: 0.12em; text-transform: uppercase; } .ds-facts dd { margin: 0; font-family: var(--font-label); font-weight: 800; font-size: 1.375rem; line-height: 1.2; text-transform: uppercase; font-variant-numeric: tabular-nums; }"
+    },
+    {
+      "name": "Pegatinas apiladas",
+      "kind": "custom",
+      "refersTo": "sticker-number",
+      "description": "Número de bug en círculo rojo girado 10° con «¡Hoy!» amarillo encima; sombra dura de pegatina.",
+      "html": "<div class=\"ds-stickers\"><span class=\"ds-sticker-today\">¡Hoy!</span><p class=\"ds-sticker-number\"><span>Bug nº</span><b>12</b><span>4 nov 2026</span></p></div>",
+      "css": ".ds-stickers { --font-display: Bungee, 'Arial Black', sans-serif; --font-label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --font-body: Barlow, system-ui, sans-serif; position: relative; width: 184px; height: 184px; margin: 24px 24px 24px 80px; } .ds-sticker-number { position: absolute; inset: 0; margin: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; background: var(--red, #d1281b); color: #fff; transform: rotate(10deg); box-shadow: 3px 3px 0 rgb(0 0 0 / 0.35); font-family: var(--font-label); font-weight: 800; font-size: 1rem; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1.1; } .ds-sticker-number b { font-family: var(--font-display); font-weight: 400; font-size: 3.5rem; letter-spacing: 0; line-height: 1; font-variant-numeric: tabular-nums; } .ds-sticker-today { position: absolute; z-index: 1; left: -72px; top: 16px; padding: 8px 16px; background: var(--yellow, #ffd23f); color: var(--ink, #141414); font-family: var(--font-display); font-size: 1.5rem; line-height: 1; transform: rotate(-6deg); box-shadow: 3px 3px 0 rgb(0 0 0 / 0.35); }"
+    },
+    {
+      "name": "Lomo del archivo",
+      "kind": "custom",
+      "refersTo": "spine",
+      "description": "Lomo negro con banda de color de plataforma y título vertical; hover seco que ensancha la banda.",
+      "html": "<div class=\"ds-rack\"><a class=\"ds-spine\" href=\"#\" style=\"--accent: var(--cyan, #2ec4d6)\"><span class=\"ds-spine-title\">Fallout 3</span><span class=\"ds-spine-meta\">2008</span></a><a class=\"ds-spine\" href=\"#\" style=\"--accent: var(--red, #d1281b)\"><span class=\"ds-spine-today\">Hoy</span><span class=\"ds-spine-title\">World of Warcraft</span><span class=\"ds-spine-meta\">2005</span></a></div>",
+      "css": ".ds-rack { --font-display: Bungee, 'Arial Black', sans-serif; --font-label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --font-body: Barlow, system-ui, sans-serif; display: flex; gap: 4px; padding: 0 0 16px; background: linear-gradient(to bottom, transparent 0 296px, var(--wood-edge, #6b4a2e) 296px 300px, var(--wood, #4a3422) 300px 312px); } .ds-spine { position: relative; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 64px; height: 296px; padding: 32px 0 8px; border-top: 16px solid var(--accent, #2ec4d6); background: var(--ink, #141414); color: var(--wall-ink, #f2efe6); font-family: var(--font-label); font-size: 1rem; line-height: 1; text-transform: uppercase; text-decoration: none; overflow: hidden; } .ds-spine:hover { border-top-width: 24px; } .ds-spine:hover .ds-spine-title { color: var(--wall-ink, #f2efe6); } .ds-spine:focus-visible { outline: 3px solid var(--yellow, #ffd23f); outline-offset: 3px; } .ds-spine-title, .ds-spine-meta { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; } .ds-spine-title { flex: 1; min-height: 0; font-weight: 800; letter-spacing: 0.04em; color: var(--yellow, #ffd23f); } .ds-spine-meta { flex-shrink: 0; padding: 8px 2px; font-weight: 600; letter-spacing: 0.08em; background: var(--card, #f2efe6); color: var(--ink, #141414); } .ds-spine-today { position: absolute; top: 8px; left: 0; right: 0; padding: 4px 0; font-weight: 800; letter-spacing: 0.08em; text-align: center; background: var(--yellow, #ffd23f); color: var(--ink, #141414); transform: rotate(-6deg); }"
+    },
+    {
+      "name": "Tarjeta de estado",
+      "kind": "card",
+      "refersTo": "status-card",
+      "description": "Cargando, error, vacío o sin resultados: cartón con banda roja y sombra de caja.",
+      "html": "<div class=\"ds-status\" role=\"status\"><p class=\"ds-status-title\">Rebobinando…</p><p>Buscando la caja en el almacén.</p><button type=\"button\" class=\"ds-status-btn\">Reintentar</button></div>",
+      "css": ".ds-status { --font-display: Bungee, 'Arial Black', sans-serif; --font-label: 'Barlow Condensed', 'Arial Narrow', sans-serif; --font-body: Barlow, system-ui, sans-serif; max-width: 560px; padding: 32px; background: var(--card, #f2efe6); color: var(--ink, #141414); border-top: 16px solid var(--red, #d1281b); box-shadow: 10px 10px 0 rgb(0 0 0 / 0.4); font-family: var(--font-body); } .ds-status p { margin: 0 0 16px; font-size: 1.125rem; } .ds-status .ds-status-title { margin-bottom: 8px; font-family: var(--font-display); font-size: 2rem; line-height: 1.1; text-transform: uppercase; } .ds-status-btn { padding: 12px 24px; border: 0; border-radius: 0; background: var(--ink, #141414); color: var(--yellow, #ffd23f); font-family: var(--font-display); font-size: 1rem; text-transform: uppercase; cursor: pointer; } .ds-status-btn:hover { background: var(--red, #d1281b); color: #fff; } .ds-status-btn:focus-visible { outline: 3px solid var(--yellow, #ffd23f); outline-offset: 3px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La estantería del videoclub",
+    "overview": "Daily Bug es un videoclub de barrio a última hora: una pared de listones oscuros, una balda de madera y cajas PAL de canto. El bug del día es la contraportada de la caja más nueva; el archivo es la estantería de lomos. Todo lo que hay en pantalla es un objeto impreso (cartón, tinta, pegatinas, cinta) y se comporta como tal: esquinas rectas, sombras duras sin desenfoque y cambios de estado secos, sin transiciones.\n\nLa densidad es de caja real: un lomo negro con banda de color, una contraportada de cartón claro con el título enorme en Bungee, una ficha técnica de tres celdas con filete negro y el texto en una columna legible. Las pegatinas (redonda roja con el número, rectangular amarilla «¡Hoy!») van giradas y apiladas en orden de llegada. El sistema rechaza el «sitio retro» por defecto: fondo negro puro, fuente pixel, neón, brillos y scanlines.",
+    "keyCharacteristics": [
+      "Dos suelos: la pared oscura (`wall`) y el cartón claro (`card`); cada uno tiene su propia tinta.",
+      "Tres tintas de impresión saturadas (rojo, amarillo, cian) que solo aparecen como bandas, pegatinas, cintas y rotulación.",
+      "Bungee como rotulación impresa, Barlow Condensed en mayúsculas para etiquetas, Barlow para leer.",
+      "Módulo de 8 px (`--u`) en todo el espaciado.",
+      "Sombras desplazadas sin desenfoque; ninguna esquina redondeada salvo la pegatina circular.",
+      "Cambios de estado instantáneos: sin `transition` ni animación."
+    ],
+    "rules": [
+      {
+        "name": "The Two Grounds Rule",
+        "body": "Cada superficie lleva su tinta: sobre la pared, `wall-ink`/`wall-ink-soft`; sobre el cartón, `ink`/`card-ink-soft`; sobre el lomo negro, `yellow` o `wall-ink`. No se cruzan.",
+        "section": "colors"
+      },
+      {
+        "name": "The Sticker Red Rule",
+        "body": "El rojo es #d1281b porque lleva texto blanco pequeño y así alcanza AA (~5,2:1). No se sustituye por un rojo más vivo.",
+        "section": "colors"
+      },
+      {
+        "name": "The Band Color Rule",
+        "body": "El color de banda de una caja lo fija su plataforma (cian, rojo o amarillo, por hash del nombre), como en las colecciones de una misma consola. La banda no codifica nada más.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Size Spine Rule",
+        "body": "En los lomos del archivo hay un solo tamaño de letra; el rango se da con peso (800/600), mayúsculas e inversión (amarillo sobre negro frente a negro sobre cartón).",
+        "section": "typography"
+      },
+      {
+        "name": "The Printed Display Rule",
+        "body": "Bungee solo rotula: logotipo, títulos, pegatinas, botones y el número del bug. Nunca texto corrido ni etiquetas.",
+        "section": "typography"
+      },
+      {
+        "name": "The Hard Shadow Rule",
+        "body": "Desenfoque siempre 0. Una sombra con blur no es de este mundo.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Shelf Rests Rule",
+        "body": "Lo que descansa en la balda no proyecta sombra bajo su base: la balda va por encima (`z-index`) y la tapa.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square Cardboard Rule",
+        "body": "Nada lleva `border-radius` salvo una pegatina redonda.",
+        "section": "shapes"
+      },
+      {
+        "name": "The Top Band Rule",
+        "body": "El color de una pieza entra por una banda en su borde superior, nunca como relleno de la pieza.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** derivar todo espaciado de `--u` (8 px).",
+      "**Do** usar solo sombras de desenfoque 0 de la Shadow Vocabulary.",
+      "**Do** marcar el color de una pieza con una banda superior (16 px en cajas y lomos, 8 px en el buscador).",
+      "**Do** poner texto blanco solo sobre el rojo #d1281b y amarillo sobre negro para rotulación.",
+      "**Do** mantener el texto de lectura en Barlow a 64ch como máximo y 1.6 de interlínea.",
+      "**Do** marcar estado actual con una cinta o pegatina (cinta roja de navegación, «Hoy», «Fuera»), no con un color nuevo.",
+      "**Do** usar iconos de lucide-react como SVG."
+    ],
+    "donts": [
+      "**Don't** usar `border-radius` salvo en la pegatina redonda.",
+      "**Don't** añadir `transition` ni animaciones de estado: los cambios son secos.",
+      "**Don't** usar sombras con desenfoque, brillos ni neón.",
+      "**Don't** usar fuentes pixel, fondo negro puro ni scanlines.",
+      "**Don't** usar Bungee para texto corrido ni el cian para texto."
+    ]
+  }
+}

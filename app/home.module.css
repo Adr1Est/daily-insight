@@ -1,0 +1,75 @@
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: calc(var(--u) * 4) clamp(16px, 4vw, 48px) calc(var(--u) * 6);
+}
+
+/* La caja de hoy, de canto, y a su derecha asoman los lomos de los días anteriores. */
+.stage {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: calc(var(--u) * 4);
+  width: 100%;
+  max-width: 1360px;
+}
+
+/* Los lomos de días anteriores tienen la misma altura que la caja de hoy: son vecinos en la misma balda. */
+.peek {
+  --spine-w: 56px;
+  --spine-h: 100%;
+  flex-shrink: 0;
+}
+
+.peek ul,
+.peek li {
+  height: 100%;
+}
+
+.peek ul {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* La balda de madera sobre la que descansa todo: tapa la sombra de la caja, que no puede caer bajo su base. */
+.shelf {
+  position: relative;
+  z-index: 1;
+  width: calc(100% + clamp(32px, 8vw, 96px));
+  height: calc(var(--u) * 5);
+  background: var(--wood);
+  border-top: var(--u) solid var(--wood-edge);
+  box-shadow: var(--shadow-board);
+}
+
+/* En pantallas estrechas la caja de hoy queda delante y los lomos anteriores, en fila sobre la balda. */
+@media (max-width: 1240px) {
+  .stage {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .peek {
+    --spine-h: 260px;
+    align-self: flex-start;
+  }
+
+  .peek ul,
+  .peek li {
+    height: auto;
+  }
+}
+
+@media (max-width: 720px) {
+  .main {
+    justify-content: flex-start;
+    padding-top: calc(var(--u) * 6);
+  }
+}

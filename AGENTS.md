@@ -4,7 +4,7 @@ Guía para agentes de código que trabajen en este repositorio.
 
 ## Qué es
 
-Daily Insight: app Next.js (App Router, React 19, Tailwind v4) que cada día genera con IA una curiosidad sobre un bug/glitch histórico de videojuegos, la guarda en PostgreSQL (Supabase) y la muestra en una UI estilo terminal. Todo el contenido de la UI y los prompts está en español.
+Daily Bug (repo `daily-insight`): app Next.js (App Router, React 19, CSS Modules) que cada día genera con IA una curiosidad sobre un bug/glitch histórico de videojuegos, la guarda en PostgreSQL (Supabase) y la muestra en una UI estilo terminal. Todo el contenido de la UI y los prompts está en español.
 
 ## Comandos
 
@@ -22,9 +22,11 @@ No hay tests configurados.
 
 Migraciones: `pnpm dlx prisma migrate dev --name <nombre>` (usa `DIRECT_URL` como shadow DB, ver `prisma.config.ts`).
 
+Desarrollar la UI sin base de datos: `DATA_SOURCE=mock pnpm dev` (en PowerShell, `$env:DATA_SOURCE="mock"; pnpm dev`).
+
 ## Variables de entorno (`.env`)
 
-`OPENAI_API_KEY`, `DATABASE_URL`, `DIRECT_URL`, `API_URL` (URL base de la propia app desplegada), `INTERNAL_TOKEN`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` (el cliente de Supabase no se usa en el código actualmente; el acceso a BD es solo vía Prisma).
+`DATA_SOURCE` (`mock` | `api`, por defecto `api`; ver «Lectura / UI»), `OPENAI_API_KEY`, `DATABASE_URL`, `DIRECT_URL`, `API_URL` (URL base de la propia app desplegada), `INTERNAL_TOKEN`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY` (el cliente de Supabase no se usa en el código actualmente; el acceso a BD es solo vía Prisma).
 
 ## Arquitectura
 
@@ -42,9 +44,14 @@ Puntos importantes:
 
 ### Lectura / UI
 
-- `app/page.tsx` (`force-dynamic`) renderiza `CustomTerminal`, un Server Component que consulta Prisma directamente para el último insight.
-- `app/bugs/page.tsx` es un Client Component que hace fetch a `/api/getBugs` y filtra en cliente.
-- Componentes en `app/ui/` (no en `components/`); `app/ui/shadcn-io/terminal` es un componente de terminal animado (motion) de shadcn.io.
+- Toda la lectura pasa por `lib/data.ts` (`getAllInsights`, `getLatestInsights`). Con `DATA_SOURCE=mock` devuelve los 12 bugs de `lib/mocks/insights.ts` (fechas calculadas hacia atrás desde hoy) y no importa Prisma, así que funciona sin `DATABASE_URL`. El interruptor solo afecta a la lectura: `getContext`, `askAgent` y `newInsight` siempre usan la BD y OpenAI.
+- `app/page.tsx` y `app/bugs/page.tsx` son Server Components (`force-dynamic`) que leen de `lib/data.ts`; `/bugs` pasa los datos a `app/ui/shelf/Shelf.tsx` (cliente), que filtra y abre cajas. `/bugs#bug-N` abre esa caja al cargar.
+- Componentes en `app/ui/` (no en `components/`): `box/BoxCover` (la caja: lomo + contraportada, compartida por portada y archivo), `shelf/` (lomos, estantería, estados vacíos) y `site/` (cabecera y pie, montados en `app/layout.tsx`).
+
+### Diseño
+
+- Sin shadcn ni Tailwind: estilos con CSS Modules junto a cada componente y tokens globales (colores, fuentes, módulo `--u` de 8 px) en `app/globals.css`, que incluye un reset mínimo. Fuentes vía `next/font` (Bungee, Barlow, Barlow Condensed). Iconos con `lucide-react`.
+- Mundo visual «estantería de videoclub»: cada bug es la contraportada de una caja PAL y el archivo es una estantería de lomos. Contexto de producto en `PRODUCT.md`; la dirección y el contrato de diseño en `.impeccable/surfaces/` (y `DESIGN.md` cuando exista). Respeta ese sistema al tocar la UI.
 
 ### Base de datos
 

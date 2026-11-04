@@ -1,0 +1,86 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2) calc(var(--u) * 4);
+  padding: calc(var(--u) * 3) clamp(16px, 4vw, 48px);
+}
+
+/* Logotipo impreso a dos tintas, con el rojo ligeramente desregistrado. */
+.logo {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--yellow);
+  text-shadow: 3px 3px 0 var(--red);
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  gap: calc(var(--u) * 3);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.navLink {
+  display: inline-block;
+  padding: var(--u) 0;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--wall-ink-soft);
+  border-bottom: 4px solid transparent;
+}
+
+.navLink:hover {
+  color: var(--wall-ink);
+}
+
+/* La página actual lleva una tira de cinta roja, no un cambio de color. */
+.navLink[aria-current="page"] {
+  color: var(--wall-ink);
+  border-bottom-color: var(--red);
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--u) calc(var(--u) * 3);
+  margin-top: auto;
+  padding: calc(var(--u) * 3) clamp(16px, 4vw, 48px) calc(var(--u) * 4);
+  font-size: 0.875rem;
+  color: var(--wall-ink-soft);
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer a:hover {
+  color: var(--yellow);
+}
+
+.social {
+  display: flex;
+  gap: var(--u);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.social a {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+}
