@@ -164,7 +164,7 @@ La densidad es de caja real: un lomo negro con banda de color, una contraportada
 - Bungee como rotulación impresa, Barlow Condensed en mayúsculas para etiquetas, Barlow para leer.
 - Módulo de 8 px (`--u`) en todo el espaciado.
 - Sombras desplazadas sin desenfoque; ninguna esquina redondeada salvo la pegatina circular.
-- Cambios de estado instantáneos: sin `transition` ni animación.
+- Cambios de estado instantáneos: sin `transition` ni animación. Única excepción: el logotipo flota suavemente.
 
 ## Colors
 
@@ -320,7 +320,7 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 
 ### Don't:
 - **Don't** usar `border-radius` salvo en la pegatina redonda.
-- **Don't** añadir `transition` ni animaciones de estado: los cambios son secos.
+- **Don't** añadir `transition` ni animaciones de estado: los cambios son secos. La única animación es la flotación del logotipo (4 s, 4 px), que se desactiva con `prefers-reduced-motion`.
 - **Don't** usar sombras con desenfoque ni brillos fuera de `--glow` del tema Neón.
 - **Don't** escribir colores literales en CSS ni componentes: cada tema debe poder cambiarlos.
 - **Don't** usar fuentes pixel, fondo negro puro ni scanlines.

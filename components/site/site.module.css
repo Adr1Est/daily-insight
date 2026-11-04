@@ -17,6 +17,20 @@
   color: var(--highlight);
   text-shadow: 3px 3px 0 var(--sticker), var(--glow);
   text-decoration: none;
+  /* Única animación del sitio: el logotipo flota suavemente, como un rótulo colgado. */
+  display: inline-block;
+  animation: logo-float 4s ease-in-out infinite;
+}
+
+@keyframes logo-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(-0.6deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo {
+    animation: none;
+  }
 }
 
 .nav {
