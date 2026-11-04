@@ -1,7 +1,9 @@
 import "server-only";
+
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "@/prisma/generated/client";
+
 import { getEnv } from "@/lib/env";
+import { PrismaClient } from "@/prisma/generated/client";
 
 // Un único cliente por proceso. En desarrollo se guarda en globalThis para sobrevivir al hot reload.
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };

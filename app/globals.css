@@ -70,7 +70,11 @@
     /* Pared de listones verticales, con la capa de ambiente del tema por encima. */
     background:
       var(--wall-pattern),
-      repeating-linear-gradient(90deg, var(--wall-slat) 0 calc(var(--u) * 6), var(--wall) calc(var(--u) * 6) calc(var(--u) * 12));
+      repeating-linear-gradient(
+        90deg,
+        var(--wall-slat) 0 calc(var(--u) * 6),
+        var(--wall) calc(var(--u) * 6) calc(var(--u) * 12)
+      );
     -webkit-font-smoothing: antialiased;
   }
 

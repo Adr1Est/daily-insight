@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { useId, useRef, useState, useSyncExternalStore } from "react";
 import { Palette } from "lucide-react";
-import { DEFAULT_THEME, engine, STORAGE_THEME, THEMES, type Theme } from "@/lib/themes";
+import { useId, useRef, useState, useSyncExternalStore } from "react";
+
 import styles from "@/components/site/site.module.css";
+import { DEFAULT_THEME, engine, STORAGE_THEME, THEMES, type Theme } from "@/lib/themes";
 
 // El tema activo vive en <html data-theme>, que fija el script de <head> antes del primer pintado.
 const subscribe = (onChange: () => void) => {
@@ -15,9 +16,13 @@ const getTheme = () => document.documentElement.dataset.theme ?? DEFAULT_THEME;
 const getServerTheme = () => DEFAULT_THEME;
 
 /** Aplica el tema y lo guarda. Fuera del componente: es una escritura en el DOM, no estado de React. */
-function applyTheme(id: string){
+function applyTheme(id: string) {
   document.documentElement.dataset.theme = id;
-  try { window.localStorage.setItem(STORAGE_THEME, id); } catch { /* sin almacenamiento: dura hasta recargar */ }
+  try {
+    window.localStorage.setItem(STORAGE_THEME, id);
+  } catch {
+    /* sin almacenamiento: dura hasta recargar */
+  }
 }
 
 const Swatch = ({ theme }: { theme: Theme }) => (
@@ -28,22 +33,22 @@ const Swatch = ({ theme }: { theme: Theme }) => (
   </span>
 );
 
-export default function ThemePicker(){
+export default function ThemePicker() {
   const current = useSyncExternalStore(subscribe, getTheme, getServerTheme);
   // Los temas disponibles dependen de la fecha del visitante: se calculan al abrir, solo en el cliente.
   const [available, setAvailable] = useState<Theme[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
-  const currentTheme = THEMES.find(theme => theme.id === current) ?? THEMES[0];
+  const currentTheme = THEMES.find((theme) => theme.id === current) ?? THEMES[0];
 
   const onBeforeToggle = (event: React.ToggleEvent<HTMLDivElement>) => {
-    if(event.newState !== "open") return;
+    if (event.newState !== "open") return;
     const ids = engine.available(new Date());
-    setAvailable(THEMES.filter(theme => ids.includes(theme.id)));
+    setAvailable(THEMES.filter((theme) => ids.includes(theme.id)));
     // El panel vive en la capa superior: se coloca bajo el botón, alineado a su borde derecho.
     const rect = buttonRef.current?.getBoundingClientRect();
-    if(rect && panelRef.current){
+    if (rect && panelRef.current) {
       panelRef.current.style.top = `${rect.bottom + 8}px`;
       panelRef.current.style.right = `${Math.max(16, window.innerWidth - rect.right)}px`;
     }
@@ -69,10 +74,16 @@ export default function ThemePicker(){
         <Swatch theme={currentTheme} />
       </button>
 
-      <div ref={panelRef} id={panelId} popover="auto" className={styles.themePanel} onBeforeToggle={onBeforeToggle}>
+      <div
+        ref={panelRef}
+        id={panelId}
+        popover="auto"
+        className={styles.themePanel}
+        onBeforeToggle={onBeforeToggle}
+      >
         <fieldset className={styles.themeList}>
           <legend className={styles.themeLegend}>Tema de la estantería</legend>
-          {available.map(theme => (
+          {available.map((theme) => (
             <label key={theme.id} className={styles.themeOption}>
               <input
                 type="radio"

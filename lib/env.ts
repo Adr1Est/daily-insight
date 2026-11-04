@@ -1,4 +1,5 @@
 import "server-only";
+
 import { z } from "zod";
 
 // Variables de entorno del servidor, validadas. Se leen bajo demanda (no al importar)

@@ -77,7 +77,20 @@ const entries: Omit<BugType, "id" | "day" | "month" | "year" | "createdAt">[] = 
   },
 ];
 
-const MONTHS = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+const MONTHS = [
+  "Enero",
+  "Febrero",
+  "Marzo",
+  "Abril",
+  "Mayo",
+  "Junio",
+  "Julio",
+  "Agosto",
+  "Septiembre",
+  "Octubre",
+  "Noviembre",
+  "Diciembre",
+];
 
 // Las fechas se calculan hacia atrás desde hoy, así el último mock siempre es «el bug del día».
 export function getMockInsights(): BugType[] {

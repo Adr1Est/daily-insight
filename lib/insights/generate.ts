@@ -1,10 +1,12 @@
 import "server-only";
+
 import { Agent, run } from "@openai/agents";
-import type { BugType } from "@/types/bug";
+
 import { getPrisma } from "@/lib/db";
-import { agentOutputSchema, insightSchema, type InsightInput } from "@/lib/insights/schema";
 import { spanishDate, type SpanishDate } from "@/lib/insights/date";
 import { AI_MODEL } from "@/lib/insights/model";
+import { agentOutputSchema, insightSchema, type InsightInput } from "@/lib/insights/schema";
+import type { BugType } from "@/types/bug";
 
 const MAX_ATTEMPTS = 3;
 
@@ -64,7 +66,12 @@ export const insightAgent = new Agent({
 
 /** Normaliza un título para comparar repeticiones («Pokémon Rojo/Azul» ≈ «pokemon rojo azul»). */
 export const normalizeTitle = (title: string) =>
-  title.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+  title
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 
 interface PromptInput {
   /** Títulos ya publicados (todo el historial, sin repetidos). */
@@ -81,9 +88,13 @@ export function buildPrompt({ usedGames, focus, rejected = [] }: PromptInput): s
     parts.push(`Juegos y productos ya publicados; no uses ninguno:\n${usedGames.join("; ")}`);
   }
   if (rejected.length > 0) {
-    parts.push(`Ya propusiste ${rejected.map(game => `«${game}»`).join(", ")}, que está publicado. Elige otro distinto.`);
+    parts.push(
+      `Ya propusiste ${rejected.map((game) => `«${game}»`).join(", ")}, que está publicado. Elige otro distinto.`,
+    );
   }
-  parts.push(`Sugerencia para hoy, si conoces un caso real y bien documentado: ${focus}. Si no, elige otro que cumpla las reglas.`);
+  parts.push(
+    `Sugerencia para hoy, si conoces un caso real y bien documentado: ${focus}. Si no, elige otro que cumpla las reglas.`,
+  );
   parts.push("Escribe la curiosidad de hoy.");
   return parts.join("\n\n");
 }
@@ -105,7 +116,11 @@ interface GenerateOptions {
  * Genera y guarda el bug del día. Es idempotente: si ya hay un bug con la fecha de hoy, no hace nada.
  * La fecha la pone el servidor y la salida del modelo se valida antes de insertar.
  */
-export async function generateDailyInsight({ now = new Date(), dryRun = false, random = Math.random }: GenerateOptions = {}): Promise<GenerateResult> {
+export async function generateDailyInsight({
+  now = new Date(),
+  dryRun = false,
+  random = Math.random,
+}: GenerateOptions = {}): Promise<GenerateResult> {
   const prisma = getPrisma();
   const date = spanishDate(now);
 
@@ -115,20 +130,32 @@ export async function generateDailyInsight({ now = new Date(), dryRun = false, r
   }
 
   // Todo el historial de títulos (no solo los últimos días), para no reciclar juegos antiguos.
-  const usedGames = (await prisma.insight.findMany({ distinct: ["game"], select: { game: true }, orderBy: { game: "asc" } }))
-    .map(row => row.game)
-    .filter(game => normalizeTitle(game) !== "no es un juego");
+  const usedGames = (
+    await prisma.insight.findMany({
+      distinct: ["game"],
+      select: { game: true },
+      orderBy: { game: "asc" },
+    })
+  )
+    .map((row) => row.game)
+    .filter((game) => normalizeTitle(game) !== "no es un juego");
   const used = new Set(usedGames.map(normalizeTitle));
   const focus = FOCUSES[Math.floor(random() * FOCUSES.length)];
 
   const rejected: string[] = [];
-  let parsed = insightSchema.parse((await run(insightAgent, buildPrompt({ usedGames, focus }))).finalOutput);
+  let parsed = insightSchema.parse(
+    (await run(insightAgent, buildPrompt({ usedGames, focus }))).finalOutput,
+  );
   while (used.has(normalizeTitle(parsed.game)) && rejected.length < MAX_ATTEMPTS - 1) {
     rejected.push(parsed.game);
-    parsed = insightSchema.parse((await run(insightAgent, buildPrompt({ usedGames, focus, rejected }))).finalOutput);
+    parsed = insightSchema.parse(
+      (await run(insightAgent, buildPrompt({ usedGames, focus, rejected }))).finalOutput,
+    );
   }
   if (used.has(normalizeTitle(parsed.game))) {
-    console.warn(`[generate] «${parsed.game}» ya estaba publicado tras ${MAX_ATTEMPTS} intentos; se publica igualmente.`);
+    console.warn(
+      `[generate] «${parsed.game}» ya estaba publicado tras ${MAX_ATTEMPTS} intentos; se publica igualmente.`,
+    );
   }
 
   if (dryRun) return { status: "preview", insight: { ...parsed, ...date } };

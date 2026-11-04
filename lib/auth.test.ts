@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { MIN_SECRET_LENGTH, verifyBearer } from "@/lib/auth";
 
 const SECRET = "s".repeat(MIN_SECRET_LENGTH);

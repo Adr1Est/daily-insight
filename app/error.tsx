@@ -1,8 +1,13 @@
-'use client';
+"use client";
 
 import styles from "@/components/shelf/shelf.module.css";
 
-export default function Error({ reset }: { error: Error & { digest?: string }; reset: () => void }){
+export default function Error({
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   return (
     <main className={styles.statusMain}>
       <div className={styles.status} role="alert">

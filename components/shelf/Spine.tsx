@@ -1,7 +1,8 @@
 import Link from "next/link";
-import type { BugType } from "@/types/bug";
+
 import { spineAccent } from "@/components/box/spineAccent";
 import styles from "@/components/shelf/shelf.module.css";
+import type { BugType } from "@/types/bug";
 
 interface SpineProps {
   bug: BugType;
@@ -14,7 +15,15 @@ interface SpineProps {
   id?: string;
 }
 
-export default function Spine({ bug, href, onOpen, isToday = false, isOut = false, controls, id }: SpineProps){
+export default function Spine({
+  bug,
+  href,
+  onOpen,
+  isToday = false,
+  isOut = false,
+  controls,
+  id,
+}: SpineProps) {
   const label = `${bug.game}, ${bug.platform}, ${bug.bugYear}`;
   const style = { "--accent": spineAccent(bug.platform) } as React.CSSProperties;
   // Las cajas con títulos largos tienen el lomo más grueso, para imprimir el título en dos líneas.
@@ -24,14 +33,29 @@ export default function Spine({ bug, href, onOpen, isToday = false, isOut = fals
     <>
       <span className={styles.spineTitle}>{bug.game}</span>
       <span className={styles.spineMeta}>{bug.bugYear}</span>
-      {isToday && <span className={styles.spineToday} aria-hidden="true">Hoy</span>}
-      {isOut && <span className={styles.spineOut} aria-hidden="true">Fuera</span>}
+      {isToday && (
+        <span className={styles.spineToday} aria-hidden="true">
+          Hoy
+        </span>
+      )}
+      {isOut && (
+        <span className={styles.spineOut} aria-hidden="true">
+          Fuera
+        </span>
+      )}
     </>
   );
 
-  if(href){
+  if (href) {
     return (
-      <Link href={href} className={styles.spine} style={style} aria-label={label} id={id} data-thick={thick}>
+      <Link
+        href={href}
+        className={styles.spine}
+        style={style}
+        aria-label={label}
+        id={id}
+        data-thick={thick}
+      >
         {content}
       </Link>
     );

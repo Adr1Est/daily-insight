@@ -14,7 +14,9 @@ Gestor de paquetes: **pnpm**.
 pnpm install          # postinstall: solo `prisma generate`
 pnpm dev              # servidor de desarrollo
 pnpm build            # prisma generate + next build (prerenderiza las páginas: necesita BD o DATA_SOURCE=mock)
-pnpm lint             # ESLint (eslint-config-next)
+pnpm lint             # ESLint (eslint-config-next + eslint-config-prettier)
+pnpm format           # Prettier: formatea todo (ver .prettierrc.json; los .md y .impeccable/ quedan fuera)
+pnpm format:check     # Prettier: solo comprueba (para CI)
 pnpm test             # Vitest (tests *.test.ts junto al código en lib/)
 pnpm test -- lib/auth.test.ts   # un solo fichero
 pnpm db:migrate       # prisma migrate deploy, a mano al desplegar cambios de esquema

@@ -1,6 +1,6 @@
 import styles from "@/components/shelf/shelf.module.css";
 
-export default function EmptyShelf(){
+export default function EmptyShelf() {
   return (
     <div className={styles.status}>
       <p className={styles.statusTitle}>La estantería está vacía</p>

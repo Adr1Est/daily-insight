@@ -1,12 +1,13 @@
-'use client';
+"use client";
 
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { Search, X } from "lucide-react";
-import type { BugType } from "@/types/bug";
-import BoxCover from "@/components/box/BoxCover";
-import Spine from "@/components/shelf/Spine";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
+
 import boxStyles from "@/components/box/box.module.css";
+import BoxCover from "@/components/box/BoxCover";
 import styles from "@/components/shelf/shelf.module.css";
+import Spine from "@/components/shelf/Spine";
+import type { BugType } from "@/types/bug";
 
 const PULLED_ID = "caja-abierta";
 
@@ -15,8 +16,7 @@ const idFromHash = (hash: string): number | null => {
   return match ? Number(match[1]) : null;
 };
 
-export default function Shelf({ bugs, isSample = false }: { bugs: BugType[]; isSample?: boolean }){
-
+export default function Shelf({ bugs, isSample = false }: { bugs: BugType[]; isSample?: boolean }) {
   const [filter, setFilter] = useState("");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const pulledRef = useRef<HTMLElement>(null);
@@ -30,23 +30,24 @@ export default function Shelf({ bugs, isSample = false }: { bugs: BugType[]; isS
     return () => window.removeEventListener("hashchange", syncFromHash);
   }, []);
 
-  const selected = bugs.find(bug => bug.id === selectedId);
+  const selected = bugs.find((bug) => bug.id === selectedId);
 
   // Al sacar una caja, se lleva la vista y el foco a ella.
   useEffect(() => {
-    if(selectedId === null) return;
+    if (selectedId === null) return;
     pulledRef.current?.scrollIntoView({ block: "start" });
     pulledRef.current?.focus({ preventScroll: true });
   }, [selectedId]);
 
   const filteredBugs = useMemo(() => {
     const query = filter.trim().toLowerCase();
-    if(!query) return bugs;
-    return bugs.filter(bug =>
-      bug.game.toLowerCase().includes(query) ||
-      bug.data.toLowerCase().includes(query) ||
-      bug.platform.toLowerCase().includes(query) ||
-      String(bug.bugYear).includes(query)
+    if (!query) return bugs;
+    return bugs.filter(
+      (bug) =>
+        bug.game.toLowerCase().includes(query) ||
+        bug.data.toLowerCase().includes(query) ||
+        bug.platform.toLowerCase().includes(query) ||
+        String(bug.bugYear).includes(query),
     );
   }, [filter, bugs]);
 
@@ -62,10 +63,12 @@ export default function Shelf({ bugs, isSample = false }: { bugs: BugType[]; isS
     document.getElementById(`lomo-${id}`)?.focus();
   };
 
-  return(
+  return (
     <>
       <search className={styles.search}>
-        <label htmlFor="buscar" className={styles.searchLabel}>Buscar en la estantería</label>
+        <label htmlFor="buscar" className={styles.searchLabel}>
+          Buscar en la estantería
+        </label>
         <div className={styles.searchField}>
           <Search size={20} aria-hidden="true" />
           <input
@@ -109,7 +112,7 @@ export default function Shelf({ bugs, isSample = false }: { bugs: BugType[]; isS
 
       {filteredBugs.length > 0 ? (
         <ul className={styles.rack} aria-label="Cajas de la estantería">
-          {filteredBugs.map(bug => (
+          {filteredBugs.map((bug) => (
             <li key={bug.id}>
               <Spine
                 bug={bug}
@@ -132,5 +135,5 @@ export default function Shelf({ bugs, isSample = false }: { bugs: BugType[]; isS
         </div>
       )}
     </>
-  )
+  );
 }

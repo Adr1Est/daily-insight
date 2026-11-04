@@ -1,19 +1,20 @@
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
+
+import styles from "@/app/home.module.css";
+import boxStyles from "@/components/box/box.module.css";
+import BoxCover from "@/components/box/BoxCover";
+import EmptyShelf from "@/components/shelf/EmptyShelf";
+import Spine from "@/components/shelf/Spine";
+import { getLatestInsights, isMockMode } from "@/lib/data";
+
 // Los datos cambian una vez al día: página estática que el cron invalida al publicar (y cada hora como red de seguridad).
 export const revalidate = 3600;
-
-import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { getLatestInsights, isMockMode } from "@/lib/data";
-import BoxCover from "@/components/box/BoxCover";
-import Spine from "@/components/shelf/Spine";
-import EmptyShelf from "@/components/shelf/EmptyShelf";
-import boxStyles from "@/components/box/box.module.css";
-import styles from "@/app/home.module.css";
 
 export default async function Home() {
   const [today, ...previous] = await getLatestInsights(5);
 
-  if(!today){
+  if (!today) {
     return (
       <main className={styles.main}>
         <EmptyShelf />
@@ -39,7 +40,7 @@ export default async function Home() {
         {previous.length > 0 && (
           <nav className={styles.peek} aria-label="Bugs anteriores">
             <ul>
-              {previous.map(bug => (
+              {previous.map((bug) => (
                 <li key={bug.id}>
                   <Spine bug={bug} href={`/bugs#bug-${bug.id}`} />
                 </li>

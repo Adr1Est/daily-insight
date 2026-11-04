@@ -1,6 +1,6 @@
-import type { BugType } from "@/types/bug";
-import { spineAccent } from "@/components/box/spineAccent";
 import styles from "@/components/box/box.module.css";
+import { spineAccent } from "@/components/box/spineAccent";
+import type { BugType } from "@/types/bug";
 
 interface BoxCoverProps {
   bug: BugType;
@@ -14,18 +14,32 @@ interface BoxCoverProps {
   isSample?: boolean;
 }
 
-export default function BoxCover({ bug, isToday = false, headingLevel = "h1", headingId, action, isSample = false }: BoxCoverProps){
+export default function BoxCover({
+  bug,
+  isToday = false,
+  headingLevel = "h1",
+  headingId,
+  action,
+  isSample = false,
+}: BoxCoverProps) {
   const Heading = headingLevel;
   const published = `${bug.day} de ${bug.month.toLowerCase()} de ${bug.year}`;
 
-  return(
-    <article className={styles.box} aria-labelledby={headingId} style={{ "--accent": spineAccent(bug.platform) } as React.CSSProperties}>
-
+  return (
+    <article
+      className={styles.box}
+      aria-labelledby={headingId}
+      style={{ "--accent": spineAccent(bug.platform) } as React.CSSProperties}
+    >
       {/* El lomo repite lo que ya dice la ficha: es decorativo para lectores de pantalla. */}
       <div className={styles.spine} aria-hidden="true">
         <span className={styles.pal}>PAL</span>
-        <span className={styles.spineTitle} data-long={bug.game.length > 16 || undefined}>{bug.game}</span>
-        <span className={styles.spinePlatform}>{bug.platform} · {bug.bugYear}</span>
+        <span className={styles.spineTitle} data-long={bug.game.length > 16 || undefined}>
+          {bug.game}
+        </span>
+        <span className={styles.spinePlatform}>
+          {bug.platform} · {bug.bugYear}
+        </span>
       </div>
 
       <div className={styles.back}>
@@ -34,11 +48,15 @@ export default function BoxCover({ bug, isToday = false, headingLevel = "h1", he
           <p className={styles.number}>
             <span>Bug nº</span>
             <b>{bug.id}</b>
-            <span>{bug.day} {bug.month.slice(0, 3)} {bug.year}</span>
+            <span>
+              {bug.day} {bug.month.slice(0, 3)} {bug.year}
+            </span>
           </p>
         </div>
 
-        <Heading id={headingId} className={styles.title}>{bug.game}</Heading>
+        <Heading id={headingId} className={styles.title}>
+          {bug.game}
+        </Heading>
 
         <dl className={styles.facts}>
           <div>
@@ -65,5 +83,5 @@ export default function BoxCover({ bug, isToday = false, headingLevel = "h1", he
         </footer>
       </div>
     </article>
-  )
+  );
 }

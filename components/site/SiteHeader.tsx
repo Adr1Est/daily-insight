@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import styles from "@/components/site/site.module.css";
 import ThemePicker from "@/components/site/ThemePicker";
 
@@ -10,10 +11,10 @@ const LINKS = [
   { href: "/bugs", label: "Estantería" },
 ];
 
-export default function SiteHeader(){
+export default function SiteHeader() {
   const pathname = usePathname();
 
-  return(
+  return (
     <header className={styles.header}>
       <Link href="/" className={styles.logo} aria-label="Daily Bug, ir al bug de hoy">
         Daily Bug
@@ -37,5 +38,5 @@ export default function SiteHeader(){
         <ThemePicker />
       </div>
     </header>
-  )
+  );
 }

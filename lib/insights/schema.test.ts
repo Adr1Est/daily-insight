@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { insightSchema } from "@/lib/insights/schema";
 
 const valid = {
@@ -14,7 +15,9 @@ describe("insightSchema", () => {
   });
 
   it("rechaza un año futuro o que no es un número entero", () => {
-    expect(insightSchema.safeParse({ ...valid, bugYear: new Date().getFullYear() + 1 }).success).toBe(false);
+    expect(
+      insightSchema.safeParse({ ...valid, bugYear: new Date().getFullYear() + 1 }).success,
+    ).toBe(false);
     expect(insightSchema.safeParse({ ...valid, bugYear: Number.NaN }).success).toBe(false);
     expect(insightSchema.safeParse({ ...valid, bugYear: 1980.5 }).success).toBe(false);
   });
