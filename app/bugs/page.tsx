@@ -1,9 +1,11 @@
 import EmptyShelf from "@/components/shelf/EmptyShelf";
 import Shelf from "@/components/shelf/Shelf";
 import styles from "@/components/shelf/shelf.module.css";
-import { getAllInsights, isMockMode } from "@/lib/data";
+import { getInsightsPage, isMockMode } from "@/lib/data";
+import { PAGE_SIZE } from "@/lib/pagination";
 
 // Los datos cambian una vez al día: página estática que el cron invalida al publicar (y cada hora como red de seguridad).
+// Solo se renderiza la primera página; el resto (y la búsqueda) llega paginado desde /api/bugs.
 export const revalidate = 3600;
 
 export const metadata = {
@@ -12,12 +14,16 @@ export const metadata = {
 };
 
 export default async function BugsList() {
-  const bugs = await getAllInsights();
+  const firstPage = await getInsightsPage({ limit: PAGE_SIZE });
 
   return (
     <main className={styles.main}>
       <h1 className={styles.heading}>La estantería</h1>
-      {bugs.length > 0 ? <Shelf bugs={bugs} isSample={isMockMode()} /> : <EmptyShelf />}
+      {firstPage.total > 0 ? (
+        <Shelf initialPage={firstPage} isSample={isMockMode()} />
+      ) : (
+        <EmptyShelf />
+      )}
     </main>
   );
 }

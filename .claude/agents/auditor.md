@@ -22,7 +22,7 @@ Las fuentes de verdad son `AGENTS.md` (estructura y arquitectura), `DESIGN.md` (
 - Componentes de UI en `components/` (`box/`, `shelf/`, `site/`); lógica de servidor en `lib/`; tipos compartidos en `types/`.
 - Imports con el alias `@/…`; no rutas relativas que suban de carpeta (`../`).
 - Prisma: solo se importa desde `@/prisma/generated/client`, nunca desde `@prisma/client`. Fuera de `lib/db.ts` se usa `getPrisma()`; nadie más crea `new PrismaClient`.
-- Lectura de datos solo a través de `lib/data.ts` (`getAllInsights`, `getLatestInsights`); las páginas no consultan Prisma directamente.
+- Lectura de datos solo a través de `lib/data.ts` (`getInsightsPage`, `getInsightById`, `getLatestInsights`); las páginas no consultan Prisma directamente. Ninguna lectura carga todos los bugs: el archivo y `/api/bugs` van paginados (`lib/pagination.ts`, máximo `MAX_PAGE_SIZE`).
 - Los módulos de servidor de `lib/` (`env`, `db`, `auth`, `data`, `insights/generate`) empiezan por `import "server-only"`. `lib/themes.ts`, `lib/insights/schema.ts`, `lib/insights/date.ts`, `lib/insights/model.ts` y `lib/mocks/` no lo llevan porque los usa el cliente o los tests.
 - Los componentes cliente (`"use client"`) no importan módulos `server-only` ni `lib/data.ts`.
 - Variables de entorno de servidor leídas con `getEnv()` de `lib/env.ts`, no con `process.env` disperso (excepción: `prisma.config.ts`).

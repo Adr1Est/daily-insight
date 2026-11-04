@@ -271,3 +271,28 @@
     font-size: 0.875rem;
   }
 }
+
+.statusButton:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+/* «Cargar más»: bajo la última balda, como pedir otra caja al almacén. */
+.more {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--u) calc(var(--u) * 3);
+  margin-top: calc(var(--u) * 4);
+}
+
+.moreCount {
+  margin: 0;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+  color: var(--wall-ink-soft);
+}

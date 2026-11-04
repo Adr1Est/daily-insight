@@ -64,8 +64,10 @@ Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSche
 
 ### Lectura / UI
 
-- Toda la lectura pasa por `lib/data.ts` (`getAllInsights`, `getLatestInsights`). Con `DATA_SOURCE=mock` devuelve los 12 bugs de `lib/mocks/insights.ts` (fechas calculadas hacia atrás desde hoy) sin importar Prisma, así que funciona sin `DATABASE_URL`. El interruptor solo afecta a la lectura; la generación siempre usa la BD y OpenAI. En modo mock, la UI indica que son datos de ejemplo.
-- `app/page.tsx`, `app/bugs/page.tsx` y `app/api/bugs` son estáticas con `revalidate = 3600`. El cron las invalida al publicar. `/bugs` pasa los datos a `components/shelf/Shelf.tsx` (cliente), que filtra y abre cajas; `/bugs#bug-N` abre esa caja al cargar.
+- Toda la lectura pasa por `lib/data.ts`: `getInsightsPage` (archivo paginado), `getInsightById` y `getLatestInsights` (portada). Nunca se cargan todos los bugs de golpe. Con `DATA_SOURCE=mock` devuelve los 12 bugs de `lib/mocks/insights.ts` (fechas calculadas hacia atrás desde hoy) sin importar Prisma, así que funciona sin `DATABASE_URL`. El interruptor solo afecta a la lectura; la generación siempre usa la BD y OpenAI. En modo mock, la UI indica que son datos de ejemplo.
+- **Paginación** (`lib/pagination.ts`): por cursor sobre el `id` (los `limit` bugs con id menor que `cursor`, del más reciente al más antiguo); `PAGE_SIZE` = 15, máximo 50. La búsqueda (juego, plataforma o texto sin distinguir mayúsculas, o año exacto) se hace en la BD y también se pagina.
+- `GET /api/bugs?limit&cursor&q` devuelve `{ items, nextCursor, total, matching }`: `total` es el número de bugs en la BD y `matching` los que cumplen la búsqueda. `GET /api/bugs/:id` devuelve un bug. Ambas son dinámicas y se cachean en la CDN por URL (`Cache-Control: s-maxage`). Parámetros inválidos → 400.
+- `app/page.tsx` y `app/bugs/page.tsx` son estáticas con `revalidate = 3600`; el cron las invalida al publicar. `/bugs` renderiza solo la primera página; `components/shelf/Shelf.tsx` (cliente) pide el resto con «Cargar más» y busca con 300 ms de espera, cancelando peticiones obsoletas. `/bugs#bug-N` abre esa caja aunque no esté cargada (la pide a `/api/bugs/:id`).
 - `next.config.ts` añade cabeceras de seguridad y desactiva `X-Powered-By`.
 
 ### Diseño
