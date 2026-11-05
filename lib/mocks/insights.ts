@@ -2,7 +2,22 @@ import type { BugType } from "@/types/bug";
 
 // Bugs reales y documentados, para desarrollar la UI sin base de datos (DATA_SOURCE=mock).
 // Ordenados del más antiguo (id 1) al más reciente (id 12).
-const entries: Omit<BugType, "id" | "day" | "month" | "year" | "createdAt" | "score" | "kind">[] = [
+type MockEntry = Omit<
+  BugType,
+  | "id"
+  | "day"
+  | "month"
+  | "year"
+  | "createdAt"
+  | "score"
+  | "kind"
+  | "releaseGame"
+  | "releasePlatform"
+  | "releaseYear"
+> &
+  Partial<Pick<BugType, "releaseGame" | "releasePlatform" | "releaseYear">>; // solo si hubo lanzamiento
+
+const entries: MockEntry[] = [
   {
     game: "Space Invaders",
     platform: "Arcade",
@@ -73,6 +88,10 @@ const entries: Omit<BugType, "id" | "day" | "month" | "year" | "createdAt" | "sc
     game: "Assassin's Creed Unity",
     platform: "PC, PS4, Xbox One",
     bugYear: 2014,
+    // El bug de hoy en modo mock lleva chapa de aniversario, para ver la chapa en la portada.
+    releaseGame: "Assassin's Creed Unity",
+    releasePlatform: "PC, PS4, Xbox One",
+    releaseYear: 2014,
     data: "En el lanzamiento, un error al cargar las texturas hacía que algunos personajes aparecieran sin piel: solo se veían los ojos y la dentadura, flotando sobre un modelo vacío. La imagen se hizo viral y se convirtió en el símbolo de un estreno lleno de fallos que obligó a Ubisoft a publicar varios parches grandes y a compensar a los compradores.",
   },
 ];
@@ -104,6 +123,9 @@ export function getMockInsights(): BugType[] {
     date.setDate(today.getDate() - (entries.length - 1 - index));
     return {
       ...entry,
+      releaseGame: entry.releaseGame ?? null,
+      releasePlatform: entry.releasePlatform ?? null,
+      releaseYear: entry.releaseYear ?? null,
       id: index + 1,
       day: date.getDate(),
       month: MONTHS[date.getMonth()],

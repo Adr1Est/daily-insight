@@ -1,8 +1,30 @@
 import styles from "@/components/box/box.module.css";
 import { spineAccent } from "@/components/box/spineAccent";
 import VoteControl from "@/components/box/VoteControl";
+import { releaseOccasion } from "@/lib/insights/calendar";
 import { kindLabel } from "@/lib/insights/kinds";
 import type { BugType } from "@/types/bug";
+
+/** Chapa del lanzamiento del calendario que motivó la caja: estreno o aniversario. */
+function ReleaseBadge({ bug }: { bug: BugType }) {
+  const occasion = releaseOccasion(bug.releaseYear ?? bug.year, bug.year);
+  const isPremiere = occasion.kind === "estreno";
+  const detail = [bug.releasePlatform, isPremiere ? null : bug.releaseYear]
+    .filter(Boolean)
+    .join(" · ");
+
+  return (
+    <p className={styles.release}>
+      <span>
+        {isPremiere
+          ? "Día de estreno"
+          : `Aniversario · ${occasion.years} ${occasion.years === 1 ? "año" : "años"}`}
+      </span>
+      <span className={styles.releaseGame}>{bug.releaseGame}</span>
+      {detail && <span>{detail}</span>}
+    </p>
+  );
+}
 
 interface BoxCoverProps {
   bug: BugType;
@@ -74,6 +96,8 @@ export default function BoxCover({
             <dd>{published}</dd>
           </div>
         </dl>
+
+        {bug.releaseGame && <ReleaseBadge bug={bug} />}
 
         <p className={styles.text}>{bug.data}</p>
 

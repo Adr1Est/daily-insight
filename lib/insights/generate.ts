@@ -130,7 +130,7 @@ export function buildEventPrompt({
   const { game, platform, year, note } = release;
   const parts: string[] = [
     isNew
-      ? `Hoy sale ${game} (${platform}).${note ? ` ${note}.` : ""} Escribe una curiosidad relacionada con este lanzamiento. No conoces el juego publicado: habla de su desarrollo ya anunciado o de la historia de su saga o de su estudio, nunca de detalles del juego final. En game pon «${game}» o el juego de la saga del que hables.`
+      ? `Hoy sale ${game} (${platform}).${note ? ` ${note}.` : ""} Escribe una curiosidad relacionada con este lanzamiento. No conoces el juego publicado: habla de su desarrollo ya anunciado o de la historia de su saga o de su estudio, nunca de detalles del juego final. En game, platform y bugYear pon los del juego del que trata la curiosidad: «${game}» solo si hablas del nuevo lanzamiento; si hablas del juego original o de otro de la saga, su título oficial en España, sin añadidos como «remake» o «remaster».`
       : `Hoy es el aniversario de ${game} (${platform}, ${year}).${note ? ` ${note}.` : ""} Escribe una curiosidad sobre ${game}. En game pon «${game}».`,
     `Elige el tipo (kind) que mejor encaje con lo que cuentes: ${KINDS.map((k) => k.id).join(", ")}.`,
   ];
@@ -245,6 +245,10 @@ export async function generateDailyInsight({
     return { status: "preview", insight: { ...parsed, ...date }, ...(release ? { release } : {}) };
   }
 
-  const insight = await prisma.insight.create({ data: { ...parsed, ...date } });
+  // El lanzamiento se copia en el bug: la chapa del archivo no depende del calendario actual.
+  const releaseFields = release
+    ? { releaseGame: release.game, releasePlatform: release.platform, releaseYear: release.year }
+    : {};
+  const insight = await prisma.insight.create({ data: { ...parsed, ...date, ...releaseFields } });
   return { status: "created", insight: insight as BugType };
 }

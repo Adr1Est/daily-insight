@@ -14,4 +14,9 @@ export interface BugType {
   createdAt: Date;
   /** Me gusta − no me gusta. En las páginas estáticas puede ir hasta una hora por detrás. */
   score: number;
+  /** Lanzamiento del calendario que motivó la curiosidad ese día (null si no hubo). */
+  releaseGame: string | null;
+  releasePlatform: string | null;
+  /** Año de salida: igual a `year` en un estreno, anterior en un aniversario. */
+  releaseYear: number | null;
 }
