@@ -20,7 +20,7 @@ export default function ThemePicker() {
     if (event.newState !== "open") return;
     const ids = engine.available(new Date());
     setAvailable(THEMES.filter((theme) => ids.includes(theme.id)));
-    // El panel vive en la capa superior: se coloca bajo el botón. Si el botón está en la mitad
+    // El panel vive en la capa superior: se coloca junto al botón. Si el botón está en la mitad
     // derecha (escritorio) se alinea a su borde derecho; si está a la izquierda (móvil, donde la
     // cabecera se apila), a su borde izquierdo, para que no se salga de la pantalla.
     const rect = buttonRef.current?.getBoundingClientRect();
@@ -29,9 +29,19 @@ export default function ThemePicker() {
       // Separaciones en el módulo --u del sistema (8 px), leído del CSS.
       const u = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--u")) || 8;
       const gutter = u * 2;
-      const top = rect.bottom + u;
-      panel.style.top = `${top}px`;
-      panel.style.maxHeight = `${window.innerHeight - top - gutter}px`;
+      const below = window.innerHeight - rect.bottom - u - gutter;
+      const above = rect.top - u - gutter;
+      // Debajo del botón; encima si abajo cabe poco y arriba hay más sitio (p. ej. en el panel
+      // lateral del móvil, donde el botón queda al pie de la pantalla).
+      if (below < 320 && above > below) {
+        panel.style.top = "auto";
+        panel.style.bottom = `${window.innerHeight - rect.top + u}px`;
+        panel.style.maxHeight = `${above}px`;
+      } else {
+        panel.style.top = `${rect.bottom + u}px`;
+        panel.style.bottom = "auto";
+        panel.style.maxHeight = `${below}px`;
+      }
       if (rect.left + rect.width / 2 < window.innerWidth / 2) {
         panel.style.left = `${Math.max(gutter, rect.left)}px`;
         panel.style.right = "auto";
