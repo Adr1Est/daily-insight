@@ -27,7 +27,11 @@ export default function TopList({ bugs }: { bugs: BugType[] }) {
                   {bug.platform} · {bug.bugYear}
                 </span>
               </span>
-              <span className={styles.score} aria-hidden="true">
+              <span
+                className={styles.score}
+                data-sign={bug.score < 0 ? "negative" : undefined}
+                aria-hidden="true"
+              >
                 {formatScore(bug.score)}
               </span>
             </Link>

@@ -121,6 +121,23 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Podio: las tres primeras filas, impresas en amarillo «¡Hoy!» con el puesto invertido. */
+.row[data-podium] .game,
+.row[data-podium] .score {
+  background: var(--highlight);
+  color: var(--on-highlight);
+}
+
+.row[data-podium] .meta {
+  color: var(--on-highlight);
+}
+
+/* Fuera del podio, una puntuación negativa se avisa en rojo pegatina; el resto, en cartón. */
+.row:not([data-podium]) .score[data-sign="negative"] {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
 @media (max-width: 720px) {
   .row {
     grid-template-columns: calc(var(--u) * 6) 1fr auto;

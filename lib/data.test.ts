@@ -49,12 +49,12 @@ describe("lib/data en modo mock", () => {
     expect(today.year).toBe(now.getFullYear());
   });
 
-  it("el top ordena por puntuación, sin bugs a cero ni negativos, y respeta el límite", async () => {
+  it("el top ordena por puntuación, incluye los negativos y respeta el límite", async () => {
     const top = await getTopInsights();
     const scores = top.map((bug) => bug.score);
     expect(scores).toEqual([...scores].sort((a, b) => b - a));
-    expect(scores.every((score) => score > 0)).toBe(true);
-    expect(top).toHaveLength(10); // 12 mocks menos el de 0 y el negativo
+    expect(top).toHaveLength(11); // 12 mocks menos el que no tiene votos (0)
+    expect(scores.at(-1)).toBe(-4); // World of Warcraft, al final
     expect(top[0].game).toBe("Super Mario Bros."); // +120
     expect(await getTopInsights(3)).toHaveLength(3);
   });

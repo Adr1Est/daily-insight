@@ -70,19 +70,19 @@ export async function getLatestInsights(count: number): Promise<BugType[]> {
 export const TOP_SIZE = 50;
 
 /**
- * Los `count` bugs con más puntuación (me gusta − no me gusta), de mayor a menor. Solo entran los
- * de puntuación positiva; a igual puntuación, el más reciente primero.
+ * Los `count` bugs votados con más puntuación (me gusta − no me gusta), de mayor a menor. Entran
+ * todos los que tienen algún voto, también los negativos; a igual puntuación, el más reciente.
  */
 export async function getTopInsights(count = TOP_SIZE): Promise<BugType[]> {
   if (isMockMode()) {
     return getMockInsights()
-      .filter((bug) => bug.score > 0)
+      .filter((bug) => bug.score !== 0) // los mocks no tienen votos: la puntuación hace de señal
       .sort((a, b) => b.score - a.score || b.id - a.id)
       .slice(0, count);
   }
   const prisma = await getPrisma();
   return prisma.insight.findMany({
-    where: { score: { gt: 0 } },
+    where: { votes: { some: {} } },
     orderBy: [{ score: "desc" }, { id: "desc" }],
     take: count,
   });
