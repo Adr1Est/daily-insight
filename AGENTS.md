@@ -40,7 +40,7 @@ Se validan en `lib/env.ts` (bajo demanda, no al importar).
 ## Estructura
 
 - `app/`: solo rutas (páginas, `loading`, `error`, `api/`).
-- `components/`: UI. `box/BoxCover` es la caja (lomo + contraportada, compartida por la portada y el archivo); `shelf/` contiene los lomos, la estantería y los estados vacíos; `top/` la lista de éxitos de `/top`; `settings/` la página `/ajustes`; `site/` la cabecera y el pie, montados en `app/layout.tsx`.
+- `components/`: UI. `box/BoxCover` es la caja (lomo + contraportada, compartida por la portada y el archivo); `shelf/` contiene los lomos, la estantería y los estados vacíos; `top/` la lista de éxitos de `/top`; `settings/` la página `/ajustes`; `site/` la cabecera, el pie y el marquee, montados en `app/layout.tsx`. En móvil y tablet (hasta 1024 px) la cabecera no se ve: un botón flotante abre un panel lateral `<dialog>` con el logotipo, los enlaces, el tema y los ajustes; el marquee se mantiene arriba.
 - `lib/`: lógica de servidor. `env`, `db` (cliente Prisma), `auth`, `data` (lectura), `insights/` (generación) y `mocks/`.
 - `types/bug.ts`: el tipo `BugType`.
 - Los módulos de servidor importan `server-only`. En Vitest se sustituye por `test/server-only.ts` (alias en `vitest.config.mts`).

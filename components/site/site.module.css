@@ -170,6 +170,183 @@
   gap: var(--u) calc(var(--u) * 3);
 }
 
+/* Botón flotante del menú (móvil y tablet): bloque de lomo con rotulación amarilla y banda roja,
+   abajo a la derecha, con sombra de caja para que se lea sobre la pared y sobre el cartón. */
+.menuButton {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: calc(var(--u) * 8);
+  height: calc(var(--u) * 8);
+  padding: 0;
+  border: 0;
+  border-top: 4px solid var(--sticker);
+  background: var(--spine);
+  color: var(--highlight);
+  box-shadow: var(--shadow-box);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.menuButton:hover {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+/* Hasta tablet la cabecera no ocupa sitio: lo primero que se ve es el bug del día. El logotipo
+   pasa al panel lateral y el menú se abre con el botón flotante. El rótulo del próximo
+   lanzamiento sigue arriba; el pie deja hueco al botón. */
+@media (max-width: 1024px) {
+  .header {
+    padding: 0;
+  }
+
+  .header > .logo,
+  .headerEnd {
+    display: none;
+  }
+
+  .menuButton {
+    display: flex;
+  }
+
+  .footer {
+    padding-bottom: calc(var(--u) * 12 + env(safe-area-inset-bottom));
+  }
+}
+
+/* Panel lateral: <dialog> modal anclado a la derecha, de cartón con banda de color a la izquierda.
+   Aparece de golpe, sin transición, como el resto de cambios de estado. */
+.drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  width: min(320px, 85vw);
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-left: calc(var(--u) * 2) solid var(--band);
+  background: var(--card);
+  color: var(--card-ink);
+  box-shadow: var(--shadow-box);
+}
+
+.drawer::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+
+/* Con el panel abierto, la página de detrás no se desplaza. */
+:global(html):has(.drawer[open]) {
+  overflow: hidden;
+}
+
+.drawerInner {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 3);
+  min-height: 100%;
+  padding: calc(var(--u) * 2) calc(var(--u) * 2) calc(var(--u) * 4);
+}
+
+/* Cabecera del panel: franja de lomo con el logotipo (que en móvil solo vive aquí) y el cierre. */
+.drawerHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+  margin: calc(var(--u) * -2) calc(var(--u) * -2) 0;
+  padding: calc(var(--u) * 2);
+  background: var(--spine);
+  border-bottom: 4px solid var(--sticker);
+}
+
+.drawerHead .logo {
+  font-size: 1.75rem;
+}
+
+.drawerClose {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: calc(var(--u) * 6);
+  height: calc(var(--u) * 6);
+  padding: 0;
+  border: 0;
+  background: var(--card);
+  color: var(--card-ink);
+  cursor: pointer;
+}
+
+.drawerClose:hover {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+.drawerNav {
+  display: grid;
+  gap: calc(var(--u) / 2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.drawerLink {
+  display: block;
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 2);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--card-ink);
+}
+
+.drawerLink:hover {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+/* Página actual invertida, como la fila elegida del selector de tema. */
+.drawerLink[aria-current="page"] {
+  background: var(--spine);
+  color: var(--highlight);
+}
+
+/* Tema y ajustes al pie del panel. Sobre cartón, las etiquetas llevan filete de tinta en los
+   otros tres lados para no fundirse con el fondo (la banda superior se mantiene). */
+.drawerTools {
+  display: flex;
+  align-items: stretch;
+  gap: var(--u);
+  margin-top: auto;
+}
+
+.drawerTools .themeButton,
+.drawerTools .settingsLink {
+  border-right: 2px solid var(--card-ink);
+  border-bottom: 2px solid var(--card-ink);
+  border-left: 2px solid var(--card-ink);
+}
+
+.drawerTools .themeButton {
+  flex: 1;
+  justify-content: center;
+}
+
 /* Selector de tema: etiqueta de cartón con la muestra de color del tema actual. */
 .themeButton {
   display: inline-flex;
