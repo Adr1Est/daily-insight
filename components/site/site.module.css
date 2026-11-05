@@ -357,9 +357,12 @@
   cursor: pointer;
 }
 
-.installButton:hover {
-  background: var(--sticker);
-  color: var(--on-sticker);
+/* Solo existe en táctil: sin esto, el rojo de hover se queda puesto tras tocarlo. */
+@media (hover: hover) {
+  .installButton:hover {
+    background: var(--sticker);
+    color: var(--on-sticker);
+  }
 }
 
 .installHint {

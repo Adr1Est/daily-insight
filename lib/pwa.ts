@@ -24,11 +24,8 @@ export type PwaIconVariant = keyof typeof PWA_ICONS;
 /** Evento propio que avisa a `InstallApp` de que cambió la posibilidad de instalar. */
 export const INSTALL_EVENT = "daily-bug:installable";
 
-/**
- * Script de <head>: guarda `beforeinstallprompt` en `window.__dbInstall`. Chrome puede lanzarlo
- * antes de hidratar, así que no basta con escucharlo desde React. `preventDefault` quita la
- * barra automática de Chrome en móvil: se instala desde el panel lateral.
- */
+// Script de <head>: guarda `beforeinstallprompt` (puede llegar antes de hidratar) en
+// `window.__dbInstall`. `preventDefault` quita la barra de Chrome: se instala desde el panel.
 export function installPromptScript(): string {
   const notify = `window.dispatchEvent(new Event(${JSON.stringify(INSTALL_EVENT)}))`;
   return `window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();window.__dbInstall=e;${notify}});window.addEventListener("appinstalled",function(){window.__dbInstall=null;${notify}});`;

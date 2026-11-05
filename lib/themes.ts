@@ -398,7 +398,8 @@ export function themeCss(): string {
   }).join("\n");
 }
 
-/** Script de <head>: aplica el tema guardado (o el de temporada la primera vez) antes del primer pintado. */
+// Script de <head>: aplica el tema guardado (o el de temporada la primera vez) antes del primer
+// pintado y pone `theme-color` al `spine` de ese tema.
 export function themeInitScript(): string {
   return `(function(){try{
 var E=(${themeEngine.toString()})(${JSON.stringify(THEME_RULES)});
@@ -408,5 +409,7 @@ if(!Array.isArray(seen))seen=[];
 var r=E.resolve({stored:stored,seen:seen,date:new Date(),seasonal:seasonal});
 document.documentElement.dataset.theme=r.theme;
 try{if(ls){ls.setItem(${JSON.stringify(STORAGE_THEME)},r.theme);ls.setItem(${JSON.stringify(STORAGE_SEEN)},JSON.stringify(r.seen));}}catch(e){}
+try{var tc=${JSON.stringify(Object.fromEntries(THEMES.map((theme) => [theme.id, theme.tokens.spine])))}[r.theme];
+if(tc)document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.content=tc;});}catch(e){}
 }catch(e){}})();`;
 }

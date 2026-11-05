@@ -1,23 +1,20 @@
-// Service worker de Daily Bug (PWA). Escrito a mano, sin dependencias.
-// - Páginas: red primero; sin red, la última copia; sin copia, /offline.
-// - /_next/static/*: caché primero (los nombres llevan hash, nunca cambian).
-// - GET /api/bugs y /api/bugs/:id: red primero con copia de respaldo.
-// - Votos, ajustes y cron: siempre red, nunca se guardan.
+// Service worker de Daily Bug, escrito a mano. Estrategia de caché: sección «PWA» de AGENTS.md.
 // Sube CACHE_VERSION al cambiar este fichero o lo que precachea.
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const PAGES = `daily-bug-pages-${CACHE_VERSION}`;
 const STATIC = `daily-bug-static-${CACHE_VERSION}`;
+const LIMITS = { [PAGES]: 60, [STATIC]: 200 };
 const OFFLINE_URL = "/offline";
-const PRECACHE = [OFFLINE_URL, "/icon.svg", "/manifest.webmanifest"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     (async () => {
       const pages = await caches.open(PAGES);
-      await pages.addAll(PRECACHE);
-      // La página offline necesita su CSS y JS: se guardan los recursos que enlaza.
+      await pages.add(OFFLINE_URL);
+      // La página offline necesita su CSS y JS: se guardan los recursos que enlaza (sin las
+      // rutas escapadas del payload RSC, que llevan «\»).
       const html = await (await pages.match(OFFLINE_URL)).text();
-      const assets = [...new Set(html.match(/\/_next\/static\/[^"'\s)]+/g) ?? [])];
+      const assets = [...new Set(html.match(/\/_next\/static\/[^"'\s)\\]+/g) ?? [])];
       const statics = await caches.open(STATIC);
       await Promise.all(assets.map((url) => statics.add(url).catch(() => {})));
       await self.skipWaiting();
@@ -37,30 +34,53 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+/** Solo respuestas buenas y que no piden quedarse fuera de cachés. */
+function storable(response) {
+  if (!response.ok) return false;
+  const cacheControl = response.headers.get("Cache-Control") ?? "";
+  return !/no-store|private/i.test(cacheControl);
+}
+
+/** Guarda y recorta la caché a su máximo, borrando primero lo más antiguo. */
+async function store(cacheName, request, response) {
+  const cache = await caches.open(cacheName);
+  await cache.put(request, response);
+  const keys = await cache.keys();
+  const excess = keys.length - LIMITS[cacheName];
+  for (let i = 0; i < excess; i++) {
+    // /offline nunca se recorta: es el último recurso sin red.
+    if (new URL(keys[i].url).pathname !== OFFLINE_URL) await cache.delete(keys[i]);
+  }
+}
+
 /** Red primero; si falla, la copia. Guarda la respuesta buena para la próxima vez. */
 async function networkFirst(request, cacheName) {
-  const cache = await caches.open(cacheName);
   try {
     const response = await fetch(request);
-    if (response.ok) await cache.put(request, response.clone());
+    if (storable(response)) await store(cacheName, request, response.clone());
     return response;
   } catch (error) {
-    const cached = await cache.match(request);
+    const cached = await caches.match(request, { cacheName });
     if (cached) return cached;
     throw error;
   }
 }
 
 async function cacheFirst(request) {
-  const cache = await caches.open(STATIC);
-  const cached = await cache.match(request);
+  const cached = await caches.match(request, { cacheName: STATIC });
   if (cached) return cached;
   const response = await fetch(request);
-  if (response.ok) await cache.put(request, response.clone());
+  if (storable(response)) await store(STATIC, request, response.clone());
   return response;
 }
 
-const isBugsApi = (path) => path === "/api/bugs" || /^\/api\/bugs\/\d+$/.test(path);
+/** La primera página del archivo (con o sin filtro de tipo) y cada bug suelto. */
+function isCacheableApi(url) {
+  if (/^\/api\/bugs\/\d+$/.test(url.pathname)) return true;
+  return (
+    url.pathname === "/api/bugs" && !url.searchParams.has("q") && !url.searchParams.has("cursor")
+  );
+}
 
 self.addEventListener("fetch", (event) => {
   const { request } = event;
@@ -68,6 +88,10 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  if (url.pathname.startsWith("/api/")) {
+    if (isCacheableApi(url)) event.respondWith(networkFirst(request, PAGES));
+    return; // Votos, /api/votes, cron y búsquedas: directo a la red.
+  }
   if (request.mode === "navigate") {
     event.respondWith(
       networkFirst(request, PAGES).catch(
@@ -78,10 +102,6 @@ self.addEventListener("fetch", (event) => {
   }
   if (url.pathname.startsWith("/_next/static/")) {
     event.respondWith(cacheFirst(request));
-    return;
   }
-  if (isBugsApi(url.pathname)) {
-    event.respondWith(networkFirst(request, PAGES));
-  }
-  // El resto (votos, /api/votes, cron, datos RSC…) va directo a la red.
+  // El resto (datos RSC, iconos…) va directo a la red.
 });

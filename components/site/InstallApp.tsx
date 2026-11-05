@@ -1,7 +1,7 @@
 "use client";
 
 import { Download } from "lucide-react";
-import { useState, useSyncExternalStore } from "react";
+import { useId, useState, useSyncExternalStore } from "react";
 
 import styles from "@/components/site/site.module.css";
 import { INSTALL_EVENT } from "@/lib/pwa";
@@ -50,13 +50,12 @@ function getState(): InstallState {
   return ios ? "ios" : "none";
 }
 
-/**
- * «Instalar app» del panel lateral (móvil y tablet). No se pinta en escritorio, si ya está
- * instalada o si el navegador no permite instalarla.
- */
+// «Instalar app» del panel lateral. No se pinta en escritorio, si ya está instalada o si el
+// navegador no permite instalarla.
 export default function InstallApp() {
   const state = useSyncExternalStore(subscribe, getState, () => "none" as const);
   const [showHint, setShowHint] = useState(false);
+  const hintId = useId();
 
   if (state === "none") return null;
 
@@ -81,13 +80,13 @@ export default function InstallApp() {
         className={styles.installButton}
         onClick={install}
         aria-expanded={state === "ios" ? showHint : undefined}
-        aria-controls={state === "ios" ? "install-hint" : undefined}
+        aria-controls={state === "ios" ? hintId : undefined}
       >
         <Download size={20} aria-hidden="true" />
         Instalar app
       </button>
-      {state === "ios" && showHint && (
-        <p id="install-hint" className={styles.installHint}>
+      {state === "ios" && (
+        <p id={hintId} className={styles.installHint} hidden={!showHint}>
           En Safari, pulsa Compartir y luego «Añadir a pantalla de inicio».
         </p>
       )}
