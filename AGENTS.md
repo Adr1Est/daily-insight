@@ -94,6 +94,15 @@ Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSche
 - `lib/prefs.ts`: claves `daily-bug:motion` (`auto|on|off`) y `daily-bug:text-size` (`normal|large|xl`), y `prefsInitScript()`, que `app/layout.tsx` inserta en `<head>` tras el del tema para aplicarlas antes del primer pintado. El CSS de `app/globals.css` las lee: `data-motion` controla `.sign-float` y `data-text-size` fija `--text-scale`, que multiplica el tamaño del texto del bug.
 - «Mis votos»: `GET /api/votes` → `{ votes }` (los de esta cookie) y `DELETE /api/votes` → `{ deleted }`, que borra los votos, los descuenta de `Insight.score` en una transacción (`forgetVoter`) y borra la cookie. El DELETE exige el mismo origen. «Restablecer» borra las preferencias y el tema, pero conserva `daily-bug:seasons-seen` y los votos.
 
+### PWA
+
+- Instalable y con uso sin conexión, sin dependencias. Nombre, descripción y colores (`spine` y `wall` del tema por defecto) salen de `lib/pwa.ts`, que usan `app/manifest.ts` (`/manifest.webmanifest`) y `metadata`/`viewport` de `app/layout.tsx`.
+- Iconos: el kit de `app/` (`favicon.ico`, `icon.svg`, `apple-icon.png`). Los PNG del manifest (`/pwa-icon/192`, `/512` y `/maskable`, este con el dibujo al 70 % para la zona segura) los genera `app/pwa-icon/[variant]/route.tsx` en el build a partir de `app/icon.svg`: si cambias el SVG, cambian solos.
+- `components/site/ThemeColorMeta.tsx` ajusta `<meta name="theme-color">` al `spine` del tema activo (la cabecera).
+- Service worker: `public/sw.js`, escrito a mano. Lo registra `components/site/ServiceWorker.tsx` **solo en producción** (para probarlo: `pnpm build && pnpm start`). Páginas: red primero, con la última copia y, sin ella, `/offline` (`app/offline/page.tsx`) como respaldo. `/_next/static/*`: caché primero. `GET /api/bugs` y `/api/bugs/:id`: red primero con copia. Votos, `/api/votes` y el cron no se guardan nunca. Al instalarse precachea `/offline` y los recursos estáticos que enlaza.
+- «Instalar app» en el panel lateral, encima de tema y ajustes (`components/site/InstallApp.tsx`, montado en `SiteHeader`): `installPromptScript()` (`lib/pwa.ts`, en `<head>`) guarda `beforeinstallprompt` en `window.__dbInstall` porque Chrome puede lanzarlo antes de hidratar, y el botón llama a `prompt()`. En iOS, que no tiene ese evento, el botón muestra cómo añadirla desde Compartir. No se pinta en escritorio (sin `pointer: coarse`), si ya está instalada (`display-mode: standalone`) o si el navegador no lo permite.
+- Si cambias `sw.js` o lo que precachea, sube `CACHE_VERSION`: al activarse borra las cachés `daily-bug-*` de otras versiones. `next.config.ts` sirve `/sw.js` con `no-cache` para que el navegador detecte siempre la versión nueva.
+
 ### Base de datos
 
 - Prisma 7 con el generador `prisma-client` y salida en `prisma/generated` (ignorado por git): importar desde `@/prisma/generated/client`, nunca desde `@prisma/client`. Usa siempre `getPrisma()` de `lib/db.ts`, que es un singleton perezoso.
