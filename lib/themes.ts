@@ -3,7 +3,8 @@
 // - components/site/ThemePicker.tsx (selector),
 // - lib/themes.test.ts (fechas y contraste).
 
-export type ThemeId = "videoclub" | "neon" | "lcd" | "vaporwave" | "halloween" | "navidad";
+export type ThemeId =
+  "videoclub" | "oscuro" | "neon" | "lcd" | "vaporwave" | "halloween" | "navidad";
 
 interface MonthDay {
   m: number;
@@ -99,6 +100,34 @@ export const THEMES: Theme[] = [
       "shadow-box": "10px 10px 0 rgb(0 0 0 / 0.4)",
       "shadow-sticker": "3px 3px 0 rgb(0 0 0 / 0.35)",
       "shadow-board": "0 12px 0 rgb(0 0 0 / 0.35)",
+    },
+  },
+  {
+    // Videoclub a oscuras: cartón marrón oscuro con tinta clara y un amarillo más suave, para leer
+    // de noche sin deslumbrar. Mismas bandas y pegatina que Videoclub, algo atenuadas.
+    id: "oscuro",
+    name: "Oscuro",
+    tokens: {
+      wall: "#121110",
+      "wall-slat": "#171513",
+      "wall-ink": "#ece8df",
+      "wall-ink-soft": "#a8a196",
+      shelf: "#3a2a1c",
+      "shelf-edge": "#5a3f27",
+      card: "#2d2925",
+      "card-ink": "#ece8df",
+      "card-ink-soft": "#b0a898",
+      spine: "#0c0b0a",
+      highlight: "#e8b931",
+      "on-highlight": "#141414",
+      sticker: "#c42b1f",
+      "on-sticker": "#ffffff",
+      band: "#2aa9b8",
+    },
+    extra: {
+      "shadow-box": "10px 10px 0 rgb(0 0 0 / 0.6)",
+      "shadow-sticker": "3px 3px 0 rgb(0 0 0 / 0.5)",
+      "shadow-board": "0 12px 0 rgb(0 0 0 / 0.5)",
     },
   },
   {

@@ -332,6 +332,7 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 | Tema | Disponible | Pared | Cartón | Pegatina | Highlight | Banda | Ambiente |
 |---|---|---|---|---|---|---|---|
 | Videoclub (por defecto) | todo el año | #1d1b19 | #f2efe6 | #d1281b | #ffd23f | #2ec4d6 | — |
+| Oscuro | todo el año | #121110 | #2d2925 (tinta clara) | #c42b1f | #e8b931 | #2aa9b8 | — (Videoclub a oscuras: amarillo más suave, sombras más densas) |
 | Neón | todo el año | #0b0a1a | #15122e (tinta clara) | #ff2e88 | #f8f32b | #35f2ff | `--glow` cian, sombra de caja magenta de 8 px, líneas horizontales cian cada 32 px en la pared |
 | Verde LCD | todo el año | #0f380f | #9bbc0f | #0f380f | #9bbc0f | #8bac0f | rejilla de píxeles de 4 px, sombras de caja (8 px) y pegatina en verde medio |
 | Vaporwave | todo el año | #1a0b2e | #fdeaf3 | #c2187a | #ffb347 | #2de2e6 | atardecer de costa: franja de cielo rosa arriba y sol naranja con aro rosa (bordes duros) detrás de la estantería; sombras de caja y pegatina turquesa |
