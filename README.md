@@ -49,7 +49,7 @@ En PowerShell: `$env:DATA_SOURCE="mock"; pnpm dev`. Después abre <http://localh
 | `DATABASE_URL` | Conexión a PostgreSQL. |
 | `DIRECT_URL` | Conexión directa para las migraciones de Prisma. |
 | `OPENAI_API_KEY` | Clave de la API de OpenAI para generar los bugs. |
-| `CRON_SECRET` | Secreto aleatorio de 32 caracteres o más que protege la ruta de generación (p. ej. `openssl rand -hex 32`). |
+| `INTERNAL_TOKEN` | Secreto aleatorio de 32 caracteres o más que protege la ruta de generación (p. ej. `openssl rand -hex 32`). |
 | `DATA_SOURCE` | Opcional: `api` (por defecto) o `mock`. |
 
 ## Scripts
@@ -66,14 +66,14 @@ En PowerShell: `$env:DATA_SOURCE="mock"; pnpm dev`. Después abre <http://localh
 
 ## Cómo se genera el bug del día
 
-1. El workflow de GitHub Actions `.github/workflows/new-insight.yml` llama cada día hacia las 00:17 UTC a `GET /api/cron/new-insight` de la app desplegada con `Authorization: Bearer <CRON_SECRET>` (GitHub puede retrasar unos minutos las ejecuciones programadas).
+1. El workflow de GitHub Actions `.github/workflows/new-insight.yml` llama cada día hacia las 00:17 UTC a `GET /api/cron/new-insight` de la app desplegada con `Authorization: Bearer <INTERNAL_TOKEN>` (GitHub puede retrasar unos minutos las ejecuciones programadas).
 2. El servidor pasa al modelo todos los títulos ya publicados y un enfoque elegido al azar (una época, un tipo de plataforma…) para variar.
 3. La respuesta se valida y, si repite un juego ya publicado, se pide otro. Después se guarda con la fecha del servidor y se refrescan la portada y el archivo.
 
 Para probar el prompt sin guardar nada:
 
 ```bash
-curl -H "Authorization: Bearer $CRON_SECRET" "http://localhost:3000/api/cron/new-insight?dryRun=1"
+curl -H "Authorization: Bearer $INTERNAL_TOKEN" "http://localhost:3000/api/cron/new-insight?dryRun=1"
 ```
 
 `dryRun` no escribe en la base de datos, pero sí llama a OpenAI.
@@ -103,9 +103,9 @@ La guía técnica completa (arquitectura, convenciones y reglas) está en [AGENT
 
 ## Despliegue (Vercel)
 
-1. Configura en Vercel las variables `DATABASE_URL`, `DIRECT_URL`, `OPENAI_API_KEY` y `CRON_SECRET`. La build necesita `DATABASE_URL`.
+1. Configura en Vercel las variables `DATABASE_URL`, `DIRECT_URL`, `OPENAI_API_KEY` y `INTERNAL_TOKEN`. La build necesita `DATABASE_URL`.
 2. Si hay migraciones nuevas, ejecuta `pnpm db:migrate` contra la base de datos de producción.
-3. En GitHub (*Settings → Secrets and variables → Actions*), crea los secretos `INTERNAL_TOKEN` (el mismo valor que `CRON_SECRET` en Vercel) y `API_URL` con la URL de producción (p. ej. `https://daily-bug.vercel.app`). Puedes lanzarlo a mano desde *Actions → Bug del día → Run workflow*, con la opción `dryRun` si no quieres guardar.
+3. En GitHub (*Settings → Secrets and variables → Actions*), crea los secretos `INTERNAL_TOKEN` (el mismo valor que en Vercel) y `API_URL` con la URL de producción (p. ej. `https://daily-bug.vercel.app`). Puedes lanzarlo a mano desde *Actions → Bug del día → Run workflow*, con la opción `dryRun` si no quieres guardar.
 
 GitHub desactiva los workflows programados tras 60 días sin actividad en el repositorio; si pasa, reactívalo desde la pestaña *Actions*.
 

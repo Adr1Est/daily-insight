@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Llamar a /api/cron/new-insight
         env:
-          # API_URL: URL base de la app desplegada. INTERNAL_TOKEN: el mismo valor que CRON_SECRET en Vercel.
+          # API_URL: URL base de la app desplegada. INTERNAL_TOKEN: el mismo valor que en Vercel.
           API_URL: ${{ secrets.API_URL }}
           INTERNAL_TOKEN: ${{ secrets.INTERNAL_TOKEN }}
           DRY_RUN: ${{ inputs.dryRun && '1' || '0' }}

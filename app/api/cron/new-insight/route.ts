@@ -4,12 +4,12 @@ import { verifyBearer } from "@/lib/auth";
 import { getEnv } from "@/lib/env";
 import { generateDailyInsight } from "@/lib/insights/generate";
 
-// Lo llama el workflow de GitHub Actions (.github/workflows/new-insight.yml) con `Authorization: Bearer ${CRON_SECRET}`.
+// Lo llama el workflow de GitHub Actions (.github/workflows/new-insight.yml) con `Authorization: Bearer ${INTERNAL_TOKEN}`.
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 
 export async function GET(req: Request) {
-  if (!verifyBearer(req.headers.get("authorization"), getEnv().CRON_SECRET)) {
+  if (!verifyBearer(req.headers.get("authorization"), getEnv().INTERNAL_TOKEN)) {
     return Response.json({ error: "No autorizado" }, { status: 401 });
   }
 

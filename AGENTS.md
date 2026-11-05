@@ -35,7 +35,7 @@ Se validan en `lib/env.ts` (bajo demanda, no al importar).
 - `DATA_SOURCE`: `mock` | `api` (por defecto `api`). Ver «Lectura / UI».
 - `DATABASE_URL` y `DIRECT_URL`: Postgres. `DIRECT_URL` solo la usa Prisma para migraciones.
 - `OPENAI_API_KEY`: la lee el SDK de agentes.
-- `CRON_SECRET`: secreto del cron, de 32 caracteres o más. Va en Vercel; en GitHub el mismo valor está en el secreto `INTERNAL_TOKEN`, que el workflow envía como `Authorization: Bearer …`. Si falta o es corto, el cron responde siempre 401.
+- `INTERNAL_TOKEN`: secreto del cron, de 32 caracteres o más. Va en Vercel y, con el mismo valor, como secreto del repositorio en GitHub; el workflow lo envía como `Authorization: Bearer …`. Si falta o es corto, el cron responde siempre 401.
 
 ## Estructura
 
@@ -50,7 +50,7 @@ Se validan en `lib/env.ts` (bajo demanda, no al importar).
 
 ### Generación diaria
 
-1. El workflow `.github/workflows/new-insight.yml` (cron `17 0 * * *` y `workflow_dispatch`) llama con `curl` a `GET ${API_URL}/api/cron/new-insight`, con reintentos. Necesita los secretos del repositorio `API_URL` (URL base de producción) e `INTERNAL_TOKEN` (mismo valor que `CRON_SECRET` en Vercel). No hay cron en Vercel.
+1. El workflow `.github/workflows/new-insight.yml` (cron `17 0 * * *` y `workflow_dispatch`) llama con `curl` a `GET ${API_URL}/api/cron/new-insight`, con reintentos. Necesita los secretos del repositorio `API_URL` (URL base de producción) e `INTERNAL_TOKEN` (mismo valor que en Vercel). No hay cron en Vercel.
 2. La ruta valida el token con `verifyBearer` (`lib/auth.ts`, en tiempo constante y cerrada por defecto) y llama a `generateDailyInsight()` (`lib/insights/generate.ts`).
 3. `generateDailyInsight`:
    1. Calcula la fecha de publicación en el servidor (`lib/insights/date.ts`, hora de Madrid, mes en español con mayúscula inicial).
@@ -60,7 +60,7 @@ Se validan en `lib/env.ts` (bajo demanda, no al importar).
    5. Valida el resultado con `insightSchema` (`lib/insights/schema.ts`) e inserta.
 4. Tras insertar, la ruta llama a `revalidatePath('/')`, `'/bugs'` y `'/api/bugs'`. Los errores se registran con `console.error` y la respuesta es genérica.
 
-Para probarlo a mano: `curl -H "Authorization: Bearer $CRON_SECRET" localhost:3000/api/cron/new-insight`. Con `?dryRun=1` genera y valida sin guardar nada (útil para revisar el prompt); lee la BD para el contexto. En producción se lanza a mano desde *Actions → Bug del día → Run workflow* (con la casilla `dryRun` opcional).
+Para probarlo a mano: `curl -H "Authorization: Bearer $INTERNAL_TOKEN" localhost:3000/api/cron/new-insight`. Con `?dryRun=1` genera y valida sin guardar nada (útil para revisar el prompt); lee la BD para el contexto. En producción se lanza a mano desde *Actions → Bug del día → Run workflow* (con la casilla `dryRun` opcional).
 
 Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSchema`, las instrucciones del agente, `prisma/schema.prisma` y `types/bug.ts`.
 

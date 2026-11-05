@@ -7,7 +7,7 @@ import { z } from "zod";
 const envSchema = z.object({
   DATA_SOURCE: z.enum(["api", "mock"]).default("api"),
   DATABASE_URL: z.string().min(1).optional(),
-  CRON_SECRET: z.string().min(1).optional(),
+  INTERNAL_TOKEN: z.string().min(1).optional(),
 });
 
 export type ServerEnv = z.infer<typeof envSchema>;

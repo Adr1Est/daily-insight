@@ -33,7 +33,7 @@ Las fuentes de verdad son `AGENTS.md` (estructura y arquitectura), `DESIGN.md` (
 
 ## 2. Seguridad
 
-- `app/api/cron/new-insight/route.ts` comprueba la autorización con `verifyBearer(…, getEnv().CRON_SECRET)` antes de cualquier trabajo. Ninguna ruta compara tokens con `===`/`!==`.
+- `app/api/cron/new-insight/route.ts` comprueba la autorización con `verifyBearer(…, getEnv().INTERNAL_TOKEN)` antes de cualquier trabajo. Ninguna ruta compara tokens con `===`/`!==`.
 - `lib/auth.ts` falla cerrado: sin secreto o con menos de `MIN_SECRET_LENGTH` caracteres no autoriza, y compara con `timingSafeEqual`.
 - Las respuestas de error de `app/api/**` son mensajes genéricos; el detalle va a `console.error`. Devolver `error`, `error.message` o un stack al cliente es un hallazgo.
 - La salida del modelo se valida con `insightSchema` antes de insertar; no hay `JSON.parse` de texto del modelo.
