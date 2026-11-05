@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="crispEdges">
+  <!-- Dibujado sobre una cuadrícula de 16 × 16 (cada celda, 2 unidades) para que sea nítido a 16 px. -->
+  <!-- Lomo de caja PAL: tinta negra con la banda superior de color, como en la estantería. -->
+  <rect width="32" height="32" fill="#141414"/>
+  <rect width="32" height="4" fill="#2ec4d6"/>
+  <!-- «B» rotulada en amarillo con la segunda tinta roja desregistrada, como el logotipo. -->
+  <defs>
+    <path id="b" fill-rule="evenodd" d="M8 8H20V10H22V20H24V26H22V28H8ZM14 12V16H18V12ZM14 20V24H20V20Z"/>
+  </defs>
+  <use href="#b" x="2" y="2" fill="#d1281b"/>
+  <use href="#b" fill="#ffd23f"/>
+</svg>
