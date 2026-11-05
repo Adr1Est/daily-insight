@@ -184,7 +184,7 @@ La densidad es de caja real: un lomo negro con banda de color, una contraportada
 - Bungee como rotulación impresa, Barlow Condensed en mayúsculas para etiquetas, Barlow para leer.
 - Módulo de 8 px (`--u`) en todo el espaciado.
 - Sombras desplazadas sin desenfoque; ninguna esquina redondeada salvo la pegatina circular.
-- Cambios de estado instantáneos: sin `transition` ni animación. Única excepción: los rótulos (logotipo y títulos de página) flotan suavemente.
+- Cambios de estado instantáneos: sin `transition` ni animación. Excepciones: los rótulos (logotipo y títulos de página) flotan suavemente, y las pegatinas de la caja («¡Hoy!» y el número) se tambalean una vez al pasar el ratón.
 
 ## Colors
 
@@ -357,7 +357,7 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 
 ### Don't:
 - **Don't** usar `border-radius` salvo en la pegatina redonda.
-- **Don't** añadir `transition` ni animaciones de estado: los cambios son secos. La única animación es la flotación de los rótulos (clase global `sign-float`: 4 s, 4 px y −0,6°): el logotipo y los títulos de página («La estantería», «Top 50»), estos a contratiempo (−2 s). Se desactiva con `prefers-reduced-motion`, salvo que el visitante elija «Siempre» en ajustes (`data-motion="on"`); con «Nunca» (`data-motion="off"`) no se anima nunca.
+- **Don't** añadir `transition` ni animaciones de estado: los cambios son secos. La única animación es la flotación de los rótulos (clase global `sign-float`: 4 s, 4 px y −0,6°): el logotipo y los títulos de página («La estantería», «Top 50»), estos a contratiempo (−2 s). La otra es el tambaleo de las pegatinas de la caja al pasar el ratón (`sticker-wobble`: 400 ms, −4° y +2° sobre su giro y escala 1,04, una sola vez). Se desactiva con `prefers-reduced-motion`, salvo que el visitante elija «Siempre» en ajustes (`data-motion="on"`); con «Nunca» (`data-motion="off"`) no se anima nunca.
 - **Don't** usar sombras con desenfoque ni brillos fuera de `--glow` del tema Neón.
 - **Don't** escribir colores literales en CSS ni componentes: cada tema debe poder cambiarlos.
 - **Don't** usar fuentes pixel, fondo negro puro ni scanlines.
