@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 
+import InstallApp from "@/components/site/InstallApp";
 import styles from "@/components/site/site.module.css";
 import ThemePicker from "@/components/site/ThemePicker";
 
@@ -123,6 +124,8 @@ export default function SiteHeader() {
               ))}
             </ul>
           </nav>
+
+          <InstallApp />
 
           <div className={styles.drawerTools}>
             <ThemePicker />

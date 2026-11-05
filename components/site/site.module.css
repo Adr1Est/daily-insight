@@ -326,6 +326,51 @@
   color: var(--highlight);
 }
 
+/* «Instalar app»: justo encima de tema y ajustes, al fondo del panel. Solo existe en móvil y
+   tablet (InstallApp no se pinta con ratón). Va en tinta, como la página actual de la lista. */
+.drawerInstall {
+  display: grid;
+  gap: var(--u);
+  margin-top: auto;
+  margin-bottom: calc(var(--u) * -2); /* 1u hasta tema y ajustes en vez del hueco de 3u */
+}
+
+.drawerInstall + .drawerTools {
+  margin-top: 0;
+}
+
+.installButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--u);
+  min-height: calc(var(--u) * 6);
+  padding: var(--u) calc(var(--u) * 2);
+  border: 0;
+  background: var(--spine);
+  color: var(--highlight);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1.125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+/* Solo existe en táctil: sin esto, el rojo de hover se queda puesto tras tocarlo. */
+@media (hover: hover) {
+  .installButton:hover {
+    background: var(--sticker);
+    color: var(--on-sticker);
+  }
+}
+
+.installHint {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--card-ink-soft);
+}
+
 /* Tema y ajustes al pie del panel. Sobre cartón, las etiquetas llevan filete de tinta en los
    otros tres lados para no fundirse con el fondo (la banda superior se mantiene). */
 .drawerTools {
