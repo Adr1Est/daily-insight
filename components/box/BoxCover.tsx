@@ -1,6 +1,7 @@
 import styles from "@/components/box/box.module.css";
 import { spineAccent } from "@/components/box/spineAccent";
 import VoteControl from "@/components/box/VoteControl";
+import { kindLabel } from "@/lib/insights/kinds";
 import type { BugType } from "@/types/bug";
 
 interface BoxCoverProps {
@@ -47,7 +48,7 @@ export default function BoxCover({
         <div className={styles.stickers}>
           {isToday && <span className={styles.today}>¡Hoy!</span>}
           <p className={styles.number}>
-            <span>Bug nº</span>
+            <span className={styles.numberKind}>{kindLabel(bug.kind)} nº</span>
             <b>{bug.id}</b>
             <span>
               {bug.day} {bug.month.slice(0, 3)} {bug.year}
@@ -65,7 +66,7 @@ export default function BoxCover({
             <dd>{bug.platform}</dd>
           </div>
           <div>
-            <dt>Año del bug</dt>
+            <dt>Año</dt>
             <dd>{bug.bugYear}</dd>
           </div>
           <div>

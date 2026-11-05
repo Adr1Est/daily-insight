@@ -115,6 +115,13 @@
   line-height: 1.1;
 }
 
+/* Rótulo del tipo («Secreto nº»): si no cabe en el círculo, baja a dos líneas. */
+.numberKind {
+  max-width: 76%;
+  text-align: center;
+  text-wrap: balance;
+}
+
 .number b {
   font-family: var(--font-display);
   font-weight: 400;
@@ -355,8 +362,15 @@
     font-size: 2.25rem;
   }
 
+  /* «Localización» es el rótulo más largo: en la pegatina de 112 px se aprieta un poco. */
+  .numberKind {
+    max-width: 64%;
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+  }
+
   .today {
-    left: calc(var(--u) * -7);
+    left: calc(var(--u) * -10); /* deja ver el rótulo del tipo de la pegatina */
     top: var(--u);
     font-size: 1.125rem;
   }

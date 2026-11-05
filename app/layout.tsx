@@ -19,7 +19,8 @@ const barlowCondensed = Barlow_Condensed({
 
 export const metadata: Metadata = {
   title: "Daily Bug",
-  description: "Descubre cada día un bug de la historia de los videojuegos.",
+  description:
+    "Cada día, una curiosidad de la historia de los videojuegos: bugs, secretos, desarrollo, contenido descartado y localización.",
 };
 
 export default function RootLayout({

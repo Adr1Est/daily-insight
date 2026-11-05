@@ -10,7 +10,7 @@ export const revalidate = 300;
 
 export const metadata = {
   title: `Top ${TOP_SIZE} · Daily Bug`,
-  description: `Los ${TOP_SIZE} bugs de videojuegos más votados de Daily Bug.`,
+  description: `Las ${TOP_SIZE} curiosidades de videojuegos más votadas de Daily Bug.`,
 };
 
 export default async function Top() {

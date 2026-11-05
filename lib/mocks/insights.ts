@@ -2,7 +2,7 @@ import type { BugType } from "@/types/bug";
 
 // Bugs reales y documentados, para desarrollar la UI sin base de datos (DATA_SOURCE=mock).
 // Ordenados del más antiguo (id 1) al más reciente (id 12).
-const entries: Omit<BugType, "id" | "day" | "month" | "year" | "createdAt" | "score">[] = [
+const entries: Omit<BugType, "id" | "day" | "month" | "year" | "createdAt" | "score" | "kind">[] = [
   {
     game: "Space Invaders",
     platform: "Arcade",
@@ -110,6 +110,7 @@ export function getMockInsights(): BugType[] {
       year: date.getFullYear(),
       createdAt: date,
       score: SCORES[index] ?? 0,
+      kind: "bug", // los 12 ejemplos son bugs reales
     };
   });
 }

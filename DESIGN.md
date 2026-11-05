@@ -296,6 +296,7 @@ Táctiles, impresos y secos: cada estado cambia de golpe, sin `transition`.
 - **Buscador:** etiqueta de catálogo de cartón con banda superior amarilla de 8 px, sin borde ni redondeo; Barlow 1.125rem; icono de lupa y botón de borrar de lucide; cursor rojo.
 - **Focus:** el anillo amarillo de 3 px rodea todo el campo (`:focus-within`), no solo el input.
 - **Etiqueta y contador:** Barlow Condensed 800 en mayúsculas, `wall-ink-soft`, contador con cifras tabulares.
+- **Filtro por tipo:** bajo el buscador, rótulo «Tipo» como el del buscador y una fila de etiquetas de cartón (Todos y los cinco tipos) con banda superior de 4 px (`band`, `sticker` en hover), como el botón «Tema», separadas 4 px y con salto de línea en móvil. La elegida va invertida (`highlight` sobre `spine`). Sin tipo que mostrar, tarjeta de estado «Aún no hay cajas de tipo «X»».
 
 ### Navigation
 - **Cabecera:** logotipo a la izquierda, enlaces Hoy / Estantería / Top 50 a la derecha en Barlow Condensed 800 1.25rem mayúsculas, `wall-ink-soft` en reposo, `wall-ink` en hover.
@@ -304,7 +305,7 @@ Táctiles, impresos y secos: cada estado cambia de golpe, sin `transition`.
 - **Pie:** Barlow 0.875rem `wall-ink-soft`, iconos sociales de lucide en áreas de 40 × 40 px; hover amarillo.
 
 ### Ficha técnica
-Rejilla de tres celdas de cartón separadas por filetes negros de 3 px, con marco negro de 3 px; rótulo en Label small y valor en Data. La última celda va invertida (amarillo sobre negro).
+Rejilla de tres celdas de cartón (Plataforma, Año, En la estantería) separadas por filetes negros de 3 px, con marco negro de 3 px; rótulo en Label small y valor en Data. La última celda va invertida (amarillo sobre negro).
 
 ### Valoración
 Tres celdas de ficha técnica en el pie de la caja, a la derecha junto al botón: pulgar arriba, puntuación y pulgar abajo (lucide `ThumbsUp` / `ThumbsDown`, 24 px), con marco y filetes negros de 3 px. Celdas de cartón de 48 px de alto; los pulgares, cuadrados de 48 px. La puntuación (me gusta − no me gusta) en Bungee 1.125rem con cifras tabulares y signo (`+12`, `−3`, `0`), con ancho mínimo de 5ch para que no salte. La celda de la puntuación se tiñe según el signo con las tintas de pegatina: positiva en `highlight` con `on-highlight` (como «¡Hoy!»), negativa en `sticker` con `on-sticker`; el 0 queda en cartón. Hover: rojo pegatina con `on-sticker`, al instante. El voto propio va invertido (`highlight` sobre `spine`), como la última celda de la ficha y la fila elegida del selector; nunca un color nuevo. Pulsar el pulgar marcado quita el voto.
@@ -318,7 +319,7 @@ Se abre desde la cabecera: rueda dentada de lucide (20 px) en una etiqueta de ca
 Cartón de hasta 880 px con banda superior de 16 px (`band`), marco y filetes de tinta de 3 px y sombra de caja. Cada ajuste es una fila de dos columnas (2:3): nombre en Data y explicación en Body small `card-ink-soft` a la izquierda, control a la derecha; en móvil se apilan. Las opciones son celdas de ficha (cartón, filetes de 3 px, Label 1rem, 48 px de alto mín.): en fila para opciones cortas, una por línea para los temas (con su muestra). La elegida va invertida (`highlight` sobre `spine`), el hover en rojo pegatina y el foco con el anillo global. Los botones siguen la receta de botón de estado; «Olvidar mis votos» pide un segundo clic y, armado, se queda en rojo pegatina con «¿Seguro? Pulsa otra vez». La lista de mis votos repite las filas de la lista de éxitos, con el pulgar en la primera celda.
 
 ### Pegatinas
-- **Número:** círculo rojo de 184 px girado 10°, «Bug nº» y fecha en Barlow Condensed 800, número en Bungee 3.5rem con cifras tabulares, sombra de pegatina; sobresale 24 px por la esquina superior derecha de la caja.
+- **Número:** círculo rojo de 184 px girado 10°, «`<Tipo>` nº» (Bug, Secreto, Desarrollo, Descartado o Localización: la única marca del tipo, sin antetítulo ni color propio; baja a dos líneas si no cabe) y fecha en Barlow Condensed 800, número en Bungee 3.5rem con cifras tabulares, sombra de pegatina; sobresale 24 px por la esquina superior derecha de la caja.
 - **«¡Hoy!»:** rectángulo amarillo girado −6°, Bungee 1.5rem, apilado encima del número.
 
 ### Lomo (signature)

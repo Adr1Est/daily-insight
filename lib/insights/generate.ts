@@ -3,7 +3,9 @@ import "server-only";
 import { Agent, run } from "@openai/agents";
 
 import { getPrisma } from "@/lib/db";
+import { findRelease, isNewRelease, type Release } from "@/lib/insights/calendar";
 import { spanishDate, type SpanishDate } from "@/lib/insights/date";
+import { DEFAULT_KIND, isKind, KINDS, type InsightKind } from "@/lib/insights/kinds";
 import { AI_MODEL } from "@/lib/insights/model";
 import { agentOutputSchema, insightSchema, type InsightInput } from "@/lib/insights/schema";
 import type { BugType } from "@/types/bug";
@@ -22,16 +24,16 @@ export const FOCUSES = [
   "la generación de PlayStation 3, Xbox 360 y Wii",
   "un juego publicado de 2015 en adelante",
   "un juego online o multijugador",
-  "un fallo de hardware de una consola o de un servicio de juego online",
+  "una consola, un periférico o un servicio de juego online",
   "un juego de móvil",
-  "un exploit famoso del mundo del speedrun",
   "un juego de estrategia, rol o simulación",
 ];
 
-export const INSTRUCTIONS = `Eres divulgador experto en la historia técnica de los videojuegos. Cada día escribes una curiosidad breve para Daily Bug, una web en español de España para aficionados.
+export const INSTRUCTIONS = `Eres divulgador experto en la historia de los videojuegos. Cada día escribes una curiosidad breve para Daily Bug, una web en español de España para aficionados.
 
 # Qué elegir
-Un bug, glitch, exploit o fallo técnico real y documentado de un videojuego, de una consola o de un servicio de juego online (por ejemplo, un desbordamiento en un arcade, un exploit de speedrun, un fallo de hardware de una consola o la caída de una red de juego). Prioriza casos cuya causa técnica se conozca.
+Un caso real y documentado del tipo que te pida el usuario. Los tipos son:
+${KINDS.map((kind) => `- ${kind.id}: ${kind.guide}`).join("\n")}
 
 # Veracidad
 - No inventes nombres, cifras, fechas, versiones ni mecánicas.
@@ -39,18 +41,19 @@ Un bug, glitch, exploit o fallo técnico real y documentado de un videojuego, de
 - Descarta leyendas urbanas y mitos desmentidos.
 
 # Variedad
-- No uses ningún juego ni producto de la lista de ya publicados que te pasa el usuario. Hay miles de videojuegos: busca más allá de los casos más famosos.
-- Alterna épocas (de los años 70 a hoy), plataformas (arcade, consolas, portátiles, PC, móvil, online) y tipos de fallo (exploit, desbordamiento, corrupción de datos, físicas, red, hardware...).
+- No repitas ningún juego ni producto de la lista de ya publicados que te pasa el usuario. Hay miles de videojuegos: busca más allá de los casos más famosos.
+- Alterna épocas (de los años 70 a hoy) y plataformas (arcade, consolas, portátiles, PC, móvil, online).
 
 # Campos
-- game: título oficial tal como se conoce en España. Si el fallo es de hardware o de un servicio, el nombre del producto (por ejemplo «Xbox 360» o «PlayStation Network»). Nunca un texto genérico.
-- platform: plataforma o plataformas donde ocurría, separadas por comas, como máximo 3.
-- bugYear: año en que el fallo llegó al público (lanzamiento, parche o incidente).
+- kind: el tipo de la curiosidad (el que te pidan; si te dejan elegir, el que mejor encaje).
+- game: título oficial tal como se conoce en España. Si trata de hardware o de un servicio, el nombre del producto (por ejemplo «Xbox 360» o «PlayStation Network»). Nunca un texto genérico.
+- platform: plataforma o plataformas del juego o de la versión de la que hablas, separadas por comas, como máximo 3.
+- bugYear: año del hecho (cuando el fallo, el secreto, la versión o el contenido llegó al público o se descubrió).
 - data: la explicación.
 
 # Cómo escribir data
 - Breve: de 2 a 4 frases y entre 250 y 500 caracteres en total.
-- Cuenta qué pasaba, por qué pasaba (la causa técnica, explicada para cualquiera) y qué consecuencia o curiosidad dejó.
+- Cuenta qué era, por qué pasó (la causa técnica o la decisión, explicada para cualquiera) y qué consecuencia o curiosidad dejó.
 - Tono cercano, divulgativo y con chispa, sin chistes forzados.
 - Texto plano: sin markdown, listas, emojis ni comillas de cita.
 - No empieces con «¿Sabías que...?» ni repitiendo el título del juego.`;
@@ -73,8 +76,15 @@ export const normalizeTitle = (title: string) =>
     .replace(/[^a-z0-9]+/g, " ")
     .trim();
 
+/** Tipo del día: los cinco con la misma probabilidad. */
+export const pickKind = (random: () => number = Math.random): InsightKind =>
+  KINDS[Math.min(KINDS.length - 1, Math.floor(random() * KINDS.length))].id;
+
+const kindGuide = (kind: InsightKind) => KINDS.find((k) => k.id === kind)!.guide;
+
 interface PromptInput {
-  /** Títulos ya publicados (todo el historial, sin repetidos). */
+  kind: InsightKind;
+  /** Títulos ya publicados con este tipo (todo el historial, sin repetidos). */
   usedGames: string[];
   /** Enfoque sugerido para hoy. */
   focus: string;
@@ -82,10 +92,12 @@ interface PromptInput {
   rejected?: string[];
 }
 
-export function buildPrompt({ usedGames, focus, rejected = [] }: PromptInput): string {
-  const parts: string[] = [];
+export function buildPrompt({ kind, usedGames, focus, rejected = [] }: PromptInput): string {
+  const parts: string[] = [`Tipo de hoy: ${kind}. ${kindGuide(kind)}`];
   if (usedGames.length > 0) {
-    parts.push(`Juegos y productos ya publicados; no uses ninguno:\n${usedGames.join("; ")}`);
+    parts.push(
+      `Juegos y productos ya publicados con este tipo; no uses ninguno:\n${usedGames.join("; ")}`,
+    );
   }
   if (rejected.length > 0) {
     parts.push(
@@ -99,67 +111,140 @@ export function buildPrompt({ usedGames, focus, rejected = [] }: PromptInput): s
   return parts.join("\n\n");
 }
 
+interface EventPromptInput {
+  release: Release;
+  /** true si el juego sale este año: el modelo aún no puede conocerlo. */
+  isNew: boolean;
+  /** Curiosidades ya publicadas de ese juego, para no repetirlas. */
+  previous: { kind: string; data: string }[];
+  /** Tipos ya propuestos hoy para este juego que estaban publicados. */
+  rejectedKinds?: string[];
+}
+
+export function buildEventPrompt({
+  release,
+  isNew,
+  previous,
+  rejectedKinds = [],
+}: EventPromptInput): string {
+  const { game, platform, year, note } = release;
+  const parts: string[] = [
+    isNew
+      ? `Hoy sale ${game} (${platform}).${note ? ` ${note}.` : ""} Escribe una curiosidad relacionada con este lanzamiento. No conoces el juego publicado: habla de su desarrollo ya anunciado o de la historia de su saga o de su estudio, nunca de detalles del juego final. En game pon «${game}» o el juego de la saga del que hables.`
+      : `Hoy es el aniversario de ${game} (${platform}, ${year}).${note ? ` ${note}.` : ""} Escribe una curiosidad sobre ${game}. En game pon «${game}».`,
+    `Elige el tipo (kind) que mejor encaje con lo que cuentes: ${KINDS.map((k) => k.id).join(", ")}.`,
+  ];
+  if (previous.length > 0) {
+    parts.push(
+      `Ya se publicó sobre este juego; cuenta algo distinto:\n${previous.map((p) => `- (${p.kind}) ${p.data}`).join("\n")}`,
+    );
+  }
+  if (rejectedKinds.length > 0) {
+    parts.push(
+      `Ya hay una curiosidad de tipo ${rejectedKinds.join(", ")} sobre este juego. Usa otro tipo.`,
+    );
+  }
+  return parts.join("\n\n");
+}
+
 export type GenerateResult =
   | { status: "created"; insight: BugType }
   | { status: "skipped"; insight: BugType }
-  | { status: "preview"; insight: InsightInput & SpanishDate };
+  | { status: "preview"; insight: InsightInput & SpanishDate; release?: Release };
 
 interface GenerateOptions {
   now?: Date;
-  /** Genera y valida sin comprobar el bug de hoy ni guardar nada (para revisar el prompt). */
+  /** Genera y valida sin comprobar la curiosidad de hoy ni guardar nada (para revisar el prompt). */
   dryRun?: boolean;
-  /** Fuente de azar para el enfoque del día (inyectable en tests). */
+  /** Fuerza el tipo (solo en pruebas; en un día con evento se ignora). */
+  kind?: InsightKind;
+  /** Fuente de azar para el tipo y el enfoque del día (inyectable en tests). */
   random?: () => number;
+  /** Calendario de lanzamientos (inyectable en tests). */
+  releases?: Release[];
 }
 
 /**
- * Genera y guarda el bug del día. Es idempotente: si ya hay un bug con la fecha de hoy, no hace nada.
- * La fecha la pone el servidor y la salida del modelo se valida antes de insertar.
+ * Genera y guarda la curiosidad del día. Es idempotente: si ya hay una con la fecha de hoy, no hace
+ * nada. La fecha la pone el servidor y la salida del modelo se valida antes de insertar.
  */
 export async function generateDailyInsight({
   now = new Date(),
   dryRun = false,
+  kind: forcedKind,
   random = Math.random,
+  releases,
 }: GenerateOptions = {}): Promise<GenerateResult> {
   const prisma = getPrisma();
   const date = spanishDate(now);
 
   if (!dryRun) {
     const existing = await prisma.insight.findFirst({ where: date });
-    if (existing) return { status: "skipped", insight: existing };
+    if (existing) return { status: "skipped", insight: existing as BugType };
   }
 
-  // Todo el historial de títulos (no solo los últimos días), para no reciclar juegos antiguos.
-  const usedGames = (
+  // Todo el historial (no solo los últimos días), para no reciclar juegos antiguos. Lo que se
+  // evita repetir es el juego dentro de un mismo tipo: un juego con un bug puede volver con un secreto.
+  const history = (
     await prisma.insight.findMany({
-      distinct: ["game"],
-      select: { game: true },
+      select: { game: true, kind: true, data: true },
       orderBy: { game: "asc" },
     })
-  )
-    .map((row) => row.game)
-    .filter((game) => normalizeTitle(game) !== "no es un juego");
-  const used = new Set(usedGames.map(normalizeTitle));
-  const focus = FOCUSES[Math.floor(random() * FOCUSES.length)];
+  ).filter((row) => normalizeTitle(row.game) !== "no es un juego");
+  const kindOf = (row: { kind?: string | null }) => (isKind(row.kind) ? row.kind : DEFAULT_KIND);
+  const usedPairs = new Set(history.map((row) => `${kindOf(row)}:${normalizeTitle(row.game)}`));
+  const isUsed = (out: InsightInput) => usedPairs.has(`${out.kind}:${normalizeTitle(out.game)}`);
 
-  const rejected: string[] = [];
-  let parsed = insightSchema.parse(
-    (await run(insightAgent, buildPrompt({ usedGames, focus }))).finalOutput,
-  );
-  while (used.has(normalizeTitle(parsed.game)) && rejected.length < MAX_ATTEMPTS - 1) {
-    rejected.push(parsed.game);
-    parsed = insightSchema.parse(
-      (await run(insightAgent, buildPrompt({ usedGames, focus, rejected }))).finalOutput,
-    );
+  const release = findRelease(now, releases);
+  let parsed: InsightInput;
+
+  if (release) {
+    // Día de lanzamiento o aniversario: el tema es ese juego y el modelo elige el tipo.
+    const game = normalizeTitle(release.game);
+    const previous = history
+      .filter((row) => normalizeTitle(row.game) === game)
+      .map((row) => ({ kind: kindOf(row), data: row.data }));
+    const prompt = (rejectedKinds: string[]) =>
+      buildEventPrompt({ release, isNew: isNewRelease(release, now), previous, rejectedKinds });
+
+    const rejectedKinds: string[] = [];
+    parsed = insightSchema.parse((await run(insightAgent, prompt(rejectedKinds))).finalOutput);
+    while (isUsed(parsed) && rejectedKinds.length < MAX_ATTEMPTS - 1) {
+      rejectedKinds.push(parsed.kind);
+      parsed = insightSchema.parse((await run(insightAgent, prompt(rejectedKinds))).finalOutput);
+    }
+  } else {
+    const kind = forcedKind ?? pickKind(random);
+    const focus = FOCUSES[Math.floor(random() * FOCUSES.length)];
+    const usedGames = [
+      ...new Set(history.filter((row) => kindOf(row) === kind).map((row) => row.game)),
+    ];
+
+    const rejected: string[] = [];
+    // El tipo lo decide el servidor: si el modelo devuelve otro, se corrige.
+    const ask = async () => ({
+      ...insightSchema.parse(
+        (await run(insightAgent, buildPrompt({ kind, usedGames, focus, rejected }))).finalOutput,
+      ),
+      kind,
+    });
+    parsed = await ask();
+    while (isUsed(parsed) && rejected.length < MAX_ATTEMPTS - 1) {
+      rejected.push(parsed.game);
+      parsed = await ask();
+    }
   }
-  if (used.has(normalizeTitle(parsed.game))) {
+
+  if (isUsed(parsed)) {
     console.warn(
-      `[generate] «${parsed.game}» ya estaba publicado tras ${MAX_ATTEMPTS} intentos; se publica igualmente.`,
+      `[generate] «${parsed.game}» (${parsed.kind}) ya estaba publicado tras ${MAX_ATTEMPTS} intentos; se publica igualmente.`,
     );
   }
 
-  if (dryRun) return { status: "preview", insight: { ...parsed, ...date } };
+  if (dryRun) {
+    return { status: "preview", insight: { ...parsed, ...date }, ...(release ? { release } : {}) };
+  }
 
   const insight = await prisma.insight.create({ data: { ...parsed, ...date } });
-  return { status: "created", insight };
+  return { status: "created", insight: insight as BugType };
 }

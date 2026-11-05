@@ -1,6 +1,7 @@
 import "server-only";
 
 import { getEnv } from "@/lib/env";
+import { DEFAULT_KIND, isKind, kindsMatching } from "@/lib/insights/kinds";
 import { getMockInsights } from "@/lib/mocks/insights";
 import { paginate, type InsightsPage, type PageParams } from "@/lib/pagination";
 import type { BugType } from "@/types/bug";
@@ -9,28 +10,42 @@ import type { BugType } from "@/types/bug";
 // Solo afecta a la lectura (portada, /bugs y /api/bugs); la generación diaria siempre usa la BD.
 export const isMockMode = () => getEnv().DATA_SOURCE === "mock";
 
+/** Prisma guarda el tipo como texto: lo que no sea un tipo conocido se lee como bug. */
+const toBug = <T extends { kind: string }>(row: T): T & Pick<BugType, "kind"> => ({
+  ...row,
+  kind: isKind(row.kind) ? row.kind : DEFAULT_KIND,
+});
+
 // Prisma se importa solo en modo api, para que el modo mock funcione sin DATABASE_URL.
 const getPrisma = async () => (await import("@/lib/db")).getPrisma();
 
 /**
  * Una página del archivo, del más reciente al más antiguo, con búsqueda opcional por juego,
- * plataforma, texto (sin distinguir mayúsculas) o año exacto. Nunca devuelve más de `limit` bugs.
+ * plataforma, texto (sin distinguir mayúsculas), año exacto o tipo, y filtro opcional por tipo. Nunca devuelve más de `limit` bugs.
  */
-export async function getInsightsPage({ limit, cursor, q }: PageParams): Promise<InsightsPage> {
-  if (isMockMode()) return paginate(getMockInsights().reverse(), { limit, cursor, q });
+export async function getInsightsPage({
+  limit,
+  cursor,
+  q,
+  kind,
+}: PageParams): Promise<InsightsPage> {
+  if (isMockMode()) return paginate(getMockInsights().reverse(), { limit, cursor, q, kind });
 
   const prisma = await getPrisma();
   const year = q && /^\d{4}$/.test(q) ? Number(q) : undefined;
-  const where = q
+  const kinds = q ? kindsMatching(q) : [];
+  const search = q
     ? {
         OR: [
           { game: { contains: q, mode: "insensitive" as const } },
           { platform: { contains: q, mode: "insensitive" as const } },
           { data: { contains: q, mode: "insensitive" as const } },
           ...(year ? [{ bugYear: year }] : []),
+          ...(kinds.length > 0 ? [{ kind: { in: kinds } }] : []),
         ],
       }
     : {};
+  const where = kind ? { AND: [search, { kind }] } : search;
 
   // Se pide uno de más para saber si hay página siguiente sin otra consulta.
   // Sin búsqueda, el total y las coincidencias son la misma cuenta: una consulta menos.
@@ -41,10 +56,10 @@ export async function getInsightsPage({ limit, cursor, q }: PageParams): Promise
       take: limit + 1,
     }),
     prisma.insight.count(),
-    q ? prisma.insight.count({ where }) : null,
+    q || kind ? prisma.insight.count({ where }) : null,
   ]);
 
-  const items = rows.slice(0, limit);
+  const items = rows.slice(0, limit).map(toBug);
   return {
     items,
     nextCursor: rows.length > limit ? items[items.length - 1].id : null,
@@ -57,14 +72,15 @@ export async function getInsightsPage({ limit, cursor, q }: PageParams): Promise
 export async function getInsightById(id: number): Promise<BugType | null> {
   if (isMockMode()) return getMockInsights().find((bug) => bug.id === id) ?? null;
   const prisma = await getPrisma();
-  return prisma.insight.findUnique({ where: { id } });
+  const row = await prisma.insight.findUnique({ where: { id } });
+  return row && toBug(row);
 }
 
 /** Los `count` bugs más recientes; el primero es el bug del día. */
 export async function getLatestInsights(count: number): Promise<BugType[]> {
   if (isMockMode()) return getMockInsights().reverse().slice(0, count);
   const prisma = await getPrisma();
-  return prisma.insight.findMany({ orderBy: { id: "desc" }, take: count });
+  return (await prisma.insight.findMany({ orderBy: { id: "desc" }, take: count })).map(toBug);
 }
 
 export const TOP_SIZE = 50;
@@ -81,9 +97,10 @@ export async function getTopInsights(count = TOP_SIZE): Promise<BugType[]> {
       .slice(0, count);
   }
   const prisma = await getPrisma();
-  return prisma.insight.findMany({
+  const rows = await prisma.insight.findMany({
     where: { votes: { some: {} } },
     orderBy: [{ score: "desc" }, { id: "desc" }],
     take: count,
   });
+  return rows.map(toBug);
 }
