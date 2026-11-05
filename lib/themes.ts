@@ -3,7 +3,7 @@
 // - components/site/ThemePicker.tsx (selector),
 // - lib/themes.test.ts (fechas y contraste).
 
-export type ThemeId = "videoclub" | "neon" | "lcd" | "halloween" | "navidad";
+export type ThemeId = "videoclub" | "neon" | "lcd" | "vaporwave" | "halloween" | "navidad";
 
 interface MonthDay {
   m: number;
@@ -155,6 +155,35 @@ export const THEMES: Theme[] = [
       "sticker-band": "#306230",
       "wall-pattern":
         "linear-gradient(90deg, rgb(0 0 0 / 0.14) 1px, transparent 1px) 0 0 / 4px 4px, linear-gradient(rgb(0 0 0 / 0.14) 1px, transparent 1px) 0 0 / 4px 4px",
+    },
+  },
+  {
+    // Atardecer de costa en clave vaporwave: pared morada, cartón rosa pálido, sol naranja de
+    // borde duro y una franja de cielo rosa arriba. Sombras turquesa sin desenfoque.
+    id: "vaporwave",
+    name: "Vaporwave",
+    tokens: {
+      wall: "#1a0b2e",
+      "wall-slat": "#21103a",
+      "wall-ink": "#fde8ff",
+      "wall-ink-soft": "#c9a7e8",
+      shelf: "#3b1458",
+      "shelf-edge": "#ff6ec7",
+      card: "#fdeaf3",
+      "card-ink": "#2a0f3d",
+      "card-ink-soft": "#6a3f78",
+      spine: "#1f0a33",
+      highlight: "#ffb347",
+      "on-highlight": "#2a0f3d",
+      sticker: "#c2187a",
+      "on-sticker": "#ffffff",
+      band: "#2de2e6",
+    },
+    extra: {
+      "shadow-box": "8px 8px 0 rgb(45 226 230 / 0.5)",
+      "shadow-sticker": "3px 3px 0 rgb(45 226 230 / 0.45)",
+      "wall-pattern":
+        "radial-gradient(circle at 86% 120px, rgb(255 179 71 / 0.7) 0 56px, rgb(255 110 199 / 0.55) 57px 72px, transparent 73px) 0 0 / 100% 100% no-repeat, linear-gradient(to bottom, rgb(255 110 199 / 0.2), rgb(255 179 71 / 0.06) 280px, transparent 480px) 0 0 / 100% 100% no-repeat",
     },
   },
   {

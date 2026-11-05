@@ -81,14 +81,14 @@ Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSche
 
 ### Temas
 
-- `lib/themes.ts` es la fuente única de los temas: Videoclub (por defecto), Neón y Verde LCD todo el año; Halloween del 1 de octubre al 1 de noviembre; Navidad del 1 de noviembre al 9 de enero. Para añadir un tema, añade una entrada a `THEMES` con los 15 roles de `ThemeTokens` (y `season` si es de temporada). Los tests de contraste lo comprueban solos.
+- `lib/themes.ts` es la fuente única de los temas: Videoclub (por defecto), Neón, Verde LCD y Vaporwave todo el año; Halloween del 1 de octubre al 1 de noviembre; Navidad del 1 de noviembre al 9 de enero. Para añadir un tema, añade una entrada a `THEMES` con los 15 roles de `ThemeTokens` (y `season` si es de temporada). Los tests de contraste lo comprueban solos.
 - `app/layout.tsx` inserta `themeCss()` (un bloque `:root[data-theme]` por tema) y `themeInitScript()` en `<head>`. El script fija `data-theme` antes del primer pintado y por eso `<html>` lleva `suppressHydrationWarning`. Ese script incrusta `themeEngine.toString()`, así que `themeEngine` no puede usar nada definido fuera de su cuerpo.
 - `components/site/ThemePicker.tsx` es el selector de la cabecera (`popover` nativo). Comparte con `/ajustes` el estado del tema a través de `components/site/themeClient.tsx` (`useCurrentTheme`, `applyTheme`, `Swatch`), que lee `data-theme` de `<html>`. Guarda en `localStorage` las claves `daily-bug:theme` y `daily-bug:seasons-seen`. Un tema de temporada se aplica solo la primera vez dentro de su temporada, salvo que `daily-bug:seasonal` valga `"off"` (ajustes): entonces `resolve` recibe `seasonal: false` y las temporadas solo se aplican si el visitante las elige.
 - En CSS usa solo los roles (`var(--card-ink)`, `var(--sticker)`…), nunca colores literales.
 
 ### Ajustes (`/ajustes`)
 
-- Página estática; el contenido son componentes de cliente (`components/settings/`). Se abre con la rueda dentada (`Settings` de lucide) de la cabecera, junto al selector de tema, y desde «Todos los ajustes» al final de su panel. Sin librerías de estado: todo vive en `<html>` (`data-theme`, `data-motion`, `data-text-size`) y en `localStorage`, y se lee con `useSyncExternalStore`.
+- Página estática; el contenido son componentes de cliente (`components/settings/`). Se abre con la rueda dentada (`Settings` de lucide) de la cabecera, junto al selector de tema. Sin librerías de estado: todo vive en `<html>` (`data-theme`, `data-motion`, `data-text-size`) y en `localStorage`, y se lee con `useSyncExternalStore`.
 - `lib/prefs.ts`: claves `daily-bug:motion` (`auto|on|off`) y `daily-bug:text-size` (`normal|large|xl`), y `prefsInitScript()`, que `app/layout.tsx` inserta en `<head>` tras el del tema para aplicarlas antes del primer pintado. El CSS de `app/globals.css` las lee: `data-motion` controla `.sign-float` y `data-text-size` fija `--text-scale`, que multiplica el tamaño del texto del bug.
 - «Mis votos»: `GET /api/votes` → `{ votes }` (los de esta cookie) y `DELETE /api/votes` → `{ deleted }`, que borra los votos, los descuenta de `Insight.score` en una transacción (`forgetVoter`) y borra la cookie. El DELETE exige el mismo origen. «Restablecer» borra las preferencias y el tema, pero conserva `daily-bug:seasons-seen` y los votos.
 

@@ -199,24 +199,6 @@
   transform: rotate(-4deg);
 }
 
-/* Enlace a /ajustes al pie del panel, separado por un filete de tinta. */
-.themeMore {
-  display: block;
-  margin-top: calc(var(--u) * 1.5);
-  padding-top: calc(var(--u) * 1.5);
-  border-top: 3px solid var(--card-ink);
-  font-family: var(--font-label);
-  font-weight: 800;
-  font-size: 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-
-.themeMore:hover {
-  text-decoration: underline;
-}
-
 .footer {
   display: flex;
   flex-wrap: wrap;

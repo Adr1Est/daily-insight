@@ -1,7 +1,6 @@
 "use client";
 
 import { Palette } from "lucide-react";
-import Link from "next/link";
 import { useId, useRef, useState } from "react";
 
 import styles from "@/components/site/site.module.css";
@@ -75,13 +74,6 @@ export default function ThemePicker() {
             </label>
           ))}
         </fieldset>
-        <Link
-          href="/ajustes"
-          className={styles.themeMore}
-          onClick={() => panelRef.current?.hidePopover()}
-        >
-          Todos los ajustes
-        </Link>
       </div>
     </>
   );

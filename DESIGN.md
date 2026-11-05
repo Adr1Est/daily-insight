@@ -333,6 +333,7 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 | Videoclub (por defecto) | todo el año | #1d1b19 | #f2efe6 | #d1281b | #ffd23f | #2ec4d6 | — |
 | Neón | todo el año | #0b0a1a | #15122e (tinta clara) | #ff2e88 | #f8f32b | #35f2ff | `--glow` cian, sombra de caja magenta de 8 px, líneas horizontales cian cada 32 px en la pared |
 | Verde LCD | todo el año | #0f380f | #9bbc0f | #0f380f | #9bbc0f | #8bac0f | rejilla de píxeles de 4 px, sombras de caja (8 px) y pegatina en verde medio |
+| Vaporwave | todo el año | #1a0b2e | #fdeaf3 | #c2187a | #ffb347 | #2de2e6 | atardecer de costa: franja de cielo rosa arriba y sol naranja con aro rosa (bordes duros) detrás de la estantería; sombras de caja y pegatina turquesa |
 | Halloween | 1 oct – 1 nov | #160d1f | #f3e6cf | #6b2fa3 | #ff8a1f | #7bd13a | telarañas SVG en las esquinas superiores de la pared |
 | Navidad | 1 nov – 9 ene | #0d2418 | #fbf6ec | #c8102e | #f2c14e | #2f8f5b | puntos de nieve sobre la pared |
 
