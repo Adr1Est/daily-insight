@@ -4,7 +4,7 @@ import { verifyBearer } from "@/lib/auth";
 import { getEnv } from "@/lib/env";
 import { generateDailyInsight } from "@/lib/insights/generate";
 
-// Lo llama el cron de Vercel (vercel.json) con `Authorization: Bearer ${CRON_SECRET}`.
+// Lo llama el workflow de GitHub Actions (.github/workflows/new-insight.yml) con `Authorization: Bearer ${CRON_SECRET}`.
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
 

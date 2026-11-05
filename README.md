@@ -66,7 +66,7 @@ En PowerShell: `$env:DATA_SOURCE="mock"; pnpm dev`. Después abre <http://localh
 
 ## Cómo se genera el bug del día
 
-1. El cron de Vercel (`vercel.json`) llama cada día a las 00:00 UTC a `GET /api/cron/new-insight` con `Authorization: Bearer <CRON_SECRET>`.
+1. El workflow de GitHub Actions `.github/workflows/new-insight.yml` llama cada día hacia las 00:17 UTC a `GET /api/cron/new-insight` de la app desplegada con `Authorization: Bearer <CRON_SECRET>` (GitHub puede retrasar unos minutos las ejecuciones programadas).
 2. El servidor pasa al modelo todos los títulos ya publicados y un enfoque elegido al azar (una época, un tipo de plataforma…) para variar.
 3. La respuesta se valida y, si repite un juego ya publicado, se pide otro. Después se guarda con la fecha del servidor y se refrescan la portada y el archivo.
 
@@ -105,7 +105,9 @@ La guía técnica completa (arquitectura, convenciones y reglas) está en [AGENT
 
 1. Configura en Vercel las variables `DATABASE_URL`, `DIRECT_URL`, `OPENAI_API_KEY` y `CRON_SECRET`. La build necesita `DATABASE_URL`.
 2. Si hay migraciones nuevas, ejecuta `pnpm db:migrate` contra la base de datos de producción.
-3. Al desplegar, el cron de `vercel.json` queda activo. Puedes lanzarlo a mano desde *Settings → Cron Jobs*.
+3. En GitHub (*Settings → Secrets and variables → Actions*), crea los secretos `INTERNAL_TOKEN` (el mismo valor que `CRON_SECRET` en Vercel) y `API_URL` con la URL de producción (p. ej. `https://daily-bug.vercel.app`). Puedes lanzarlo a mano desde *Actions → Bug del día → Run workflow*, con la opción `dryRun` si no quieres guardar.
+
+GitHub desactiva los workflows programados tras 60 días sin actividad en el repositorio; si pasa, reactívalo desde la pestaña *Actions*.
 
 ## CI
 
