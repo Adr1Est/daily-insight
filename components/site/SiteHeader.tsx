@@ -9,6 +9,7 @@ import ThemePicker from "@/components/site/ThemePicker";
 const LINKS = [
   { href: "/", label: "Hoy" },
   { href: "/bugs", label: "Estantería" },
+  { href: "/top", label: "Top 50" },
 ];
 
 export default function SiteHeader() {

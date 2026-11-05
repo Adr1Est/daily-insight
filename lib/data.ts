@@ -66,3 +66,24 @@ export async function getLatestInsights(count: number): Promise<BugType[]> {
   const prisma = await getPrisma();
   return prisma.insight.findMany({ orderBy: { id: "desc" }, take: count });
 }
+
+export const TOP_SIZE = 50;
+
+/**
+ * Los `count` bugs con más puntuación (me gusta − no me gusta), de mayor a menor. Solo entran los
+ * de puntuación positiva; a igual puntuación, el más reciente primero.
+ */
+export async function getTopInsights(count = TOP_SIZE): Promise<BugType[]> {
+  if (isMockMode()) {
+    return getMockInsights()
+      .filter((bug) => bug.score > 0)
+      .sort((a, b) => b.score - a.score || b.id - a.id)
+      .slice(0, count);
+  }
+  const prisma = await getPrisma();
+  return prisma.insight.findMany({
+    where: { score: { gt: 0 } },
+    orderBy: [{ score: "desc" }, { id: "desc" }],
+    take: count,
+  });
+}

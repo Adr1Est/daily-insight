@@ -4,6 +4,7 @@ import { ThumbsDown, ThumbsUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import styles from "@/components/box/box.module.css";
+import { formatScore } from "@/components/box/formatScore";
 
 type VoteValue = -1 | 0 | 1;
 
@@ -12,10 +13,6 @@ interface VoteControlProps {
   /** Puntuación de la página estática; se refresca al montar con la de la API. */
   initialScore: number;
 }
-
-/** +12, −3, 0: con signo, como un marcador. */
-const formatScore = (score: number) =>
-  score > 0 ? `+${score}` : score < 0 ? `−${Math.abs(score)}` : "0";
 
 /** Valoración de la caja: me gusta, puntuación (me gusta − no me gusta) y no me gusta. */
 export default function VoteControl({ bugId, initialScore }: VoteControlProps) {

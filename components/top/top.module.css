@@ -1,0 +1,141 @@
+.main {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: calc(var(--u) * 3) clamp(16px, 4vw, 48px) calc(var(--u) * 4);
+}
+
+.heading {
+  margin: 0 0 var(--u);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--wall-ink);
+}
+
+.intro {
+  margin: 0 0 calc(var(--u) * 4);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--wall-ink-soft);
+}
+
+/* Lista de éxitos: un cartel de cartón con banda roja y filas separadas por filetes de tinta. */
+.chart {
+  display: grid;
+  gap: 3px; /* el hueco es el filete entre filas, como en la ficha técnica */
+  max-width: 880px;
+  margin: 0;
+  padding: 3px; /* el marco de tinta es el fondo; así la banda roja queda recta, sin bisel */
+  list-style: none;
+  border-top: calc(var(--u) * 2) solid var(--sticker);
+  background: var(--card-ink);
+  box-shadow: var(--shadow-box);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 9) 1fr auto;
+  gap: 3px;
+  min-height: calc(var(--u) * 8);
+  color: var(--card-ink);
+  text-decoration: none;
+}
+
+.rank,
+.game,
+.score {
+  display: flex;
+  align-items: center;
+  background: var(--card);
+}
+
+.rank {
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Los tres primeros, invertidos: el rango se marca por inversión, no con un color nuevo. */
+.row[data-podium] .rank {
+  background: var(--spine);
+  color: var(--highlight);
+}
+
+.row:hover .rank {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+.game {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: calc(var(--u) * 0.5);
+  min-width: 0;
+  padding: var(--u) calc(var(--u) * 3);
+}
+
+.title {
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1.375rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.row:hover .title {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.meta {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--card-ink-soft);
+}
+
+.score {
+  justify-content: center;
+  min-width: 7ch; /* «+1234» sin que la columna baile entre filas */
+  padding: 0 calc(var(--u) * 2);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+  .row {
+    grid-template-columns: calc(var(--u) * 6) 1fr auto;
+  }
+
+  .rank {
+    font-size: 1.125rem;
+  }
+
+  .game {
+    padding: var(--u) calc(var(--u) * 1.5);
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .score {
+    min-width: 6ch;
+    padding: 0 var(--u);
+  }
+}

@@ -244,6 +244,7 @@
 }
 
 .statusButton {
+  display: inline-block; /* también se usa como enlace */
   padding: calc(var(--u) * 1.5) calc(var(--u) * 3);
   border: 0;
   background: var(--spine);
@@ -251,6 +252,7 @@
   font-family: var(--font-display);
   font-size: 1rem;
   text-transform: uppercase;
+  text-decoration: none;
   cursor: pointer;
 }
 
