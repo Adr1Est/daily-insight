@@ -1,46 +1,20 @@
 "use client";
 
 import { Palette } from "lucide-react";
-import { useId, useRef, useState, useSyncExternalStore } from "react";
+import { useId, useRef, useState } from "react";
 
 import styles from "@/components/site/site.module.css";
-import { DEFAULT_THEME, engine, STORAGE_THEME, THEMES, type Theme } from "@/lib/themes";
-
-// El tema activo vive en <html data-theme>, que fija el script de <head> antes del primer pintado.
-const subscribe = (onChange: () => void) => {
-  const observer = new MutationObserver(onChange);
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-  return () => observer.disconnect();
-};
-const getTheme = () => document.documentElement.dataset.theme ?? DEFAULT_THEME;
-const getServerTheme = () => DEFAULT_THEME;
-
-/** Aplica el tema y lo guarda. Fuera del componente: es una escritura en el DOM, no estado de React. */
-function applyTheme(id: string) {
-  document.documentElement.dataset.theme = id;
-  try {
-    window.localStorage.setItem(STORAGE_THEME, id);
-  } catch {
-    /* sin almacenamiento: dura hasta recargar */
-  }
-}
-
-const Swatch = ({ theme }: { theme: Theme }) => (
-  <span className={styles.swatch} aria-hidden="true">
-    <span style={{ background: theme.tokens.spine }} />
-    <span style={{ background: theme.tokens.highlight }} />
-    <span style={{ background: theme.tokens.sticker }} />
-  </span>
-);
+import { applyTheme, findTheme, Swatch, useCurrentTheme } from "@/components/site/themeClient";
+import { engine, THEMES, type Theme } from "@/lib/themes";
 
 export default function ThemePicker() {
-  const current = useSyncExternalStore(subscribe, getTheme, getServerTheme);
+  const current = useCurrentTheme();
   // Los temas disponibles dependen de la fecha del visitante: se calculan al abrir, solo en el cliente.
   const [available, setAvailable] = useState<Theme[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const panelId = useId();
-  const currentTheme = THEMES.find((theme) => theme.id === current) ?? THEMES[0];
+  const currentTheme = findTheme(current);
 
   const onBeforeToggle = (event: React.ToggleEvent<HTMLDivElement>) => {
     if (event.newState !== "open") return;

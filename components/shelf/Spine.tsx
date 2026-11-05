@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { spineAccent } from "@/components/box/spineAccent";
 import styles from "@/components/shelf/shelf.module.css";
+import { kindLabel } from "@/lib/insights/kinds";
 import type { BugType } from "@/types/bug";
 
 interface SpineProps {
@@ -24,7 +25,7 @@ export default function Spine({
   controls,
   id,
 }: SpineProps) {
-  const label = `${bug.game}, ${bug.platform}, ${bug.bugYear}`;
+  const label = `${kindLabel(bug.kind)}: ${bug.game}, ${bug.platform}, ${bug.bugYear}`;
   const style = { "--accent": spineAccent(bug.platform) } as React.CSSProperties;
   // Las cajas con títulos largos tienen el lomo más grueso, para imprimir el título en dos líneas.
   const thick = bug.game.length > 18 || undefined;

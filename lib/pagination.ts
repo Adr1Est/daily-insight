@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { KIND_IDS, kindsMatching, type InsightKind } from "@/lib/insights/kinds";
 import type { BugType } from "@/types/bug";
 
 // Paginación del archivo por cursor: cada página son los `limit` bugs con id menor que `cursor`,
@@ -19,12 +20,15 @@ export const pageParamsSchema = z.object({
     .max(MAX_QUERY_LENGTH)
     .optional()
     .transform((q) => q || undefined),
+  /** Filtro por tipo de curiosidad (lib/insights/kinds.ts). */
+  kind: z.enum(KIND_IDS).optional(),
 });
 
 export interface PageParams {
   limit: number;
   cursor?: number;
   q?: string;
+  kind?: InsightKind;
 }
 
 export interface InsightsPage {
@@ -33,7 +37,7 @@ export interface InsightsPage {
   nextCursor: number | null;
   /** Total de bugs en la base de datos, sin filtrar. */
   total: number;
-  /** Bugs que cumplen la búsqueda (igual a `total` si no hay búsqueda). */
+  /** Bugs que cumplen la búsqueda y el filtro de tipo (igual a `total` si no hay ninguno). */
   matching: number;
 }
 
@@ -43,6 +47,7 @@ export function parsePageParams(searchParams: URLSearchParams): PageParams {
     limit: searchParams.get("limit") ?? undefined,
     cursor: searchParams.get("cursor") ?? undefined,
     q: searchParams.get("q") ?? undefined,
+    kind: searchParams.get("kind") ?? undefined,
   });
 }
 
@@ -53,13 +58,16 @@ export function matchesQuery(bug: BugType, q: string): boolean {
     bug.game.toLowerCase().includes(query) ||
     bug.platform.toLowerCase().includes(query) ||
     bug.data.toLowerCase().includes(query) ||
-    String(bug.bugYear) === query
+    String(bug.bugYear) === query ||
+    (kindsMatching(q) as string[]).includes(bug.kind)
   );
 }
 
 /** Pagina una lista ya ordenada del más reciente al más antiguo (modo mock). */
-export function paginate(bugs: BugType[], { limit, cursor, q }: PageParams): InsightsPage {
-  const matching = q ? bugs.filter((bug) => matchesQuery(bug, q)) : bugs;
+export function paginate(bugs: BugType[], { limit, cursor, q, kind }: PageParams): InsightsPage {
+  const matching = bugs.filter(
+    (bug) => (!q || matchesQuery(bug, q)) && (!kind || bug.kind === kind),
+  );
   const after = cursor === undefined ? matching : matching.filter((bug) => bug.id < cursor);
   const items = after.slice(0, limit);
   return {

@@ -3,7 +3,8 @@
 // - components/site/ThemePicker.tsx (selector),
 // - lib/themes.test.ts (fechas y contraste).
 
-export type ThemeId = "videoclub" | "neon" | "lcd" | "halloween" | "navidad";
+export type ThemeId =
+  "videoclub" | "oscuro" | "neon" | "lcd" | "vaporwave" | "byn" | "halloween" | "navidad";
 
 interface MonthDay {
   m: number;
@@ -44,6 +45,8 @@ export interface Theme {
 
 export const STORAGE_THEME = "daily-bug:theme";
 export const STORAGE_SEEN = "daily-bug:seasons-seen";
+/** "off" = no aplicar solos los temas de temporada (ajustes). Ausente = sí. */
+export const STORAGE_SEASONAL = "daily-bug:seasonal";
 
 const svg = (body: string, size: number) =>
   `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}' viewBox='0 0 ${size} ${size}'>${body}</svg>`)}")`;
@@ -100,6 +103,34 @@ export const THEMES: Theme[] = [
     },
   },
   {
+    // Videoclub a oscuras: cartón marrón oscuro con tinta clara y un amarillo más suave, para leer
+    // de noche sin deslumbrar. Mismas bandas y pegatina que Videoclub, algo atenuadas.
+    id: "oscuro",
+    name: "Oscuro",
+    tokens: {
+      wall: "#121110",
+      "wall-slat": "#171513",
+      "wall-ink": "#ece8df",
+      "wall-ink-soft": "#a8a196",
+      shelf: "#3a2a1c",
+      "shelf-edge": "#5a3f27",
+      card: "#2d2925",
+      "card-ink": "#ece8df",
+      "card-ink-soft": "#b0a898",
+      spine: "#0c0b0a",
+      highlight: "#e8b931",
+      "on-highlight": "#141414",
+      sticker: "#c42b1f",
+      "on-sticker": "#ffffff",
+      band: "#2aa9b8",
+    },
+    extra: {
+      "shadow-box": "10px 10px 0 rgb(0 0 0 / 0.6)",
+      "shadow-sticker": "3px 3px 0 rgb(0 0 0 / 0.5)",
+      "shadow-board": "0 12px 0 rgb(0 0 0 / 0.5)",
+    },
+  },
+  {
     id: "neon",
     name: "Neón",
     tokens: {
@@ -153,6 +184,65 @@ export const THEMES: Theme[] = [
       "sticker-band": "#306230",
       "wall-pattern":
         "linear-gradient(90deg, rgb(0 0 0 / 0.14) 1px, transparent 1px) 0 0 / 4px 4px, linear-gradient(rgb(0 0 0 / 0.14) 1px, transparent 1px) 0 0 / 4px 4px",
+    },
+  },
+  {
+    // Atardecer de costa en clave vaporwave: pared morada, cartón rosa pálido, sol naranja de
+    // borde duro y una franja de cielo rosa arriba. Sombras turquesa sin desenfoque.
+    id: "vaporwave",
+    name: "Vaporwave",
+    tokens: {
+      wall: "#1a0b2e",
+      "wall-slat": "#21103a",
+      "wall-ink": "#fde8ff",
+      "wall-ink-soft": "#c9a7e8",
+      shelf: "#3b1458",
+      "shelf-edge": "#ff6ec7",
+      card: "#fdeaf3",
+      "card-ink": "#2a0f3d",
+      "card-ink-soft": "#6a3f78",
+      spine: "#1f0a33",
+      highlight: "#ffb347",
+      "on-highlight": "#2a0f3d",
+      sticker: "#c2187a",
+      "on-sticker": "#ffffff",
+      band: "#2de2e6",
+    },
+    extra: {
+      "shadow-box": "8px 8px 0 rgb(45 226 230 / 0.5)",
+      "shadow-sticker": "3px 3px 0 rgb(45 226 230 / 0.45)",
+      "wall-pattern":
+        "radial-gradient(circle at 86% 120px, rgb(255 179 71 / 0.7) 0 56px, rgb(255 110 199 / 0.55) 57px 72px, transparent 73px) 0 0 / 100% 100% no-repeat, linear-gradient(to bottom, rgb(255 110 199 / 0.2), rgb(255 179 71 / 0.06) 280px, transparent 480px) 0 0 / 100% 100% no-repeat",
+    },
+  },
+  {
+    // Tele de tubo en blanco y negro: todo en grises, líneas de barrido finas sobre la pared, esquinas
+    // oscurecidas por la curvatura de la pantalla y un brillo de fósforo suave en rótulos y caja.
+    id: "byn",
+    name: "Blanco y negro",
+    tokens: {
+      wall: "#161616",
+      "wall-slat": "#1b1b1b",
+      "wall-ink": "#efefef",
+      "wall-ink-soft": "#a3a3a3",
+      shelf: "#333333",
+      "shelf-edge": "#5c5c5c",
+      card: "#cccccc",
+      "card-ink": "#111111",
+      "card-ink-soft": "#474747",
+      spine: "#0d0d0d",
+      highlight: "#f7f7f7",
+      "on-highlight": "#111111",
+      sticker: "#4a4a4a",
+      "on-sticker": "#ffffff",
+      band: "#8a8a8a",
+    },
+    extra: {
+      glow: "0 0 10px rgb(255 255 255 / 0.18)",
+      "shadow-box": "10px 10px 0 rgb(0 0 0 / 0.6)",
+      "shadow-sticker": "3px 3px 0 rgb(0 0 0 / 0.5)",
+      "wall-pattern":
+        "radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.55) 100%) 0 0 / 100% 100% no-repeat fixed, repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 3px) 0 0 / 100% 3px",
     },
   },
   {
@@ -217,7 +307,7 @@ export interface ThemeEngine {
   isAvailable(id: string, date: Date): boolean;
   available(date: Date): string[];
   seasonKey(id: string, date: Date): string | null;
-  resolve(input: { stored: string | null; seen: string[]; date: Date }): {
+  resolve(input: { stored: string | null; seen: string[]; date: Date; seasonal?: boolean }): {
     theme: string;
     seen: string[];
   };
@@ -259,7 +349,12 @@ export function themeEngine(rules: { id: string; season: Season | null }[]): The
   const available = (date: Date) =>
     rules.filter((rule) => isAvailable(rule.id, date)).map((rule) => rule.id);
 
-  const resolve = (input: { stored: string | null; seen: string[]; date: Date }) => {
+  const resolve = (input: {
+    stored: string | null;
+    seen: string[];
+    date: Date;
+    seasonal?: boolean;
+  }) => {
     const date = input.date;
     // Temporadas activas, de la que empezó más tarde a la que empezó antes.
     const active = rules
@@ -273,7 +368,8 @@ export function themeEngine(rules: { id: string; season: Season | null }[]): The
       })
       .sort((a, b) => b.start - a.start);
 
-    const latest = active[0];
+    // Con seasonal = false (ajustes), las temporadas solo se aplican si el visitante las elige.
+    const latest = input.seasonal === false ? undefined : active[0];
     if (latest) {
       const key = seasonKey(latest.id, date) as string;
       if (input.seen.indexOf(key) === -1)
@@ -306,10 +402,10 @@ export function themeCss(): string {
 export function themeInitScript(): string {
   return `(function(){try{
 var E=(${themeEngine.toString()})(${JSON.stringify(THEME_RULES)});
-var ls=null,stored=null,seen=[];
-try{ls=window.localStorage;stored=ls.getItem(${JSON.stringify(STORAGE_THEME)});seen=JSON.parse(ls.getItem(${JSON.stringify(STORAGE_SEEN)})||"[]");}catch(e){}
+var ls=null,stored=null,seen=[],seasonal=true;
+try{ls=window.localStorage;stored=ls.getItem(${JSON.stringify(STORAGE_THEME)});seasonal=ls.getItem(${JSON.stringify(STORAGE_SEASONAL)})!=="off";seen=JSON.parse(ls.getItem(${JSON.stringify(STORAGE_SEEN)})||"[]");}catch(e){}
 if(!Array.isArray(seen))seen=[];
-var r=E.resolve({stored:stored,seen:seen,date:new Date()});
+var r=E.resolve({stored:stored,seen:seen,date:new Date(),seasonal:seasonal});
 document.documentElement.dataset.theme=r.theme;
 try{if(ls){ls.setItem(${JSON.stringify(STORAGE_THEME)},r.theme);ls.setItem(${JSON.stringify(STORAGE_SEEN)},JSON.stringify(r.seen));}}catch(e){}
 }catch(e){}})();`;

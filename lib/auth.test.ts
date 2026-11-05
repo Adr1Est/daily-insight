@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { MIN_SECRET_LENGTH, verifyBearer } from "@/lib/auth";
+import { isSameOrigin, MIN_SECRET_LENGTH, verifyBearer } from "@/lib/auth";
 
 const SECRET = "s".repeat(MIN_SECRET_LENGTH);
 
@@ -23,5 +23,20 @@ describe("verifyBearer", () => {
 
   it("autoriza con el token correcto", () => {
     expect(verifyBearer(`Bearer ${SECRET}`, SECRET)).toBe(true);
+  });
+});
+
+describe("isSameOrigin", () => {
+  it("acepta peticiones de la propia web", () => {
+    expect(isSameOrigin("https://dailybug.example", "dailybug.example")).toBe(true);
+    expect(isSameOrigin("http://localhost:3000", "localhost:3000")).toBe(true);
+  });
+
+  it("rechaza otros orígenes, o sin Origin u Host", () => {
+    expect(isSameOrigin("https://evil.example", "dailybug.example")).toBe(false);
+    expect(isSameOrigin("https://dailybug.example.evil.example", "dailybug.example")).toBe(false);
+    expect(isSameOrigin(null, "dailybug.example")).toBe(false);
+    expect(isSameOrigin("null", "dailybug.example")).toBe(false);
+    expect(isSameOrigin("https://dailybug.example", null)).toBe(false);
   });
 });

@@ -14,7 +14,18 @@
   --glow: 0 0 0 transparent;
   --wall-pattern: none;
 
+  /* Tamaño del texto del bug (ajustes, data-text-size en <html>). */
+  --text-scale: 1;
+
   color-scheme: dark;
+}
+
+:root[data-text-size="large"] {
+  --text-scale: 1.15;
+}
+
+:root[data-text-size="xl"] {
+  --text-scale: 1.3;
 }
 
 @layer reset, base;
@@ -93,5 +104,32 @@
 
   input {
     caret-color: var(--sticker);
+  }
+
+  /* Única animación del sitio: los rótulos (logotipo y títulos de página) flotan suavemente,
+     como carteles colgados. Clase global para que todos compartan el mismo movimiento. */
+  .sign-float {
+    animation: sign-float 4s ease-in-out infinite;
+  }
+
+  /* Ajustes (data-motion en <html>): «auto» sigue al sistema, «on» y «off» lo fuerzan. */
+  :root[data-motion="off"] .sign-float {
+    animation: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root:not([data-motion="on"]) .sign-float {
+      animation: none;
+    }
+  }
+}
+
+@keyframes sign-float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(-0.6deg);
   }
 }

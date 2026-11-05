@@ -36,7 +36,7 @@ export default function SiteFooter() {
         <p>Mostrando datos de ejemplo</p>
       ) : (
         <p>
-          Bugs escritos por IA con{" "}
+          Curiosidades escritas por IA con{" "}
           <a href={AI_MODEL_URL} target="_blank" rel="noopener noreferrer">
             {AI_MODEL}
           </a>

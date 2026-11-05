@@ -8,15 +8,15 @@ web
 
 ## Users
 
-Gamers curiosos: aficionados a los videojuegos que entran a leer la curiosidad del día sobre un bug, glitch o fallo histórico, y pueden volver a diario o explorar los anteriores.
+Gamers curiosos: aficionados a los videojuegos que entran a leer la curiosidad del día (un bug, un secreto, una historia de desarrollo, contenido descartado o una curiosidad de localización), y pueden volver a diario o explorar los anteriores.
 
 ## Product Purpose
 
-Daily Bug publica cada día, generada con IA (el modelo actual está en `lib/insights/model.ts`), una curiosidad sobre un bug/glitch/fallo conocido de la historia de los videojuegos, y guarda el archivo completo para consultarlo. El éxito es que el visitante lea el bug del día y le apetezca volver o bucear en el archivo.
+Daily Bug publica cada día, generada con IA (el modelo actual está en `lib/insights/model.ts`), una curiosidad de la historia de los videojuegos (bug, secreto, desarrollo, contenido descartado o localización; los días señalados del calendario de lanzamientos, sobre ese juego), y guarda el archivo completo para consultarlo. El éxito es que el visitante lea el bug del día y le apetezca volver o bucear en el archivo.
 
 ## Positioning
 
-Una única dosis diaria, breve (máx. ~10 líneas), centrada exclusivamente en bugs y glitches de videojuegos, con un archivo acumulado que crece cada día.
+Una única dosis diaria, breve (máx. ~10 líneas), nacida de los bugs y glitches y abierta a otras curiosidades de videojuegos, con un archivo acumulado que crece cada día.
 
 ## Operating Context
 

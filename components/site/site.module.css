@@ -19,25 +19,8 @@
     3px 3px 0 var(--sticker),
     var(--glow);
   text-decoration: none;
-  /* Única animación del sitio: el logotipo flota suavemente, como un rótulo colgado. */
+  /* Flota con la clase global .sign-float (app/globals.css). */
   display: inline-block;
-  animation: logo-float 4s ease-in-out infinite;
-}
-
-@keyframes logo-float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-4px) rotate(-0.6deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .logo {
-    animation: none;
-  }
 }
 
 .nav {
@@ -108,6 +91,33 @@
 .swatch span {
   width: 12px;
   height: 16px;
+}
+
+/* Tema y ajustes van juntos y a la misma altura: nunca se separan al partirse la cabecera. */
+.tools {
+  display: flex;
+  align-items: stretch;
+  gap: var(--u);
+}
+
+/* Ajustes: etiqueta de cartón cuadrada junto al selector de tema, con la misma banda superior.
+   En /ajustes lleva la cinta roja de página actual abajo (sombra interior: no cambia el alto). */
+.settingsLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--u) calc(var(--u) * 1.5);
+  border-top: 4px solid var(--band);
+  background: var(--card);
+  color: var(--card-ink);
+}
+
+.settingsLink:hover {
+  border-top-color: var(--sticker);
+}
+
+.settingsLink[aria-current="page"] {
+  box-shadow: inset 0 -4px 0 var(--sticker);
 }
 
 /* El panel es un popover (capa superior); ThemePicker fija top/right bajo el botón. */

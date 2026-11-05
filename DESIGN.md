@@ -175,7 +175,7 @@ components:
 
 Daily Bug es un videoclub de barrio a última hora: una pared de listones oscuros, una balda de madera y cajas PAL de canto. El bug del día es la contraportada de la caja más nueva; el archivo es la estantería de lomos. Todo lo que hay en pantalla es un objeto impreso (cartón, tinta, pegatinas, cinta) y se comporta como tal: esquinas rectas, sombras duras sin desenfoque y cambios de estado secos, sin transiciones.
 
-La densidad es de caja real: un lomo negro con banda de color, una contraportada de cartón claro con el título enorme en Bungee, una ficha técnica de tres celdas con filete negro y el texto en una columna legible. Las pegatinas (redonda roja con el número, rectangular amarilla «¡Hoy!») van giradas y apiladas en orden de llegada. El sistema rechaza el «sitio retro» por defecto (fondo negro puro, fuente pixel, neón, brillos y scanlines); el neón solo existe como tema que el visitante elige.
+La densidad es de caja real: un lomo negro con banda de color, una contraportada de cartón claro con el título enorme en Bungee, una ficha técnica de tres celdas con filete negro y el texto en una columna legible. Las pegatinas (redonda roja con el número, rectangular amarilla «¡Hoy!») van giradas y apiladas en orden de llegada. El sistema rechaza el «sitio retro» por defecto (fondo negro puro, fuente pixel, neón, brillos y scanlines); el neón y la tele en blanco y negro (con sus líneas de barrido) solo existen como temas que el visitante elige.
 
 **Key Characteristics:**
 - Dos suelos: la pared oscura (`wall`) y el cartón claro (`card`); cada uno tiene su propia tinta.
@@ -184,7 +184,7 @@ La densidad es de caja real: un lomo negro con banda de color, una contraportada
 - Bungee como rotulación impresa, Barlow Condensed en mayúsculas para etiquetas, Barlow para leer.
 - Módulo de 8 px (`--u`) en todo el espaciado.
 - Sombras desplazadas sin desenfoque; ninguna esquina redondeada salvo la pegatina circular.
-- Cambios de estado instantáneos: sin `transition` ni animación. Única excepción: el logotipo flota suavemente.
+- Cambios de estado instantáneos: sin `transition` ni animación. Excepciones: los rótulos (logotipo y títulos de página) flotan suavemente, y las pegatinas de la caja («¡Hoy!» y el número) se tambalean una vez al pasar el ratón.
 
 ## Colors
 
@@ -269,7 +269,7 @@ La profundidad es de cartón sobre una balda: sombras duras, desplazadas y sin d
 
 ## Shapes
 
-Esquinas rectas en todo: cajas, lomos, botones, campos, celdas y tarjetas. La única curva es la pegatina del número (círculo de 184 px). Los bordes son filetes de tinta (3 px negro en la ficha y el pie de la caja) o bandas superiores gruesas de color (16 px en lomo y contraportada, 8 px en el buscador). Las pegatinas y cintas se giran (10°, −6°; −4° la chapa «Nuevo» del selector); el texto de los lomos va en vertical (`writing-mode: vertical-rl` girado 180°).
+Esquinas rectas en todo: cajas, lomos, botones, campos, celdas y tarjetas. La única curva es la pegatina del número (círculo de 184 px). Los bordes son filetes de tinta (3 px negro en la ficha y el pie de la caja) o bandas superiores gruesas de color (16 px en lomo y contraportada, 8 px en el buscador). Las pegatinas y cintas se giran (10°, −6°; −4° la chapa «Nuevo» del selector); el texto de los lomos va en vertical (`writing-mode: vertical-rl` girado 180°), siempre con `text-orientation: sideways` y sin las características `vert`/`vrt2`: Bungee trae letras alternativas para rotular de pie y iOS las aplicaría.
 
 ### Named Rules
 **The Square Cardboard Rule.** Nada lleva `border-radius` salvo una pegatina redonda.
@@ -296,18 +296,30 @@ Táctiles, impresos y secos: cada estado cambia de golpe, sin `transition`.
 - **Buscador:** etiqueta de catálogo de cartón con banda superior amarilla de 8 px, sin borde ni redondeo; Barlow 1.125rem; icono de lupa y botón de borrar de lucide; cursor rojo.
 - **Focus:** el anillo amarillo de 3 px rodea todo el campo (`:focus-within`), no solo el input.
 - **Etiqueta y contador:** Barlow Condensed 800 en mayúsculas, `wall-ink-soft`, contador con cifras tabulares.
+- **Filtro por tipo:** bajo el buscador, rótulo «Tipo» como el del buscador y una fila de etiquetas de cartón (Todos y los cinco tipos) con banda superior de 4 px (`band`, `sticker` en hover), como el botón «Tema», separadas 4 px y con salto de línea en móvil. La elegida va invertida (`highlight` sobre `spine`). Sin tipo que mostrar, tarjeta de estado «Aún no hay cajas de tipo «X»».
 
 ### Navigation
-- **Cabecera:** logotipo a la izquierda, enlaces Hoy / Estantería a la derecha en Barlow Condensed 800 1.25rem mayúsculas, `wall-ink-soft` en reposo, `wall-ink` en hover.
+- **Cabecera:** logotipo a la izquierda, enlaces Hoy / Estantería / Top 50 a la derecha en Barlow Condensed 800 1.25rem mayúsculas, `wall-ink-soft` en reposo, `wall-ink` en hover.
 - **Activo:** tira de cinta roja de 4 px debajo; la página actual se marca con la cinta, no con un color nuevo.
 - **Selector de tema:** botón de cartón con banda superior de 4 px (`band`, `sticker` en hover), icono de paleta, «Tema» en Label y una muestra de 3 colores del tema actual. Abre un panel de cartón (popover) con banda de 16 px: cada tema es una fila con muestra y nombre en Label; la fila elegida va invertida (`highlight` sobre `spine`); los temas de temporada llevan la chapa «Nuevo» (pegatina rectangular `sticker`, girada −4°).
 - **Pie:** Barlow 0.875rem `wall-ink-soft`, iconos sociales de lucide en áreas de 40 × 40 px; hover amarillo.
 
 ### Ficha técnica
-Rejilla de tres celdas de cartón separadas por filetes negros de 3 px, con marco negro de 3 px; rótulo en Label small y valor en Data. La última celda va invertida (amarillo sobre negro).
+Rejilla de tres celdas de cartón (Plataforma, Año, En la estantería) separadas por filetes negros de 3 px, con marco negro de 3 px; rótulo en Label small y valor en Data. La última celda va invertida (amarillo sobre negro).
+
+### Valoración
+Tres celdas de ficha técnica en el pie de la caja, a la derecha junto al botón: pulgar arriba, puntuación y pulgar abajo (lucide `ThumbsUp` / `ThumbsDown`, 24 px), con marco y filetes negros de 3 px. Celdas de cartón de 48 px de alto; los pulgares, cuadrados de 48 px. La puntuación (me gusta − no me gusta) en Bungee 1.125rem con cifras tabulares y signo (`+12`, `−3`, `0`), con ancho mínimo de 5ch para que no salte. La celda de la puntuación se tiñe según el signo con las tintas de pegatina: positiva en `highlight` con `on-highlight` (como «¡Hoy!»), negativa en `sticker` con `on-sticker`; el 0 queda en cartón. Hover: rojo pegatina con `on-sticker`, al instante. El voto propio va invertido (`highlight` sobre `spine`), como la última celda de la ficha y la fila elegida del selector; nunca un color nuevo. Pulsar el pulgar marcado quita el voto.
+
+### Lista de éxitos (`/top`)
+Cartel de cartón de hasta 880 px con banda superior roja de 16 px, marco y filetes de tinta de 3 px y sombra de caja, como la ficha técnica. Cada fila (64 px de alto mín.) es un enlace a su caja con tres celdas: puesto en Bungee 1.5rem con dos cifras tabulares (`01`) sobre 72 px; juego en Data y plataforma · año en Label small `card-ink-soft`; puntuación con signo en Bungee 1.125rem. **Podio:** las tres primeras filas se imprimen en `highlight` con `on-highlight` (juego, plataforma y puntuación) y el puesto invertido (`highlight` sobre `spine`): el rango por inversión y tinta de pegatina, no por un color nuevo. Fuera del podio, una puntuación negativa va en `sticker` con `on-sticker`; el resto, en cartón. Hover: la celda del puesto en rojo pegatina y el título subrayado, al instante. Sin votos, tarjeta de estado «Aún no hay votos» con enlace a la estantería.
+
+### Ficha de socio (`/ajustes`)
+Se abre desde la cabecera: rueda dentada de lucide (20 px) en una etiqueta de cartón con banda superior de 4 px (`band`, `sticker` en hover), igual que el selector de tema y a su derecha; en `/ajustes` lleva abajo la cinta roja de 4 px de página actual.
+
+Cartón de hasta 880 px con banda superior de 16 px (`band`), marco y filetes de tinta de 3 px y sombra de caja. Cada ajuste es una fila de dos columnas (2:3): nombre en Data y explicación en Body small `card-ink-soft` a la izquierda, control a la derecha; en móvil se apilan. Las opciones son celdas de ficha (cartón, filetes de 3 px, Label 1rem, 48 px de alto mín.): en fila para opciones cortas, una por línea para los temas (con su muestra). La elegida va invertida (`highlight` sobre `spine`), el hover en rojo pegatina y el foco con el anillo global. Los botones siguen la receta de botón de estado; «Olvidar mis votos» pide un segundo clic y, armado, se queda en rojo pegatina con «¿Seguro? Pulsa otra vez». La lista de mis votos repite las filas de la lista de éxitos, con el pulgar en la primera celda.
 
 ### Pegatinas
-- **Número:** círculo rojo de 184 px girado 10°, «Bug nº» y fecha en Barlow Condensed 800, número en Bungee 3.5rem con cifras tabulares, sombra de pegatina; sobresale 24 px por la esquina superior derecha de la caja.
+- **Número:** círculo rojo de 184 px girado 10°, «`<Tipo>` nº» (Bug, Secreto, Desarrollo, Descartado o Localización: la única marca del tipo, sin antetítulo ni color propio; baja a dos líneas si no cabe) y fecha en Barlow Condensed 800, número en Bungee 3.5rem con cifras tabulares, sombra de pegatina; sobresale 24 px por la esquina superior derecha de la caja.
 - **«¡Hoy!»:** rectángulo amarillo girado −6°, Bungee 1.5rem, apilado encima del número.
 
 ### Lomo (signature)
@@ -320,8 +332,11 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 | Tema | Disponible | Pared | Cartón | Pegatina | Highlight | Banda | Ambiente |
 |---|---|---|---|---|---|---|---|
 | Videoclub (por defecto) | todo el año | #1d1b19 | #f2efe6 | #d1281b | #ffd23f | #2ec4d6 | — |
+| Oscuro | todo el año | #121110 | #2d2925 (tinta clara) | #c42b1f | #e8b931 | #2aa9b8 | — (Videoclub a oscuras: amarillo más suave, sombras más densas) |
 | Neón | todo el año | #0b0a1a | #15122e (tinta clara) | #ff2e88 | #f8f32b | #35f2ff | `--glow` cian, sombra de caja magenta de 8 px, líneas horizontales cian cada 32 px en la pared |
 | Verde LCD | todo el año | #0f380f | #9bbc0f | #0f380f | #9bbc0f | #8bac0f | rejilla de píxeles de 4 px, sombras de caja (8 px) y pegatina en verde medio |
+| Vaporwave | todo el año | #1a0b2e | #fdeaf3 | #c2187a | #ffb347 | #2de2e6 | atardecer de costa: franja de cielo rosa arriba y sol naranja con aro rosa (bordes duros) detrás de la estantería; sombras de caja y pegatina turquesa |
+| Blanco y negro | todo el año | #161616 | #cccccc | #4a4a4a | #f7f7f7 | #8a8a8a | tele de tubo: líneas de barrido cada 3 px y viñeta en las esquinas sobre la pared; `--glow` blanco suave de fósforo (la otra excepción al «sin brillos») |
 | Halloween | 1 oct – 1 nov | #160d1f | #f3e6cf | #6b2fa3 | #ff8a1f | #7bd13a | telarañas SVG en las esquinas superiores de la pared |
 | Navidad | 1 nov – 9 ene | #0d2418 | #fbf6ec | #c8102e | #f2c14e | #2f8f5b | puntos de nieve sobre la pared |
 
@@ -344,8 +359,8 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 
 ### Don't:
 - **Don't** usar `border-radius` salvo en la pegatina redonda.
-- **Don't** añadir `transition` ni animaciones de estado: los cambios son secos. La única animación es la flotación del logotipo (4 s, 4 px), que se desactiva con `prefers-reduced-motion`.
-- **Don't** usar sombras con desenfoque ni brillos fuera de `--glow` del tema Neón.
+- **Don't** añadir `transition` ni animaciones de estado: los cambios son secos. La única animación es la flotación de los rótulos (clase global `sign-float`: 4 s, 4 px y −0,6°): el logotipo y los títulos de página («La estantería», «Top 50»), estos a contratiempo (−2 s). La otra es el tambaleo de las pegatinas de la caja al pasar el ratón (`sticker-wobble`: 400 ms, −4° y +2° sobre su giro y escala 1,04, una sola vez). Se desactiva con `prefers-reduced-motion`, salvo que el visitante elija «Siempre» en ajustes (`data-motion="on"`); con «Nunca» (`data-motion="off"`) no se anima nunca.
+- **Don't** usar sombras con desenfoque ni brillos fuera de `--glow` de los temas Neón y Blanco y negro.
 - **Don't** escribir colores literales en CSS ni componentes: cada tema debe poder cambiarlos.
-- **Don't** usar fuentes pixel, fondo negro puro ni scanlines.
+- **Don't** usar fuentes pixel, fondo negro puro ni scanlines (salvo las líneas de barrido del tema Blanco y negro, que el visitante elige).
 - **Don't** usar Bungee para texto corrido ni el cian para texto.

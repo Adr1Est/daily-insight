@@ -6,6 +6,7 @@ import "@/app/globals.css";
 
 import SiteFooter from "@/components/site/SiteFooter";
 import SiteHeader from "@/components/site/SiteHeader";
+import { prefsInitScript } from "@/lib/prefs";
 import { themeCss, themeInitScript } from "@/lib/themes";
 
 const bungee = Bungee({ weight: "400", subsets: ["latin"], variable: "--font-bungee" });
@@ -18,7 +19,8 @@ const barlowCondensed = Barlow_Condensed({
 
 export const metadata: Metadata = {
   title: "Daily Bug",
-  description: "Descubre cada día un bug de la historia de los videojuegos.",
+  description:
+    "Cada día, una curiosidad de la historia de los videojuegos: bugs, secretos, desarrollo, contenido descartado y localización.",
 };
 
 export default function RootLayout({
@@ -36,6 +38,7 @@ export default function RootLayout({
       <head>
         <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
+        <script dangerouslySetInnerHTML={{ __html: prefsInitScript() }} />
       </head>
       <body>
         <SiteHeader />

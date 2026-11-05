@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   engine,
+  STORAGE_SEASONAL,
   STORAGE_SEEN,
   STORAGE_THEME,
   themeCss,
@@ -73,6 +74,17 @@ describe("resolveTheme", () => {
     ).toBe("navidad");
   });
 
+  it("con las temporadas desactivadas, no aplica ninguna sola pero se pueden elegir", () => {
+    const date = day(2026, 11, 15);
+    expect(engine.resolve({ stored: "neon", seen: [], date, seasonal: false })).toEqual({
+      theme: "neon",
+      seen: [],
+    });
+    expect(engine.resolve({ stored: "navidad", seen: [], date, seasonal: false }).theme).toBe(
+      "navidad",
+    );
+  });
+
   it("ignora un tema guardado desconocido", () => {
     expect(engine.resolve({ stored: "inventado", seen: [], date: day(2026, 3, 1) }).theme).toBe(
       "videoclub",
@@ -110,6 +122,15 @@ describe("themeInitScript", () => {
 
   it("respeta la elección guardada fuera de temporada", () => {
     expect(runScript(day(2026, 3, 1), { [STORAGE_THEME]: "lcd" }).theme).toBe("lcd");
+  });
+
+  it("respeta las temporadas desactivadas en los ajustes", () => {
+    const { theme, store } = runScript(day(2026, 11, 15), {
+      [STORAGE_THEME]: "lcd",
+      [STORAGE_SEASONAL]: "off",
+    });
+    expect(theme).toBe("lcd");
+    expect(store.get(STORAGE_SEEN)).toBe("[]");
   });
 
   it("no rompe si el almacenamiento está corrupto", () => {

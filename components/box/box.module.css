@@ -34,6 +34,13 @@
 .spineTitle,
 .spinePlatform {
   writing-mode: vertical-rl;
+  /* Letras siempre tumbadas. En iOS, la orientación por defecto (mixed) usa las alternativas
+     verticales de Bungee (vert/vrt2) y pone las letras de pie; sideways y sin esas
+     características, todos los navegadores pintan el lomo igual. */
+  text-orientation: sideways;
+  font-feature-settings:
+    "vert" 0,
+    "vrt2" 0;
   transform: rotate(180deg);
   white-space: nowrap;
   overflow: hidden;
@@ -98,7 +105,8 @@
   border-radius: 50%;
   background: var(--sticker);
   color: var(--on-sticker);
-  transform: rotate(10deg);
+  --tilt: 10deg;
+  transform: rotate(var(--tilt));
   box-shadow: var(--shadow-sticker);
   font-family: var(--font-label);
   font-weight: 800;
@@ -106,6 +114,45 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   line-height: 1.1;
+}
+
+/* Al pasar el ratón, cada pegatina se tambalea una vez, como si se despegara un poco.
+   Respeta los ajustes de movimiento (data-motion) igual que los rótulos flotantes. */
+.number:hover,
+.today:hover {
+  animation: sticker-wobble 400ms ease-in-out;
+}
+
+:global(:root[data-motion="off"]) .number:hover,
+:global(:root[data-motion="off"]) .today:hover {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(:root:not([data-motion="on"])) .number:hover,
+  :global(:root:not([data-motion="on"])) .today:hover {
+    animation: none;
+  }
+}
+
+@keyframes sticker-wobble {
+  0%,
+  100% {
+    transform: rotate(var(--tilt)) scale(1);
+  }
+  30% {
+    transform: rotate(calc(var(--tilt) - 4deg)) scale(1.04);
+  }
+  65% {
+    transform: rotate(calc(var(--tilt) + 2deg)) scale(1.04);
+  }
+}
+
+/* Rótulo del tipo («Secreto nº»): si no cabe en el círculo, baja a dos líneas. */
+.numberKind {
+  max-width: 76%;
+  text-align: center;
+  text-wrap: balance;
 }
 
 .number b {
@@ -128,7 +175,8 @@
   font-family: var(--font-display);
   font-size: 1.5rem;
   line-height: 1;
-  transform: rotate(-6deg);
+  --tilt: -6deg;
+  transform: rotate(var(--tilt));
   box-shadow: var(--shadow-sticker);
 }
 
@@ -188,7 +236,7 @@
 .text {
   margin: 0;
   max-width: 64ch;
-  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  font-size: calc(clamp(1.0625rem, 1rem + 0.3vw, 1.25rem) * var(--text-scale, 1));
   line-height: 1.6;
 }
 
@@ -236,6 +284,73 @@
   color: var(--on-sticker);
 }
 
+/* Valoración: tres celdas de ficha técnica (me gusta, puntuación, no me gusta) con filete negro.
+   El voto propio va invertido, como la última celda de la ficha; el hover, rojo pegatina. */
+.vote {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 3px; /* filete entre celdas, como en .facts */
+  margin-left: auto; /* se agrupa a la derecha con el botón de la caja */
+  border: 3px solid var(--card-ink);
+  background: var(--card-ink);
+}
+
+.voteButton,
+.voteScore {
+  display: grid;
+  place-items: center;
+  min-height: calc(var(--u) * 6);
+  background: var(--card);
+  color: var(--card-ink);
+}
+
+.voteButton {
+  width: calc(var(--u) * 6);
+  padding: 0;
+  border: 0;
+  cursor: pointer;
+}
+
+.voteButton[aria-pressed="true"] {
+  background: var(--spine);
+  color: var(--highlight);
+}
+
+.voteButton:hover {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+.voteScore {
+  min-width: 5ch; /* «+120» o «−15» sin que el control cambie de ancho */
+  padding: 0 var(--u);
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* El signo de la puntuación se imprime con las tintas de pegatina: amarillo «¡Hoy!» si es
+   positiva, rojo pegatina si es negativa; el 0 queda en cartón. */
+.voteScore[data-sign="positive"] {
+  background: var(--highlight);
+  color: var(--on-highlight);
+}
+
+.voteScore[data-sign="negative"] {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* Móvil: el lomo pasa a ser una banda horizontal sobre la contraportada. */
 @media (max-width: 720px) {
   .box {
@@ -281,8 +396,15 @@
     font-size: 2.25rem;
   }
 
+  /* «Localización» es el rótulo más largo: en la pegatina de 112 px se aprieta un poco. */
+  .numberKind {
+    max-width: 64%;
+    font-size: 0.6875rem;
+    letter-spacing: 0.02em;
+  }
+
   .today {
-    left: calc(var(--u) * -7);
+    left: calc(var(--u) * -10); /* deja ver el rótulo del tipo de la pegatina */
     top: var(--u);
     font-size: 1.125rem;
   }

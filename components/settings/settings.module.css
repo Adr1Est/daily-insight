@@ -1,0 +1,278 @@
+.main {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: calc(var(--u) * 3) clamp(16px, 4vw, 48px) calc(var(--u) * 4);
+}
+
+.heading {
+  margin: 0 0 var(--u);
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.5rem);
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--wall-ink);
+  /* Flota con .sign-float (app/globals.css), a contratiempo del logotipo. */
+  width: fit-content;
+  animation-delay: -2s;
+}
+
+.intro {
+  margin: 0 0 calc(var(--u) * 4);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--wall-ink-soft);
+}
+
+/* Ficha de socio: cartón con banda de color, una fila por ajuste separada por filetes de tinta. */
+.card {
+  display: grid;
+  gap: 3px; /* filete entre filas */
+  max-width: 880px;
+  padding: 3px; /* marco de tinta: el fondo, así la banda queda recta */
+  border-top: calc(var(--u) * 2) solid var(--band);
+  background: var(--card-ink);
+  box-shadow: var(--shadow-box);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: calc(var(--u) * 3);
+  padding: calc(var(--u) * 3);
+  background: var(--card);
+  color: var(--card-ink);
+}
+
+.label h2 {
+  margin: 0 0 var(--u);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1.375rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.label p {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--card-ink-soft);
+}
+
+.stack {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: calc(var(--u) * 2);
+  min-width: 0;
+}
+
+/* Opciones: celdas de ficha técnica; la elegida, invertida como la última celda de la ficha. */
+.options {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  border: 3px solid var(--card-ink);
+  background: var(--card-ink);
+}
+
+.option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--u) * 1.5);
+  min-height: calc(var(--u) * 6);
+  padding: var(--u) calc(var(--u) * 1.5);
+  background: var(--card);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.options[data-layout="list"] .option {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.option:has(input:checked) {
+  background: var(--spine);
+  color: var(--highlight);
+}
+
+.option:hover {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+.option:has(input:focus-visible) {
+  outline: 3px solid var(--highlight);
+  outline-offset: 3px;
+  z-index: 1;
+}
+
+.option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sample {
+  margin: 0;
+}
+
+/* Rótulo de muestra del movimiento: el logotipo en pequeño. */
+.sign {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--highlight);
+  background: var(--spine);
+  padding: var(--u) calc(var(--u) * 2);
+}
+
+/* Botón de estado (receta de DESIGN.md › Buttons). */
+.button {
+  padding: calc(var(--u) * 1.5) calc(var(--u) * 3);
+  border: 0;
+  background: var(--spine);
+  color: var(--highlight);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.button:hover,
+.button[data-armed] {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+.textButton {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  cursor: pointer;
+}
+
+.note {
+  margin: 0;
+  min-height: 1.5em;
+}
+
+.note:empty {
+  display: none;
+}
+
+.count {
+  margin: 0;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Mis votos: filas como las de la lista de éxitos. */
+.votes {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 3px solid var(--card-ink);
+  background: var(--card-ink);
+}
+
+.vote {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 6) 1fr;
+  gap: 3px;
+  min-height: calc(var(--u) * 6);
+  color: var(--card-ink);
+  text-decoration: none;
+}
+
+.thumb,
+.voteGame {
+  display: flex;
+  background: var(--card);
+}
+
+.thumb {
+  align-items: center;
+  justify-content: center;
+}
+
+.vote:hover .thumb {
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+.vote:hover .voteTitle {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.voteGame {
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(var(--u) * 0.5);
+  min-width: 0;
+  padding: var(--u) calc(var(--u) * 1.5);
+}
+
+.voteTitle {
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1.125rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.voteMeta {
+  font-family: var(--font-label);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--card-ink-soft);
+}
+
+@media (max-width: 720px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: calc(var(--u) * 2);
+    padding: calc(var(--u) * 2);
+  }
+
+  .option {
+    padding: var(--u);
+    font-size: 0.875rem;
+  }
+}

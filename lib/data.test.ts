@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { getInsightById, getInsightsPage, getLatestInsights } from "@/lib/data";
+import { getInsightById, getInsightsPage, getLatestInsights, getTopInsights } from "@/lib/data";
 
 describe("lib/data en modo mock", () => {
   beforeEach(() => vi.stubEnv("DATA_SOURCE", "mock"));
@@ -47,5 +47,15 @@ describe("lib/data en modo mock", () => {
     const now = new Date();
     expect(today.day).toBe(now.getDate());
     expect(today.year).toBe(now.getFullYear());
+  });
+
+  it("el top ordena por puntuación, incluye los negativos y respeta el límite", async () => {
+    const top = await getTopInsights();
+    const scores = top.map((bug) => bug.score);
+    expect(scores).toEqual([...scores].sort((a, b) => b - a));
+    expect(top).toHaveLength(11); // 12 mocks menos el que no tiene votos (0)
+    expect(scores.at(-1)).toBe(-4); // World of Warcraft, al final
+    expect(top[0].game).toBe("Super Mario Bros."); // +120
+    expect(await getTopInsights(3)).toHaveLength(3);
   });
 });

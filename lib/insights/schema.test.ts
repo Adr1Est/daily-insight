@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { insightSchema } from "@/lib/insights/schema";
 
 const valid = {
+  kind: "bug",
   game: "Pac-Man",
   platform: "Arcade",
   bugYear: 1980,
@@ -20,6 +21,16 @@ describe("insightSchema", () => {
     ).toBe(false);
     expect(insightSchema.safeParse({ ...valid, bugYear: Number.NaN }).success).toBe(false);
     expect(insightSchema.safeParse({ ...valid, bugYear: 1980.5 }).success).toBe(false);
+  });
+
+  it("acepta los cinco tipos y rechaza uno desconocido o ausente", () => {
+    for (const kind of ["bug", "secreto", "desarrollo", "descartado", "localizacion"]) {
+      expect(insightSchema.safeParse({ ...valid, kind }).success).toBe(true);
+    }
+    expect(insightSchema.safeParse({ ...valid, kind: "cortado" }).success).toBe(false);
+    const { kind, ...withoutKind } = valid;
+    void kind;
+    expect(insightSchema.safeParse(withoutKind).success).toBe(false);
   });
 
   it("rechaza textos vacíos o demasiado cortos", () => {

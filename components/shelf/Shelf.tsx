@@ -7,6 +7,7 @@ import boxStyles from "@/components/box/box.module.css";
 import BoxCover from "@/components/box/BoxCover";
 import styles from "@/components/shelf/shelf.module.css";
 import Spine from "@/components/shelf/Spine";
+import { kindLabel, KINDS, type InsightKind } from "@/lib/insights/kinds";
 import type { InsightsPage } from "@/lib/pagination";
 import type { BugType } from "@/types/bug";
 
@@ -18,23 +19,33 @@ const idFromHash = (hash: string): number | null => {
   return match ? Number(match[1]) : null;
 };
 
+/** Lo que se está viendo: texto de búsqueda y tipo («» = todos). */
+interface Filter {
+  q: string;
+  kind: InsightKind | "";
+}
+
 /** Pide una página a /api/bugs. Lanza si la respuesta no es correcta (incluido el aborto). */
 async function fetchPage(
-  params: { q?: string; cursor?: number },
+  params: { q?: string; kind?: InsightKind | ""; cursor?: number },
   signal?: AbortSignal,
 ): Promise<InsightsPage> {
   const search = new URLSearchParams();
   if (params.q) search.set("q", params.q);
+  if (params.kind) search.set("kind", params.kind);
   if (params.cursor) search.set("cursor", String(params.cursor));
   const response = await fetch(`/api/bugs?${search}`, { signal });
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
   return response.json();
 }
 
-interface ShelfPage extends InsightsPage {
-  /** Búsqueda a la que corresponde la página («» = todo el archivo). */
-  q: string;
-}
+/** Página cargada, con la búsqueda y el tipo a los que corresponde. */
+interface ShelfPage extends InsightsPage, Filter {}
+
+const KIND_FILTERS: { value: InsightKind | ""; label: string }[] = [
+  { value: "", label: "Todos" },
+  ...KINDS.map((kind) => ({ value: kind.id, label: kind.label })),
+];
 
 type Status = "idle" | "searching" | "loading-more" | "error";
 
@@ -46,7 +57,8 @@ export default function Shelf({
   isSample?: boolean;
 }) {
   const [query, setQuery] = useState("");
-  const [page, setPage] = useState<ShelfPage>({ ...initialPage, q: "" });
+  const [kind, setKind] = useState<InsightKind | "">("");
+  const [page, setPage] = useState<ShelfPage>({ ...initialPage, q: "", kind: "" });
   const [status, setStatus] = useState<Status>("idle");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   // Caja abierta por enlace (#bug-N) que no está entre las cargadas.
@@ -85,11 +97,11 @@ export default function Shelf({
     pulledRef.current?.focus({ preventScroll: true });
   }, [selected]);
 
-  /** Busca en la base de datos (paginado). Sin texto, vuelve a la primera página del archivo. */
-  const runSearch = async (q: string) => {
+  /** Busca en la base de datos (paginado). Sin texto ni tipo, vuelve a la primera página del archivo. */
+  const runSearch = async ({ q, kind }: Filter) => {
     request.current?.abort();
-    if (!q) {
-      setPage({ ...initialPage, q: "" });
+    if (!q && !kind) {
+      setPage({ ...initialPage, q: "", kind: "" });
       setStatus("idle");
       return;
     }
@@ -97,8 +109,8 @@ export default function Shelf({
     request.current = controller;
     setStatus("searching");
     try {
-      const result = await fetchPage({ q }, controller.signal);
-      setPage({ ...result, q });
+      const result = await fetchPage({ q, kind }, controller.signal);
+      setPage({ ...result, q, kind });
       setStatus("idle");
     } catch {
       if (!controller.signal.aborted) setStatus("error");
@@ -109,13 +121,21 @@ export default function Shelf({
     const value = event.target.value;
     setQuery(value);
     clearTimeout(searchTimer.current);
-    searchTimer.current = setTimeout(() => runSearch(value.trim()), SEARCH_DELAY_MS);
+    searchTimer.current = setTimeout(() => runSearch({ q: value.trim(), kind }), SEARCH_DELAY_MS);
+  };
+
+  // El filtro de tipo responde al instante: no hay nada que escribir.
+  const onKindChange = (value: InsightKind | "") => {
+    clearTimeout(searchTimer.current);
+    setKind(value);
+    runSearch({ q: query.trim(), kind: value });
   };
 
   const clearSearch = () => {
     clearTimeout(searchTimer.current);
     setQuery("");
-    runSearch("");
+    setKind("");
+    runSearch({ q: "", kind: "" });
   };
 
   const loadMore = async () => {
@@ -125,12 +145,16 @@ export default function Shelf({
     request.current = controller;
     setStatus("loading-more");
     try {
-      const result = await fetchPage({ q: page.q, cursor: page.nextCursor }, controller.signal);
+      const result = await fetchPage(
+        { q: page.q, kind: page.kind, cursor: page.nextCursor },
+        controller.signal,
+      );
       setPage((current) => {
         const known = new Set(current.items.map((bug) => bug.id));
         return {
           ...result,
           q: current.q,
+          kind: current.kind,
           items: [...current.items, ...result.items.filter((bug) => !known.has(bug.id))],
         };
       });
@@ -140,7 +164,10 @@ export default function Shelf({
     }
   };
 
-  const retry = () => (page.q !== query.trim() ? runSearch(query.trim()) : loadMore());
+  const retry = () =>
+    page.q !== query.trim() || page.kind !== kind
+      ? runSearch({ q: query.trim(), kind })
+      : loadMore();
 
   const open = (id: number) => {
     setSelectedId(id);
@@ -158,7 +185,7 @@ export default function Shelf({
   const countText =
     status === "searching"
       ? "Buscando…"
-      : page.q
+      : page.q || page.kind
         ? `${page.matching} de ${page.total} cajas coinciden`
         : `${page.items.length} de ${page.total} cajas`;
 
@@ -184,6 +211,21 @@ export default function Shelf({
         <p className={styles.searchCount} aria-live="polite">
           {countText}
         </p>
+        <fieldset className={styles.kinds}>
+          <legend className={styles.kindsLegend}>Tipo</legend>
+          {KIND_FILTERS.map((option) => (
+            <label key={option.value || "todos"} className={styles.kind}>
+              <input
+                type="radio"
+                name="tipo"
+                value={option.value}
+                checked={kind === option.value}
+                onChange={() => onKindChange(option.value)}
+              />
+              {option.label}
+            </label>
+          ))}
+        </fieldset>
       </search>
 
       {selected && (
@@ -231,8 +273,16 @@ export default function Shelf({
         status !== "searching" &&
         status !== "error" && (
           <div className={styles.status}>
-            <p className={styles.statusTitle}>Ninguna caja coincide con «{page.q}»</p>
-            <p>Prueba con el nombre de un juego, una consola o un año.</p>
+            <p className={styles.statusTitle}>
+              {page.q
+                ? `Ninguna caja coincide con «${page.q}»`
+                : `Aún no hay cajas de tipo «${kindLabel(page.kind)}»`}
+            </p>
+            <p>
+              {page.q
+                ? "Prueba con el nombre de un juego, una consola o un año."
+                : "Cada día llega una caja nueva de algún tipo. Vuelve pronto."}
+            </p>
             <button type="button" className={styles.statusButton} onClick={clearSearch}>
               Ver todas las cajas
             </button>

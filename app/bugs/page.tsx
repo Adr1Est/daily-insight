@@ -10,7 +10,8 @@ export const revalidate = 3600;
 
 export const metadata = {
   title: "La estantería · Daily Bug",
-  description: "Todos los bugs de la historia de los videojuegos publicados en Daily Bug.",
+  description:
+    "Todas las curiosidades de videojuegos publicadas en Daily Bug: bugs, secretos, desarrollo, contenido descartado y localización.",
 };
 
 export default async function BugsList() {
@@ -18,7 +19,7 @@ export default async function BugsList() {
 
   return (
     <main className={styles.main}>
-      <h1 className={styles.heading}>La estantería</h1>
+      <h1 className={`${styles.heading} sign-float`}>La estantería</h1>
       {firstPage.total > 0 ? (
         <Shelf initialPage={firstPage} isSample={isMockMode()} />
       ) : (

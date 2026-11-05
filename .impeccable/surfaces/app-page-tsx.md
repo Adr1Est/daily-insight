@@ -27,7 +27,10 @@ Gamers curiosos que leen el bug del día en menos de un minuto y, si les pica, c
 - Antetítulo de fecha eliminado (prohibido por el craft floor); la fecha vive en la pegatina «Bug nº» y en la ficha.
 - Ficha: plataforma, año del bug y en la estantería; el juego ya es el título.
 - Rojo de pegatina #d1281b por contraste (ver Constraints).
-- Selector de 5 temas (DESIGN.md › Temas) y flotación del logo, pedidos por el usuario.
+- Selector de 5 temas (DESIGN.md › Temas) y flotación del logo (extendida después a los títulos de página), pedidos por el usuario.
+- Valoración 👍 / 👎 con una sola puntuación en el pie de cada caja (DESIGN.md › Valoración), pedida por el usuario.
+- Página `/top` con los 50 bugs más votados (DESIGN.md › Lista de éxitos) y enlace «Top 50» en la cabecera, pedidos por el usuario.
+- Página `/ajustes` como ficha de socio (DESIGN.md › Ficha de socio): mis votos, tema, temporadas, movimiento, tamaño del texto y restablecer; pedida por el usuario.
 
 ## Direction contract
 

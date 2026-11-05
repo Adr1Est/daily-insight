@@ -16,6 +16,10 @@
   line-height: 1;
   text-transform: uppercase;
   color: var(--wall-ink);
+  /* Flota con .sign-float (app/globals.css), a contratiempo del logotipo; fit-content para que
+     el giro sea alrededor del rótulo y no de toda la fila. */
+  width: fit-content;
+  animation-delay: -2s;
 }
 
 /* Buscador: etiqueta de catálogo pegada en la pared. */
@@ -83,6 +87,65 @@
   text-transform: uppercase;
   font-variant-numeric: tabular-nums;
   color: var(--wall-ink-soft);
+}
+
+/* Filtro por tipo: etiquetas de cartón con banda superior, como el botón «Tema».
+   La elegida, invertida; el hover cambia la banda a rojo pegatina. */
+.kinds {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  flex-basis: 100%;
+  gap: calc(var(--u) / 2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* Rótulo del filtro, como el del buscador. */
+.kindsLegend {
+  margin-bottom: var(--u);
+  padding: 0;
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--wall-ink-soft);
+}
+
+.kind {
+  position: relative;
+  padding: var(--u) calc(var(--u) * 1.5);
+  border-top: 4px solid var(--band);
+  background: var(--card);
+  color: var(--card-ink);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.kind:hover {
+  border-top-color: var(--sticker);
+}
+
+.kind:has(input:checked) {
+  background: var(--spine);
+  color: var(--highlight);
+}
+
+.kind:has(input:focus-visible) {
+  outline: 3px solid var(--highlight);
+  outline-offset: 3px;
+}
+
+.kind input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* La caja que se ha sacado de la estantería. */
@@ -155,6 +218,13 @@
 .spineTitle,
 .spineMeta {
   writing-mode: vertical-rl;
+  /* Letras siempre tumbadas. En iOS, la orientación por defecto (mixed) usa las alternativas
+     verticales de Bungee (vert/vrt2) y pone las letras de pie; sideways y sin esas
+     características, todos los navegadores pintan el lomo igual. */
+  text-orientation: sideways;
+  font-feature-settings:
+    "vert" 0,
+    "vrt2" 0;
   transform: rotate(180deg);
   white-space: nowrap;
   overflow: hidden;
@@ -244,6 +314,7 @@
 }
 
 .statusButton {
+  display: inline-block; /* también se usa como enlace */
   padding: calc(var(--u) * 1.5) calc(var(--u) * 3);
   border: 0;
   background: var(--spine);
@@ -251,6 +322,7 @@
   font-family: var(--font-display);
   font-size: 1rem;
   text-transform: uppercase;
+  text-decoration: none;
   cursor: pointer;
 }
 

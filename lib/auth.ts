@@ -15,3 +15,16 @@ export function verifyBearer(authorization: string | null, secret: string | unde
   const received = Buffer.from(authorization);
   return received.length === expected.length && timingSafeEqual(received, expected);
 }
+
+/**
+ * Protección CSRF de las escrituras públicas (votos): la petición debe venir de esta misma web.
+ * Falla cerrado: sin `Origin` (o ilegible) o sin `Host`, no se acepta.
+ */
+export function isSameOrigin(origin: string | null, host: string | null): boolean {
+  if (!origin || !host) return false;
+  try {
+    return new URL(origin).host === host;
+  } catch {
+    return false;
+  }
+}
