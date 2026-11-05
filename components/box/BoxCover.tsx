@@ -1,5 +1,6 @@
 import styles from "@/components/box/box.module.css";
 import { spineAccent } from "@/components/box/spineAccent";
+import VoteControl from "@/components/box/VoteControl";
 import type { BugType } from "@/types/bug";
 
 interface BoxCoverProps {
@@ -79,6 +80,7 @@ export default function BoxCover({
           <p className={styles.credit}>
             {isSample ? "Datos de ejemplo · no generados por la IA" : "Texto generado con IA"}
           </p>
+          <VoteControl key={bug.id} bugId={bug.id} initialScore={bug.score} />
           {action}
         </footer>
       </div>

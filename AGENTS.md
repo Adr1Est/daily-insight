@@ -62,13 +62,14 @@ Se validan en `lib/env.ts` (bajo demanda, no al importar).
 
 Para probarlo a mano: `curl -H "Authorization: Bearer $INTERNAL_TOKEN" localhost:3000/api/cron/new-insight`. Con `?dryRun=1` genera y valida sin guardar nada (útil para revisar el prompt); lee la BD para el contexto. En producción se lanza a mano desde *Actions → Bug del día → Run workflow* (con la casilla `dryRun` opcional).
 
-Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSchema`, las instrucciones del agente, `prisma/schema.prisma` y `types/bug.ts`.
+Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSchema`, las instrucciones del agente, `prisma/schema.prisma` y `types/bug.ts`. `score` es la excepción: no lo genera la IA, lo mantienen los votos.
 
 ### Lectura / UI
 
 - Toda la lectura pasa por `lib/data.ts`: `getInsightsPage` (archivo paginado), `getInsightById` y `getLatestInsights` (portada). Nunca se cargan todos los bugs de golpe. Con `DATA_SOURCE=mock` devuelve los 12 bugs de `lib/mocks/insights.ts` (fechas calculadas hacia atrás desde hoy) sin importar Prisma, así que funciona sin `DATABASE_URL`. El interruptor solo afecta a la lectura; la generación siempre usa la BD y OpenAI. En modo mock, la UI indica que son datos de ejemplo.
 - **Paginación** (`lib/pagination.ts`): por cursor sobre el `id` (los `limit` bugs con id menor que `cursor`, del más reciente al más antiguo); `PAGE_SIZE` = 15, máximo 50. La búsqueda (juego, plataforma o texto sin distinguir mayúsculas, o año exacto) se hace en la BD y también se pagina.
 - `GET /api/bugs?limit&cursor&q` devuelve `{ items, nextCursor, total, matching }`: `total` es el número de bugs en la BD y `matching` los que cumplen la búsqueda. `GET /api/bugs/:id` devuelve un bug. Ambas son dinámicas y se cachean en la CDN por URL (`Cache-Control: s-maxage`). Parámetros inválidos → 400.
+- **Votos** (`lib/votes.ts`, `lib/voter.ts`, `components/box/VoteControl.tsx`): cada caja lleva 👍 / 👎 y una sola puntuación (me gusta − no me gusta). El votante es anónimo: cookie httpOnly `daily-bug-voter` con un UUID, creada en el primer voto; un voto por bug y navegador, que se puede cambiar o quitar. `GET /api/bugs/:id/vote` → `{ score, myVote }` y `POST` con `{ value: 1 | -1 | 0 }` (0 quita el voto); ambas con `Cache-Control: private, no-store`. El POST exige `Origin` de la propia web (`isSameOrigin` en `lib/auth.ts`) → 403 si no. Las páginas estáticas traen `score` como valor inicial (hasta una hora por detrás) y el cliente lo refresca al montar. En modo mock los votos viven en memoria del proceso.
 - `app/page.tsx` y `app/bugs/page.tsx` son estáticas con `revalidate = 3600`; el cron las invalida al publicar. `/bugs` renderiza solo la primera página; `components/shelf/Shelf.tsx` (cliente) pide el resto con «Cargar más» y busca con 300 ms de espera, cancelando peticiones obsoletas. `/bugs#bug-N` abre esa caja aunque no esté cargada (la pide a `/api/bugs/:id`).
 - `next.config.ts` añade cabeceras de seguridad y desactiva `X-Powered-By`.
 - `app/layout.tsx` monta `<Analytics />` de `@vercel/analytics` (Vercel Web Analytics). Solo envía datos desplegado en Vercel con Analytics activado en el panel; en local no registra nada.
@@ -90,6 +91,7 @@ Si cambias campos del bug, actualiza a la vez `agentOutputSchema` e `insightSche
 - Prisma 7 con el generador `prisma-client` y salida en `prisma/generated` (ignorado por git): importar desde `@/prisma/generated/client`, nunca desde `@prisma/client`. Usa siempre `getPrisma()` de `lib/db.ts`, que es un singleton perezoso.
 - Conexión con el driver adapter `@prisma/adapter-pg`. La URL se configura en `prisma.config.ts` / `lib/db.ts`, no en el `datasource` del schema.
 - Las tablas viven en el esquema de Postgres `daily_insight` (`@@schema("daily_insight")`).
+- `Vote` (clave `insightId` + `voterId`, `value` 1 o −1 con `CHECK`) es la fuente de verdad de los votos; `Insight.score` es su suma desnormalizada. `castVote` actualiza ambos en una transacción que bloquea la fila del bug (`FOR UPDATE`). Si tocas una, toca la otra.
 
 ### Dependencias
 

@@ -28,6 +28,7 @@ Gamers curiosos que leen el bug del día en menos de un minuto y, si les pica, c
 - Ficha: plataforma, año del bug y en la estantería; el juego ya es el título.
 - Rojo de pegatina #d1281b por contraste (ver Constraints).
 - Selector de 5 temas (DESIGN.md › Temas) y flotación del logo, pedidos por el usuario.
+- Valoración 👍 / 👎 con una sola puntuación en el pie de cada caja (DESIGN.md › Valoración), pedida por el usuario.
 
 ## Direction contract
 

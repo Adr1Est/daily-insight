@@ -25,6 +25,23 @@ model Insight {
   month     String
   year      Int
   createdAt DateTime @default(now())
+  /// Me gusta − no me gusta. Contador de Vote, actualizado en la misma transacción (lib/votes.ts).
+  score     Int      @default(0)
+  votes     Vote[]
 
+  @@schema("daily_insight")
+}
+
+/// Un voto por bug y navegador (cookie anónima `daily-bug-voter`).
+model Vote {
+  insightId Int
+  voterId   String   @db.Uuid
+  /// 1 = me gusta, -1 = no me gusta (CHECK en la migración). Quitar el voto borra la fila.
+  value     Int      @db.SmallInt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  insight   Insight  @relation(fields: [insightId], references: [id], onDelete: Cascade)
+
+  @@id([insightId, voterId])
   @@schema("daily_insight")
 }

@@ -2,7 +2,7 @@ import type { BugType } from "@/types/bug";
 
 // Bugs reales y documentados, para desarrollar la UI sin base de datos (DATA_SOURCE=mock).
 // Ordenados del más antiguo (id 1) al más reciente (id 12).
-const entries: Omit<BugType, "id" | "day" | "month" | "year" | "createdAt">[] = [
+const entries: Omit<BugType, "id" | "day" | "month" | "year" | "createdAt" | "score">[] = [
   {
     game: "Space Invaders",
     platform: "Arcade",
@@ -92,6 +92,9 @@ const MONTHS = [
   "Diciembre",
 ];
 
+// Puntuaciones de ejemplo fijas (positivas, negativas y cero) para ver todos los casos en la UI.
+const SCORES = [42, 87, 15, 120, 64, 33, 9, 51, -4, 0, 18, 3];
+
 // Las fechas se calculan hacia atrás desde hoy, así el último mock siempre es «el bug del día».
 export function getMockInsights(): BugType[] {
   const today = new Date();
@@ -106,6 +109,7 @@ export function getMockInsights(): BugType[] {
       month: MONTHS[date.getMonth()],
       year: date.getFullYear(),
       createdAt: date,
+      score: SCORES[index] ?? 0,
     };
   });
 }

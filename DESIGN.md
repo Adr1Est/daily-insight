@@ -306,6 +306,9 @@ Táctiles, impresos y secos: cada estado cambia de golpe, sin `transition`.
 ### Ficha técnica
 Rejilla de tres celdas de cartón separadas por filetes negros de 3 px, con marco negro de 3 px; rótulo en Label small y valor en Data. La última celda va invertida (amarillo sobre negro).
 
+### Valoración
+Tres celdas de ficha técnica en el pie de la caja, a la derecha junto al botón: pulgar arriba, puntuación y pulgar abajo (lucide `ThumbsUp` / `ThumbsDown`, 24 px), con marco y filetes negros de 3 px. Celdas de cartón de 48 px de alto; los pulgares, cuadrados de 48 px. La puntuación (me gusta − no me gusta) en Bungee 1.125rem con cifras tabulares y signo (`+12`, `−3`, `0`), con ancho mínimo de 5ch para que no salte. La celda de la puntuación se tiñe según el signo con las tintas de pegatina: positiva en `highlight` con `on-highlight` (como «¡Hoy!»), negativa en `sticker` con `on-sticker`; el 0 queda en cartón. Hover: rojo pegatina con `on-sticker`, al instante. El voto propio va invertido (`highlight` sobre `spine`), como la última celda de la ficha y la fila elegida del selector; nunca un color nuevo. Pulsar el pulgar marcado quita el voto.
+
 ### Pegatinas
 - **Número:** círculo rojo de 184 px girado 10°, «Bug nº» y fecha en Barlow Condensed 800, número en Bungee 3.5rem con cifras tabulares, sombra de pegatina; sobresale 24 px por la esquina superior derecha de la caja.
 - **«¡Hoy!»:** rectángulo amarillo girado −6°, Bungee 1.5rem, apilado encima del número.
