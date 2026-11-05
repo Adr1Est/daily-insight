@@ -4,6 +4,7 @@ import { Barlow, Barlow_Condensed, Bungee } from "next/font/google";
 
 import "@/app/globals.css";
 
+import ReleaseMarquee from "@/components/site/ReleaseMarquee";
 import SiteFooter from "@/components/site/SiteFooter";
 import SiteHeader from "@/components/site/SiteHeader";
 import { prefsInitScript } from "@/lib/prefs";
@@ -41,6 +42,7 @@ export default function RootLayout({
         <script dangerouslySetInnerHTML={{ __html: prefsInitScript() }} />
       </head>
       <body>
+        <ReleaseMarquee />
         <SiteHeader />
         {children}
         <SiteFooter />

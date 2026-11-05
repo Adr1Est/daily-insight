@@ -203,6 +203,42 @@ export function findRelease(date: Date, releases: Release[] = RELEASES): Release
   );
 }
 
+export interface UpcomingReleases {
+  /** Fecha de salida «AAAA-MM-DD». */
+  date: string;
+  /** Días que faltan desde hoy (1 = mañana). */
+  daysLeft: number;
+  /** Todos los juegos que salen ese día, en el orden del calendario. */
+  releases: Release[];
+}
+
+const isoToUtc = (iso: string) =>
+  Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10));
+
+/**
+ * El próximo día del calendario con estrenos, después de hoy (fecha de Madrid). Solo cuenta las
+ * fechas completas: los aniversarios no son lanzamientos nuevos.
+ */
+export function nextReleases(date: Date, releases: Release[] = RELEASES): UpcomingReleases | null {
+  const today = madridIsoDate(date);
+  const upcoming = releases.filter((r) => FULL.test(r.date) && r.date > today);
+  if (upcoming.length === 0) return null;
+  const next = upcoming.reduce((min, r) => (r.date < min ? r.date : min), upcoming[0].date);
+  return {
+    date: next,
+    daysLeft: Math.round((isoToUtc(next) - isoToUtc(today)) / 86_400_000),
+    releases: upcoming.filter((r) => r.date === next),
+  };
+}
+
+export type ReleaseOccasion = { kind: "estreno" } | { kind: "aniversario"; years: number };
+
+/** Estreno si sale el mismo año en que se publica la curiosidad; si no, aniversario de N años. */
+export const releaseOccasion = (releaseYear: number, onYear: number): ReleaseOccasion =>
+  releaseYear >= onYear
+    ? { kind: "estreno" }
+    : { kind: "aniversario", years: onYear - releaseYear };
+
 /** true si es un lanzamiento de este mismo año: el modelo aún no puede conocer el juego. */
 export const isNewRelease = (release: Release, date: Date) =>
   release.year >= Number(madridIsoDate(date).slice(0, 4));

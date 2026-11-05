@@ -30,6 +30,12 @@ model Insight {
   createdAt DateTime @default(now())
   /// Me gusta − no me gusta. Contador de Vote, actualizado en la misma transacción (lib/votes.ts).
   score     Int      @default(0)
+  /// Entrada del calendario (lib/insights/calendar.ts) que motivó la curiosidad ese día, si la hubo.
+  /// Se copia al generar para que el archivo no cambie si luego se edita el calendario.
+  releaseGame     String?
+  releasePlatform String?
+  /// Año de salida: si coincide con `year` es un estreno; si no, un aniversario.
+  releaseYear     Int?
   votes     Vote[]
 
   @@schema("daily_insight")

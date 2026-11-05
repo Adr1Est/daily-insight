@@ -158,6 +158,21 @@ describe("generateDailyInsight", () => {
     expect(result.insight).toMatchObject({ game: "Super Mario Bros.", kind: "secreto" });
   });
 
+  it("guarda en el bug el lanzamiento del calendario que lo motivó", async () => {
+    const releases = [{ date: "11-04", game: "Super Mario Bros.", platform: "NES", year: 1985 }];
+    await generateDailyInsight({ now: NOW, releases });
+    expect(prisma.insight.create.mock.calls[0][0].data).toMatchObject({
+      releaseGame: "Super Mario Bros.",
+      releasePlatform: "NES",
+      releaseYear: 1985,
+    });
+  });
+
+  it("sin lanzamiento no guarda campos de calendario", async () => {
+    await generateDailyInsight({ now: NOW, random: () => 0, releases: [] });
+    expect(prisma.insight.create.mock.calls[0][0].data).not.toHaveProperty("releaseGame");
+  });
+
   it("tras 3 intentos repetidos publica igualmente (no deja el día sin bug)", async () => {
     prisma.insight.findMany.mockResolvedValue([{ game: "Super Mario Bros." }]);
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
@@ -197,6 +212,12 @@ describe("buildEventPrompt", () => {
     const prompt = buildEventPrompt({ release, isNew: true, previous: [] });
     expect(prompt).toContain("Hoy sale Juego nuevo (PS5).");
     expect(prompt).toContain("nunca de detalles del juego final");
+  });
+
+  it("en un lanzamiento pide el título del juego del que se habla, no el del estreno", () => {
+    const prompt = buildEventPrompt({ release, isNew: true, previous: [] });
+    expect(prompt).toContain("«Juego nuevo» solo si hablas del nuevo lanzamiento");
+    expect(prompt).toContain("sin añadidos como «remake»");
   });
 
   it("en un aniversario pide una curiosidad del juego", () => {

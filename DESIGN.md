@@ -184,7 +184,7 @@ La densidad es de caja real: un lomo negro con banda de color, una contraportada
 - Bungee como rotulación impresa, Barlow Condensed en mayúsculas para etiquetas, Barlow para leer.
 - Módulo de 8 px (`--u`) en todo el espaciado.
 - Sombras desplazadas sin desenfoque; ninguna esquina redondeada salvo la pegatina circular.
-- Cambios de estado instantáneos: sin `transition` ni animación. Excepciones: los rótulos (logotipo y títulos de página) flotan suavemente, y las pegatinas de la caja («¡Hoy!» y el número) se tambalean una vez al pasar el ratón.
+- Cambios de estado instantáneos: sin `transition` ni animación. Excepciones: los rótulos (logotipo y títulos de página) flotan suavemente, las pegatinas de la caja («¡Hoy!», el número y la chapa de lanzamiento) se tambalean una vez al pasar el ratón, y el rótulo luminoso del próximo lanzamiento corre en bucle (se para al pasar el ratón). Todas respetan `data-motion` y `prefers-reduced-motion`.
 
 ## Colors
 
@@ -304,6 +304,9 @@ Táctiles, impresos y secos: cada estado cambia de golpe, sin `transition`.
 - **Selector de tema:** botón de cartón con banda superior de 4 px (`band`, `sticker` en hover), icono de paleta, «Tema» en Label y una muestra de 3 colores del tema actual. Abre un panel de cartón (popover) con banda de 16 px: cada tema es una fila con muestra y nombre en Label; la fila elegida va invertida (`highlight` sobre `spine`); los temas de temporada llevan la chapa «Nuevo» (pegatina rectangular `sticker`, girada −4°).
 - **Pie:** Barlow 0.875rem `wall-ink-soft`, iconos sociales de lucide en áreas de 40 × 40 px; hover amarillo.
 
+### Rótulo del próximo lanzamiento
+Franja de lomo (`spine`) a todo el ancho sobre la cabecera, con filete inferior rojo de 4 px y rotulación amarilla en Label (Barlow Condensed 800, 0.9375rem, mayúsculas). Empieza con la etiqueta «Próximo lanzamiento» en rojo pegatina, sigue con «Mañana / En N días · fecha» y cada juego de ese día tras una estrella roja, con la plataforma en `wall-ink-soft`. Corre de derecha a izquierda en 40 s (20 s por debajo de 720 px, donde cada vuelta es más corta); sin movimiento queda quieta y con salto de línea. Solo aparece si hay un lanzamiento futuro en el calendario.
+
 ### Ficha técnica
 Rejilla de tres celdas de cartón (Plataforma, Año, En la estantería) separadas por filetes negros de 3 px, con marco negro de 3 px; rótulo en Label small y valor en Data. La última celda va invertida (amarillo sobre negro).
 
@@ -321,6 +324,7 @@ Cartón de hasta 880 px con banda superior de 16 px (`band`), marco y filetes de
 ### Pegatinas
 - **Número:** círculo rojo de 184 px girado 10°, «`<Tipo>` nº» (Bug, Secreto, Desarrollo, Descartado o Localización: la única marca del tipo, sin antetítulo ni color propio; baja a dos líneas si no cabe) y fecha en Barlow Condensed 800, número en Bungee 3.5rem con cifras tabulares, sombra de pegatina; sobresale 24 px por la esquina superior derecha de la caja.
 - **«¡Hoy!»:** rectángulo amarillo girado −6°, Bungee 1.5rem, apilado encima del número.
+- **Chapa de lanzamiento:** rectángulo rojo (`sticker`, texto `on-sticker`) girado −2°, con sombra de pegatina, pegado bajo la ficha técnica. Solo en las cajas que motivó una entrada del calendario: «Día de estreno» o «Aniversario · N años» en Label, el juego del calendario en Bungee 1.125rem y la plataforma (y el año, en los aniversarios) debajo.
 
 ### Lomo (signature)
 Lomo de tinta negra con banda superior de color de plataforma; título vertical en amarillo, año abajo sobre una tira de cartón. En la caja lleva sello «PAL» de cartón y el título en Bungee 2.25rem (1.5rem si pasa de 16 caracteres). En el archivo cada lomo es un enlace o botón que saca la caja: el hover ensancha la banda de 16 a 24 px y aclara el título; marcas «Hoy» (cinta amarilla arriba) y «Fuera» (cinta roja abajo, cuando la caja está abierta), ambas giradas −6°, sin tapar el título.

@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { findRelease, isNewRelease, madridIsoDate, type Release } from "@/lib/insights/calendar";
+import {
+  findRelease,
+  isNewRelease,
+  madridIsoDate,
+  nextReleases,
+  releaseOccasion,
+  type Release,
+} from "@/lib/insights/calendar";
 
 const releases: Release[] = [
   { date: "09-13", game: "Super Mario Bros.", platform: "NES", year: 1985 },
@@ -35,5 +42,28 @@ describe("calendario de lanzamientos", () => {
     const now = new Date("2026-09-13T10:00:00Z");
     expect(isNewRelease(releases[1], now)).toBe(true);
     expect(isNewRelease(releases[0], now)).toBe(false);
+  });
+
+  it("nextReleases: el próximo día con estrenos, con todos sus juegos y los días que faltan", () => {
+    const calendar: Release[] = [
+      { date: "2026-11-05", game: "Hoy", platform: "PC", year: 2026 },
+      { date: "2026-11-12", game: "B", platform: "PC", year: 2026 },
+      { date: "11-06", game: "Aniversario", platform: "NES", year: 1985 },
+      { date: "2026-11-12", game: "C", platform: "PS5", year: 2026 },
+      { date: "2026-12-01", game: "D", platform: "PC", year: 2026 },
+    ];
+    // 23:30 UTC del 4 ya es día 5 en Madrid: el de hoy no cuenta como próximo.
+    const next = nextReleases(new Date("2026-11-04T23:30:00Z"), calendar);
+    expect(next).toEqual({
+      date: "2026-11-12",
+      daysLeft: 7,
+      releases: [calendar[1], calendar[3]],
+    });
+    expect(nextReleases(new Date("2026-12-02T10:00:00Z"), calendar)).toBeNull();
+  });
+
+  it("releaseOccasion: estreno el mismo año, aniversario con los años transcurridos", () => {
+    expect(releaseOccasion(2026, 2026)).toEqual({ kind: "estreno" });
+    expect(releaseOccasion(1985, 2026)).toEqual({ kind: "aniversario", years: 41 });
   });
 });

@@ -119,18 +119,21 @@
 /* Al pasar el ratón, cada pegatina se tambalea una vez, como si se despegara un poco.
    Respeta los ajustes de movimiento (data-motion) igual que los rótulos flotantes. */
 .number:hover,
-.today:hover {
+.today:hover,
+.release:hover {
   animation: sticker-wobble 400ms ease-in-out;
 }
 
 :global(:root[data-motion="off"]) .number:hover,
-:global(:root[data-motion="off"]) .today:hover {
+:global(:root[data-motion="off"]) .today:hover,
+:global(:root[data-motion="off"]) .release:hover {
   animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   :global(:root:not([data-motion="on"])) .number:hover,
-  :global(:root:not([data-motion="on"])) .today:hover {
+  :global(:root:not([data-motion="on"])) .today:hover,
+  :global(:root:not([data-motion="on"])) .release:hover {
     animation: none;
   }
 }
@@ -178,6 +181,38 @@
   --tilt: -6deg;
   transform: rotate(var(--tilt));
   box-shadow: var(--shadow-sticker);
+}
+
+/* Chapa de lanzamiento: pegatina rectangular roja pegada bajo la ficha, como la chapa «Nuevo»
+   del selector de tema. Solo en las cajas que motivó una entrada del calendario. */
+.release {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  max-width: min(100%, 420px);
+  margin: 0;
+  padding: var(--u) calc(var(--u) * 2);
+  background: var(--sticker);
+  color: var(--on-sticker);
+  --tilt: -2deg;
+  transform: rotate(var(--tilt));
+  box-shadow: var(--shadow-sticker);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 0.875rem;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.releaseGame {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.125rem;
+  letter-spacing: 0;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 .title {

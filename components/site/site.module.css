@@ -1,3 +1,112 @@
+/* Rótulo luminoso del próximo lanzamiento: franja negra de lomo sobre la cabecera con rotulación
+   amarilla que corre de derecha a izquierda. Con el movimiento desactivado queda quieta. */
+.marquee {
+  overflow: hidden;
+  background: var(--spine);
+  color: var(--highlight);
+  border-bottom: 4px solid var(--sticker);
+  font-family: var(--font-label);
+  font-weight: 800;
+  font-size: 0.9375rem;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+/* En móvil cada copia mide solo lo que el texto (no el ancho de pantalla): recorre menos
+   distancia por vuelta, así que sin acortar la duración iría más despacio que en escritorio. */
+@media (max-width: 720px) {
+  .marqueeTrack {
+    animation-duration: 20s;
+  }
+}
+
+.marquee:hover .marqueeTrack {
+  animation-play-state: paused;
+}
+
+/* Cada copia ocupa al menos el ancho de la pantalla: el texto nunca se ve dos veces a la vez. */
+.marqueeItem {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 2);
+  min-width: 100vw;
+  margin: 0;
+  padding: var(--u) calc(var(--u) * 6) var(--u) calc(var(--u) * 2);
+  white-space: nowrap;
+}
+
+.marqueeLead {
+  padding: 2px var(--u);
+  background: var(--sticker);
+  color: var(--on-sticker);
+}
+
+.marqueeGame {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--u);
+}
+
+.marqueeStar {
+  color: var(--sticker);
+}
+
+.marqueeMeta {
+  color: var(--wall-ink-soft);
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+:global(:root[data-motion="off"]) .marqueeTrack {
+  animation: none;
+}
+
+:global(:root[data-motion="off"]) .marqueeItem[aria-hidden] {
+  display: none;
+}
+
+:global(:root[data-motion="off"]) .marqueeTrack,
+:global(:root[data-motion="off"]) .marqueeItem {
+  width: auto;
+  min-width: 0;
+}
+
+:global(:root[data-motion="off"]) .marqueeItem {
+  flex-wrap: wrap;
+  white-space: normal;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(:root:not([data-motion="on"])) .marqueeTrack {
+    animation: none;
+    width: auto;
+  }
+
+  :global(:root:not([data-motion="on"])) .marqueeItem[aria-hidden] {
+    display: none;
+  }
+
+  :global(:root:not([data-motion="on"])) .marqueeItem {
+    flex-wrap: wrap;
+    min-width: 0;
+    white-space: normal;
+    padding-inline: clamp(16px, 4vw, 48px);
+  }
+}
+
 .header {
   display: flex;
   flex-wrap: wrap;
@@ -126,7 +235,11 @@
   inset: auto;
   margin: 0;
   padding: calc(var(--u) * 2);
-  min-width: 240px;
+  min-width: min(240px, calc(100vw - var(--u) * 4));
+  /* En pantallas estrechas o bajas no se sale del viewport: se ajusta y, si hace falta, desplaza
+     (el alto máximo exacto lo fija ThemePicker al abrir, según dónde queda el panel). */
+  max-width: calc(100vw - var(--u) * 4);
+  overflow-y: auto;
   border: 0;
   border-top: calc(var(--u) * 2) solid var(--band);
   background: var(--card);

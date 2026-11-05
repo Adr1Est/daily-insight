@@ -20,13 +20,25 @@ export default function ThemePicker() {
     if (event.newState !== "open") return;
     const ids = engine.available(new Date());
     setAvailable(THEMES.filter((theme) => ids.includes(theme.id)));
-    // El panel vive en la capa superior: se coloca bajo el botón, alineado a su borde derecho.
+    // El panel vive en la capa superior: se coloca bajo el botón. Si el botón está en la mitad
+    // derecha (escritorio) se alinea a su borde derecho; si está a la izquierda (móvil, donde la
+    // cabecera se apila), a su borde izquierdo, para que no se salga de la pantalla.
     const rect = buttonRef.current?.getBoundingClientRect();
-    if (rect && panelRef.current) {
+    const panel = panelRef.current;
+    if (rect && panel) {
       // Separaciones en el módulo --u del sistema (8 px), leído del CSS.
       const u = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--u")) || 8;
-      panelRef.current.style.top = `${rect.bottom + u}px`;
-      panelRef.current.style.right = `${Math.max(u * 2, window.innerWidth - rect.right)}px`;
+      const gutter = u * 2;
+      const top = rect.bottom + u;
+      panel.style.top = `${top}px`;
+      panel.style.maxHeight = `${window.innerHeight - top - gutter}px`;
+      if (rect.left + rect.width / 2 < window.innerWidth / 2) {
+        panel.style.left = `${Math.max(gutter, rect.left)}px`;
+        panel.style.right = "auto";
+      } else {
+        panel.style.right = `${Math.max(gutter, window.innerWidth - rect.right)}px`;
+        panel.style.left = "auto";
+      }
     }
   };
 
