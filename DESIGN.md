@@ -184,7 +184,7 @@ La densidad es de caja real: un lomo negro con banda de color, una contraportada
 - Bungee como rotulación impresa, Barlow Condensed en mayúsculas para etiquetas, Barlow para leer.
 - Módulo de 8 px (`--u`) en todo el espaciado.
 - Sombras desplazadas sin desenfoque; ninguna esquina redondeada salvo la pegatina circular.
-- Cambios de estado instantáneos: sin `transition` ni animación. Única excepción: el logotipo flota suavemente.
+- Cambios de estado instantáneos: sin `transition` ni animación. Única excepción: los rótulos (logotipo y títulos de página) flotan suavemente.
 
 ## Colors
 
@@ -269,7 +269,7 @@ La profundidad es de cartón sobre una balda: sombras duras, desplazadas y sin d
 
 ## Shapes
 
-Esquinas rectas en todo: cajas, lomos, botones, campos, celdas y tarjetas. La única curva es la pegatina del número (círculo de 184 px). Los bordes son filetes de tinta (3 px negro en la ficha y el pie de la caja) o bandas superiores gruesas de color (16 px en lomo y contraportada, 8 px en el buscador). Las pegatinas y cintas se giran (10°, −6°; −4° la chapa «Nuevo» del selector); el texto de los lomos va en vertical (`writing-mode: vertical-rl` girado 180°).
+Esquinas rectas en todo: cajas, lomos, botones, campos, celdas y tarjetas. La única curva es la pegatina del número (círculo de 184 px). Los bordes son filetes de tinta (3 px negro en la ficha y el pie de la caja) o bandas superiores gruesas de color (16 px en lomo y contraportada, 8 px en el buscador). Las pegatinas y cintas se giran (10°, −6°; −4° la chapa «Nuevo» del selector); el texto de los lomos va en vertical (`writing-mode: vertical-rl` girado 180°), siempre con `text-orientation: sideways` y sin las características `vert`/`vrt2`: Bungee trae letras alternativas para rotular de pie y iOS las aplicaría.
 
 ### Named Rules
 **The Square Cardboard Rule.** Nada lleva `border-radius` salvo una pegatina redonda.
@@ -312,6 +312,11 @@ Tres celdas de ficha técnica en el pie de la caja, a la derecha junto al botón
 ### Lista de éxitos (`/top`)
 Cartel de cartón de hasta 880 px con banda superior roja de 16 px, marco y filetes de tinta de 3 px y sombra de caja, como la ficha técnica. Cada fila (64 px de alto mín.) es un enlace a su caja con tres celdas: puesto en Bungee 1.5rem con dos cifras tabulares (`01`) sobre 72 px; juego en Data y plataforma · año en Label small `card-ink-soft`; puntuación con signo en Bungee 1.125rem. Los tres primeros puestos van invertidos (`highlight` sobre `spine`): el rango por inversión, no por un color nuevo. Hover: la celda del puesto en rojo pegatina y el título subrayado, al instante. Sin votos, tarjeta de estado «Aún no hay votos» con enlace a la estantería.
 
+### Ficha de socio (`/ajustes`)
+Se abre desde la cabecera: rueda dentada de lucide (20 px) en una etiqueta de cartón con banda superior de 4 px (`band`, `sticker` en hover), igual que el selector de tema y a su derecha; en `/ajustes` lleva abajo la cinta roja de 4 px de página actual.
+
+Cartón de hasta 880 px con banda superior de 16 px (`band`), marco y filetes de tinta de 3 px y sombra de caja. Cada ajuste es una fila de dos columnas (2:3): nombre en Data y explicación en Body small `card-ink-soft` a la izquierda, control a la derecha; en móvil se apilan. Las opciones son celdas de ficha (cartón, filetes de 3 px, Label 1rem, 48 px de alto mín.): en fila para opciones cortas, una por línea para los temas (con su muestra). La elegida va invertida (`highlight` sobre `spine`), el hover en rojo pegatina y el foco con el anillo global. Los botones siguen la receta de botón de estado; «Olvidar mis votos» pide un segundo clic y, armado, se queda en rojo pegatina con «¿Seguro? Pulsa otra vez». La lista de mis votos repite las filas de la lista de éxitos, con el pulgar en la primera celda.
+
 ### Pegatinas
 - **Número:** círculo rojo de 184 px girado 10°, «Bug nº» y fecha en Barlow Condensed 800, número en Bungee 3.5rem con cifras tabulares, sombra de pegatina; sobresale 24 px por la esquina superior derecha de la caja.
 - **«¡Hoy!»:** rectángulo amarillo girado −6°, Bungee 1.5rem, apilado encima del número.
@@ -350,7 +355,7 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 
 ### Don't:
 - **Don't** usar `border-radius` salvo en la pegatina redonda.
-- **Don't** añadir `transition` ni animaciones de estado: los cambios son secos. La única animación es la flotación del logotipo (4 s, 4 px), que se desactiva con `prefers-reduced-motion`.
+- **Don't** añadir `transition` ni animaciones de estado: los cambios son secos. La única animación es la flotación de los rótulos (clase global `sign-float`: 4 s, 4 px y −0,6°): el logotipo y los títulos de página («La estantería», «Top 50»), estos a contratiempo (−2 s). Se desactiva con `prefers-reduced-motion`, salvo que el visitante elija «Siempre» en ajustes (`data-motion="on"`); con «Nunca» (`data-motion="off"`) no se anima nunca.
 - **Don't** usar sombras con desenfoque ni brillos fuera de `--glow` del tema Neón.
 - **Don't** escribir colores literales en CSS ni componentes: cada tema debe poder cambiarlos.
 - **Don't** usar fuentes pixel, fondo negro puro ni scanlines.

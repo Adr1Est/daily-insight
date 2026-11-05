@@ -110,3 +110,70 @@ export async function castVote(
     return { score, myVote: value };
   });
 }
+
+/** Un voto del visitante, con lo justo para listarlo en /ajustes. */
+export interface MyVote {
+  id: number;
+  game: string;
+  platform: string;
+  bugYear: number;
+  value: 1 | -1;
+}
+
+/** Los votos de un visitante, del más reciente al más antiguo (como mucho uno por bug). */
+export async function getMyVotes(voterId: string): Promise<MyVote[]> {
+  if (isMockMode()) {
+    const bugs = new Map(getMockInsights().map((bug) => [bug.id, bug]));
+    const mine: MyVote[] = [];
+    for (const [key, value] of mockVotes) {
+      const [id, voter] = key.split(":");
+      const bug = bugs.get(Number(id));
+      if (voter !== voterId || !bug || value === 0) continue;
+      const { game, platform, bugYear } = bug;
+      mine.push({ id: bug.id, game, platform, bugYear, value });
+    }
+    return mine.reverse(); // el Map conserva el orden de inserción: el último voto, primero
+  }
+
+  const prisma = await getPrisma();
+  const votes = await prisma.vote.findMany({
+    where: { voterId },
+    orderBy: { updatedAt: "desc" },
+    select: {
+      value: true,
+      insight: { select: { id: true, game: true, platform: true, bugYear: true } },
+    },
+  });
+  return votes.map(({ value, insight }) => ({ ...insight, value: value === 1 ? 1 : -1 }));
+}
+
+/**
+ * Borra todos los votos de un visitante y descuenta cada uno de la puntuación de su bug, en la
+ * misma transacción. Devuelve cuántos votos se han borrado.
+ */
+export async function forgetVoter(voterId: string): Promise<number> {
+  if (isMockMode()) {
+    let deleted = 0;
+    for (const [key, value] of mockVotes) {
+      const [id, voter] = key.split(":");
+      if (voter !== voterId) continue;
+      const insightId = Number(id);
+      mockScores.set(insightId, (mockScore(insightId) ?? 0) - value);
+      mockVotes.delete(key);
+      deleted++;
+    }
+    return deleted;
+  }
+
+  const prisma = await getPrisma();
+  return prisma.$transaction(async (tx) => {
+    // UPDATE … FROM bloquea las filas de los bugs, como castVote: no se cruza con un voto a la vez.
+    await tx.$executeRaw`
+      UPDATE "daily_insight"."Insight" AS i
+      SET "score" = i."score" - v."value"
+      FROM "daily_insight"."Vote" AS v
+      WHERE v."insightId" = i."id" AND v."voterId" = ${voterId}::uuid`;
+    const { count } = await tx.vote.deleteMany({ where: { voterId } });
+    return count;
+  });
+}

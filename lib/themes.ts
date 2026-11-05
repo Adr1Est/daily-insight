@@ -44,6 +44,8 @@ export interface Theme {
 
 export const STORAGE_THEME = "daily-bug:theme";
 export const STORAGE_SEEN = "daily-bug:seasons-seen";
+/** "off" = no aplicar solos los temas de temporada (ajustes). Ausente = sí. */
+export const STORAGE_SEASONAL = "daily-bug:seasonal";
 
 const svg = (body: string, size: number) =>
   `url("data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='${size}' height='${size}' viewBox='0 0 ${size} ${size}'>${body}</svg>`)}")`;
@@ -217,7 +219,7 @@ export interface ThemeEngine {
   isAvailable(id: string, date: Date): boolean;
   available(date: Date): string[];
   seasonKey(id: string, date: Date): string | null;
-  resolve(input: { stored: string | null; seen: string[]; date: Date }): {
+  resolve(input: { stored: string | null; seen: string[]; date: Date; seasonal?: boolean }): {
     theme: string;
     seen: string[];
   };
@@ -259,7 +261,12 @@ export function themeEngine(rules: { id: string; season: Season | null }[]): The
   const available = (date: Date) =>
     rules.filter((rule) => isAvailable(rule.id, date)).map((rule) => rule.id);
 
-  const resolve = (input: { stored: string | null; seen: string[]; date: Date }) => {
+  const resolve = (input: {
+    stored: string | null;
+    seen: string[];
+    date: Date;
+    seasonal?: boolean;
+  }) => {
     const date = input.date;
     // Temporadas activas, de la que empezó más tarde a la que empezó antes.
     const active = rules
@@ -273,7 +280,8 @@ export function themeEngine(rules: { id: string; season: Season | null }[]): The
       })
       .sort((a, b) => b.start - a.start);
 
-    const latest = active[0];
+    // Con seasonal = false (ajustes), las temporadas solo se aplican si el visitante las elige.
+    const latest = input.seasonal === false ? undefined : active[0];
     if (latest) {
       const key = seasonKey(latest.id, date) as string;
       if (input.seen.indexOf(key) === -1)
@@ -306,10 +314,10 @@ export function themeCss(): string {
 export function themeInitScript(): string {
   return `(function(){try{
 var E=(${themeEngine.toString()})(${JSON.stringify(THEME_RULES)});
-var ls=null,stored=null,seen=[];
-try{ls=window.localStorage;stored=ls.getItem(${JSON.stringify(STORAGE_THEME)});seen=JSON.parse(ls.getItem(${JSON.stringify(STORAGE_SEEN)})||"[]");}catch(e){}
+var ls=null,stored=null,seen=[],seasonal=true;
+try{ls=window.localStorage;stored=ls.getItem(${JSON.stringify(STORAGE_THEME)});seasonal=ls.getItem(${JSON.stringify(STORAGE_SEASONAL)})!=="off";seen=JSON.parse(ls.getItem(${JSON.stringify(STORAGE_SEEN)})||"[]");}catch(e){}
 if(!Array.isArray(seen))seen=[];
-var r=E.resolve({stored:stored,seen:seen,date:new Date()});
+var r=E.resolve({stored:stored,seen:seen,date:new Date(),seasonal:seasonal});
 document.documentElement.dataset.theme=r.theme;
 try{if(ls){ls.setItem(${JSON.stringify(STORAGE_THEME)},r.theme);ls.setItem(${JSON.stringify(STORAGE_SEEN)},JSON.stringify(r.seen));}}catch(e){}
 }catch(e){}})();`;

@@ -18,7 +18,7 @@ export default async function Top() {
 
   return (
     <main className={styles.main}>
-      <h1 className={styles.heading}>Top {TOP_SIZE}</h1>
+      <h1 className={`${styles.heading} sign-float`}>Top {TOP_SIZE}</h1>
       <p className={styles.intro}>Los bugs más votados · me gusta menos no me gusta</p>
       {bugs.length > 0 ? (
         <TopList bugs={bugs} />

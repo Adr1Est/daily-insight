@@ -34,6 +34,13 @@
 .spineTitle,
 .spinePlatform {
   writing-mode: vertical-rl;
+  /* Letras siempre tumbadas. En iOS, la orientación por defecto (mixed) usa las alternativas
+     verticales de Bungee (vert/vrt2) y pone las letras de pie; sideways y sin esas
+     características, todos los navegadores pintan el lomo igual. */
+  text-orientation: sideways;
+  font-feature-settings:
+    "vert" 0,
+    "vrt2" 0;
   transform: rotate(180deg);
   white-space: nowrap;
   overflow: hidden;
@@ -188,7 +195,7 @@
 .text {
   margin: 0;
   max-width: 64ch;
-  font-size: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  font-size: calc(clamp(1.0625rem, 1rem + 0.3vw, 1.25rem) * var(--text-scale, 1));
   line-height: 1.6;
 }
 

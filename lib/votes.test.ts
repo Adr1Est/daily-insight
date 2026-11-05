@@ -1,6 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import { castVote, getVoteState, voteBodySchema, voteDelta, type VoteValue } from "@/lib/votes";
+import {
+  castVote,
+  forgetVoter,
+  getMyVotes,
+  getVoteState,
+  voteBodySchema,
+  voteDelta,
+  type VoteValue,
+} from "@/lib/votes";
 
 describe("voteDelta", () => {
   it.each<[VoteValue, VoteValue, number]>([
@@ -55,5 +63,37 @@ describe("votos en modo mock", () => {
   it("devuelve null si el bug no existe", async () => {
     expect(await getVoteState(999, null)).toBeNull();
     expect(await castVote(999, "00000000-0000-4000-8000-000000000001", 1)).toBeNull();
+  });
+
+  it("lista los votos de un navegador, el último primero", async () => {
+    const voter = "00000000-0000-4000-8000-0000000000c1";
+    await castVote(3, voter, 1);
+    await castVote(4, voter, -1);
+    await castVote(5, voter, 1);
+    await castVote(5, voter, 0); // quitado: no aparece
+    const mine = await getMyVotes(voter);
+    expect(mine.map(({ id, value }) => [id, value])).toEqual([
+      [4, -1],
+      [3, 1],
+    ]);
+    expect(mine[0].game).toBe("Super Mario Bros.");
+  });
+
+  it("olvidar los votos deja las puntuaciones como estaban y no toca a otros navegadores", async () => {
+    const me = "00000000-0000-4000-8000-0000000000d1";
+    const other = "00000000-0000-4000-8000-0000000000d2";
+    const before6 = (await getVoteState(6, null))!.score;
+    const before7 = (await getVoteState(7, null))!.score;
+
+    await castVote(6, me, 1);
+    await castVote(7, me, -1);
+    await castVote(6, other, 1);
+
+    expect(await forgetVoter(me)).toBe(2);
+    expect((await getVoteState(6, null))!.score).toBe(before6 + 1); // queda el voto del otro
+    expect((await getVoteState(7, null))!.score).toBe(before7);
+    expect(await getMyVotes(me)).toEqual([]);
+    expect(await getVoteState(6, other)).toMatchObject({ myVote: 1 });
+    expect(await forgetVoter(me)).toBe(0);
   });
 });

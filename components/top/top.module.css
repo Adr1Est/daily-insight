@@ -13,6 +13,10 @@
   line-height: 1;
   text-transform: uppercase;
   color: var(--wall-ink);
+  /* Flota con .sign-float (app/globals.css), a contratiempo del logotipo; fit-content para que
+     el giro sea alrededor del rótulo y no de toda la fila. */
+  width: fit-content;
+  animation-delay: -2s;
 }
 
 .intro {

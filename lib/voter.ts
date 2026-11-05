@@ -35,3 +35,8 @@ export async function ensureVoterId(): Promise<string> {
   });
   return voterId;
 }
+
+/** Borra la cookie del votante («Olvidar mis votos»): el próximo voto empezará con un id nuevo. */
+export async function forgetVoterCookie(): Promise<void> {
+  (await cookies()).delete(VOTER_COOKIE);
+}

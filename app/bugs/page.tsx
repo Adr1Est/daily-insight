@@ -18,7 +18,7 @@ export default async function BugsList() {
 
   return (
     <main className={styles.main}>
-      <h1 className={styles.heading}>La estantería</h1>
+      <h1 className={`${styles.heading} sign-float`}>La estantería</h1>
       {firstPage.total > 0 ? (
         <Shelf initialPage={firstPage} isSample={isMockMode()} />
       ) : (

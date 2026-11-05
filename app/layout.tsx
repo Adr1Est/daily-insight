@@ -6,6 +6,7 @@ import "@/app/globals.css";
 
 import SiteFooter from "@/components/site/SiteFooter";
 import SiteHeader from "@/components/site/SiteHeader";
+import { prefsInitScript } from "@/lib/prefs";
 import { themeCss, themeInitScript } from "@/lib/themes";
 
 const bungee = Bungee({ weight: "400", subsets: ["latin"], variable: "--font-bungee" });
@@ -36,6 +37,7 @@ export default function RootLayout({
       <head>
         <style dangerouslySetInnerHTML={{ __html: themeCss() }} />
         <script dangerouslySetInnerHTML={{ __html: themeInitScript() }} />
+        <script dangerouslySetInnerHTML={{ __html: prefsInitScript() }} />
       </head>
       <body>
         <SiteHeader />

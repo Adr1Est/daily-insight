@@ -16,6 +16,10 @@
   line-height: 1;
   text-transform: uppercase;
   color: var(--wall-ink);
+  /* Flota con .sign-float (app/globals.css), a contratiempo del logotipo; fit-content para que
+     el giro sea alrededor del rótulo y no de toda la fila. */
+  width: fit-content;
+  animation-delay: -2s;
 }
 
 /* Buscador: etiqueta de catálogo pegada en la pared. */
@@ -155,6 +159,13 @@
 .spineTitle,
 .spineMeta {
   writing-mode: vertical-rl;
+  /* Letras siempre tumbadas. En iOS, la orientación por defecto (mixed) usa las alternativas
+     verticales de Bungee (vert/vrt2) y pone las letras de pie; sideways y sin esas
+     características, todos los navegadores pintan el lomo igual. */
+  text-orientation: sideways;
+  font-feature-settings:
+    "vert" 0,
+    "vrt2" 0;
   transform: rotate(180deg);
   white-space: nowrap;
   overflow: hidden;
