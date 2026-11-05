@@ -126,7 +126,11 @@
   inset: auto;
   margin: 0;
   padding: calc(var(--u) * 2);
-  min-width: 240px;
+  min-width: min(240px, calc(100vw - var(--u) * 4));
+  /* En pantallas estrechas o bajas no se sale del viewport: se ajusta y, si hace falta, desplaza
+     (el alto máximo exacto lo fija ThemePicker al abrir, según dónde queda el panel). */
+  max-width: calc(100vw - var(--u) * 4);
+  overflow-y: auto;
   border: 0;
   border-top: calc(var(--u) * 2) solid var(--band);
   background: var(--card);
