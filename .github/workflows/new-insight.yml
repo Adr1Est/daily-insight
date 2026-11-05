@@ -1,0 +1,57 @@
+name: Bug del día
+
+on:
+  schedule:
+    # 00:17 UTC: se evita la hora en punto, cuando GitHub retrasa o descarta más ejecuciones programadas.
+    - cron: "17 0 * * *"
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: "Generar y validar sin guardar (dryRun=1)"
+        type: boolean
+        default: false
+
+permissions: {}
+
+concurrency:
+  group: new-insight
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Llamar a /api/cron/new-insight
+        env:
+          # API_URL: URL base de la app desplegada. INTERNAL_TOKEN: el mismo valor que CRON_SECRET en Vercel.
+          API_URL: ${{ secrets.API_URL }}
+          INTERNAL_TOKEN: ${{ secrets.INTERNAL_TOKEN }}
+          DRY_RUN: ${{ inputs.dryRun && '1' || '0' }}
+        run: |
+          if [ -z "$API_URL" ] || [ -z "$INTERNAL_TOKEN" ]; then
+            echo "::error::Faltan los secretos API_URL o INTERNAL_TOKEN en el repositorio."
+            exit 1
+          fi
+
+          # Acepta tanto la URL base como la ruta completa del endpoint.
+          url="${API_URL%/}"
+          case "$url" in
+            */api/cron/new-insight) ;;
+            *) url="$url/api/cron/new-insight" ;;
+          esac
+          if [ "$DRY_RUN" = "1" ]; then url="$url?dryRun=1"; fi
+
+          # La ruta es idempotente (devuelve `skipped` si ya hay bug hoy), así que reintentar es seguro.
+          status=$(curl --silent --show-error \
+            --retry 3 --retry-delay 30 --retry-all-errors \
+            --max-time 120 \
+            --output response.json --write-out "%{http_code}" \
+            -H "Authorization: Bearer $INTERNAL_TOKEN" \
+            "$url")
+
+          cat response.json; echo
+          if [ "$status" -lt 200 ] || [ "$status" -ge 300 ]; then
+            echo "::error::La ruta respondió $status"
+            exit 1
+          fi
