@@ -175,7 +175,7 @@ components:
 
 Daily Bug es un videoclub de barrio a última hora: una pared de listones oscuros, una balda de madera y cajas PAL de canto. El bug del día es la contraportada de la caja más nueva; el archivo es la estantería de lomos. Todo lo que hay en pantalla es un objeto impreso (cartón, tinta, pegatinas, cinta) y se comporta como tal: esquinas rectas, sombras duras sin desenfoque y cambios de estado secos, sin transiciones.
 
-La densidad es de caja real: un lomo negro con banda de color, una contraportada de cartón claro con el título enorme en Bungee, una ficha técnica de tres celdas con filete negro y el texto en una columna legible. Las pegatinas (redonda roja con el número, rectangular amarilla «¡Hoy!») van giradas y apiladas en orden de llegada. El sistema rechaza el «sitio retro» por defecto (fondo negro puro, fuente pixel, neón, brillos y scanlines); el neón solo existe como tema que el visitante elige.
+La densidad es de caja real: un lomo negro con banda de color, una contraportada de cartón claro con el título enorme en Bungee, una ficha técnica de tres celdas con filete negro y el texto en una columna legible. Las pegatinas (redonda roja con el número, rectangular amarilla «¡Hoy!») van giradas y apiladas en orden de llegada. El sistema rechaza el «sitio retro» por defecto (fondo negro puro, fuente pixel, neón, brillos y scanlines); el neón y la tele en blanco y negro (con sus líneas de barrido) solo existen como temas que el visitante elige.
 
 **Key Characteristics:**
 - Dos suelos: la pared oscura (`wall`) y el cartón claro (`card`); cada uno tiene su propia tinta.
@@ -336,6 +336,7 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 | Neón | todo el año | #0b0a1a | #15122e (tinta clara) | #ff2e88 | #f8f32b | #35f2ff | `--glow` cian, sombra de caja magenta de 8 px, líneas horizontales cian cada 32 px en la pared |
 | Verde LCD | todo el año | #0f380f | #9bbc0f | #0f380f | #9bbc0f | #8bac0f | rejilla de píxeles de 4 px, sombras de caja (8 px) y pegatina en verde medio |
 | Vaporwave | todo el año | #1a0b2e | #fdeaf3 | #c2187a | #ffb347 | #2de2e6 | atardecer de costa: franja de cielo rosa arriba y sol naranja con aro rosa (bordes duros) detrás de la estantería; sombras de caja y pegatina turquesa |
+| Blanco y negro | todo el año | #161616 | #cccccc | #4a4a4a | #f7f7f7 | #8a8a8a | tele de tubo: líneas de barrido cada 3 px y viñeta en las esquinas sobre la pared; `--glow` blanco suave de fósforo (la otra excepción al «sin brillos») |
 | Halloween | 1 oct – 1 nov | #160d1f | #f3e6cf | #6b2fa3 | #ff8a1f | #7bd13a | telarañas SVG en las esquinas superiores de la pared |
 | Navidad | 1 nov – 9 ene | #0d2418 | #fbf6ec | #c8102e | #f2c14e | #2f8f5b | puntos de nieve sobre la pared |
 
@@ -359,7 +360,7 @@ Los colores y el ambiente vienen de `lib/themes.ts`, que es la fuente única. `t
 ### Don't:
 - **Don't** usar `border-radius` salvo en la pegatina redonda.
 - **Don't** añadir `transition` ni animaciones de estado: los cambios son secos. La única animación es la flotación de los rótulos (clase global `sign-float`: 4 s, 4 px y −0,6°): el logotipo y los títulos de página («La estantería», «Top 50»), estos a contratiempo (−2 s). La otra es el tambaleo de las pegatinas de la caja al pasar el ratón (`sticker-wobble`: 400 ms, −4° y +2° sobre su giro y escala 1,04, una sola vez). Se desactiva con `prefers-reduced-motion`, salvo que el visitante elija «Siempre» en ajustes (`data-motion="on"`); con «Nunca» (`data-motion="off"`) no se anima nunca.
-- **Don't** usar sombras con desenfoque ni brillos fuera de `--glow` del tema Neón.
+- **Don't** usar sombras con desenfoque ni brillos fuera de `--glow` de los temas Neón y Blanco y negro.
 - **Don't** escribir colores literales en CSS ni componentes: cada tema debe poder cambiarlos.
-- **Don't** usar fuentes pixel, fondo negro puro ni scanlines.
+- **Don't** usar fuentes pixel, fondo negro puro ni scanlines (salvo las líneas de barrido del tema Blanco y negro, que el visitante elige).
 - **Don't** usar Bungee para texto corrido ni el cian para texto.

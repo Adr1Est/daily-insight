@@ -17,12 +17,166 @@ export interface Release {
   note?: string;
 }
 
+// Calendario de lanzamientos importantes: noviembre 2026 – diciembre 2027
+// Fechas comprobadas el 5 de noviembre de 2026. Pueden cambiar por retrasos.
+
 export const RELEASES: Release[] = [
-  // Ejemplos de formato; descoméntalos o sustitúyelos por tu calendario.
-  // { date: "09-13", game: "Super Mario Bros.", platform: "NES", year: 1985 },
-  // { date: "05-22", game: "Pac-Man", platform: "Arcade", year: 1980 },
-  // { date: "11-21", game: "The Legend of Zelda: Ocarina of Time", platform: "Nintendo 64", year: 1998 },
-  // { date: "2026-11-19", game: "Nombre del juego", platform: "PS5, Xbox Series X|S", year: 2026, note: "Sale hoy" },
+  // ── Noviembre 2026 ──────────────────────────────────────────────
+  {
+    date: "2026-11-05",
+    game: "The Legend of Zelda: Ocarina of Time (remake)",
+    platform: "Switch 2",
+    year: 2026,
+    note: "Sale hoy",
+  },
+  { date: "2026-11-06", game: "Stellar Blade", platform: "Switch 2", year: 2026, note: "Port" },
+  {
+    date: "2026-11-10",
+    game: "Shrek 2 Remastered",
+    platform: "PS5, Xbox Series X|S, Switch 2, Switch, PC",
+    year: 2026,
+  },
+  {
+    date: "2026-11-12",
+    game: "Metaphor: ReFantazio",
+    platform: "Switch 2",
+    year: 2026,
+    note: "Port",
+  },
+  {
+    date: "2026-11-12",
+    game: "Sonic Pico Park",
+    platform: "PS5, Xbox Series X|S, Switch 2, Switch, PC",
+    year: 2026,
+  },
+  {
+    date: "2026-11-19",
+    game: "Grand Theft Auto VI",
+    platform: "PS5, Xbox Series X|S",
+    year: 2026,
+    note: "Lanzamiento del año; PC sin fecha",
+  },
+
+  // ── Diciembre 2026 ──────────────────────────────────────────────
+  {
+    date: "2026-12-03",
+    game: "Dragon Quest Monsters: The Withered World",
+    platform: "PS5, Switch 2, Switch",
+    year: 2026,
+  },
+  {
+    date: "2026-12-03",
+    game: "Rayman Legends Retold",
+    platform: "PS5, Xbox Series X|S, Switch 2, PC",
+    year: 2026,
+  },
+  { date: "2026-12-03", game: "Warhammer 40,000: Dawn of War IV", platform: "PC", year: 2026 },
+  {
+    date: "2026-12-03",
+    game: "Xenoblade Chronicles 3 – Switch 2 Edition",
+    platform: "Switch 2",
+    year: 2026,
+  },
+  {
+    date: "2026-12-04",
+    game: "Monster Hunter Wilds",
+    platform: "Switch 2",
+    year: 2026,
+    note: "Port",
+  },
+  {
+    date: "2026-12-10",
+    game: "Professor Layton and the New World of Steam",
+    platform: "PS5, Switch 2, Switch, PC",
+    year: 2026,
+  },
+  {
+    date: "2026-12-10",
+    game: "Attack on Titan 3",
+    platform: "PS5, Xbox Series X|S, Switch 2, PC",
+    year: 2026,
+  },
+  {
+    date: "2026-12-11",
+    game: "Path of Exile II",
+    platform: "PS5, Xbox Series X|S, PC",
+    year: 2026,
+    note: "Versión 1.0",
+  },
+
+  // ── Enero 2027 ──────────────────────────────────────────────────
+  {
+    date: "2027-01-14",
+    game: "Danganronpa 2x2",
+    platform: "PS5, Xbox Series X|S, Switch 2, Switch, PC",
+    year: 2027,
+  },
+  {
+    date: "2027-01-26",
+    game: "Forza Horizon 6",
+    platform: "PS5",
+    year: 2027,
+    note: "Ya disponible en Xbox y PC",
+  },
+  { date: "2027-01-28", game: "Until Dawn 2", platform: "PS5", year: 2027 },
+  { date: "2027-01-28", game: "Metroid Ravenous", platform: "Switch 2", year: 2027 },
+  {
+    date: "2027-01-28",
+    game: "Witchbrook",
+    platform: "PS5, Xbox Series X|S, Switch, PC",
+    year: 2027,
+  },
+
+  // ── Febrero 2027 ────────────────────────────────────────────────
+  { date: "2027-02-04", game: "Metro 2039", platform: "PS5, Xbox Series X|S, PC", year: 2027 },
+  {
+    date: "2027-02-12",
+    game: "Tomb Raider: Legacy of Atlantis",
+    platform: "PS5, Xbox Series X|S, Switch 2, PC",
+    year: 2027,
+    note: "Remake del original",
+  },
+  {
+    date: "2027-02-18",
+    game: "Persona 4 Revival",
+    platform: "PS5, Xbox Series X|S, PC",
+    year: 2027,
+  },
+  {
+    date: "2027-02-23",
+    game: "Fable",
+    platform: "PS5, Xbox Series X|S, PC",
+    year: 2027,
+    note: "Acceso anticipado Premium desde el 5 de feb.",
+  },
+
+  // ── Marzo 2027 ──────────────────────────────────────────────────
+  {
+    date: "2027-03-04",
+    game: "Wo Long 2: Wings of Ember",
+    platform: "PS5, Xbox Series X|S, Switch 2, PC",
+    year: 2027,
+  },
+  { date: "2027-03-18", game: "007 First Light", platform: "Switch 2", year: 2027, note: "Port" },
+
+  // ── Abril 2027 ──────────────────────────────────────────────────
+  {
+    date: "2027-04-08",
+    game: "Final Fantasy VII Revelation",
+    platform: "PS5, Xbox Series X|S, Switch 2, PC",
+    year: 2027,
+    note: "Final de la trilogía Remake",
+  },
+
+  // ── Mayo 2027 ───────────────────────────────────────────────────
+  {
+    date: "2027-05-20",
+    game: "God of War: Laufey",
+    platform: "PS5",
+    year: 2027,
+    note: "Retrasado (antes 16 de feb.)",
+  },
+  { date: "2027-05-20", game: "Persona 4 Revival", platform: "Switch 2", year: 2027 },
 ];
 
 const FULL = /^\d{4}-\d{2}-\d{2}$/;

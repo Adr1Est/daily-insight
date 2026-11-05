@@ -4,7 +4,7 @@
 // - lib/themes.test.ts (fechas y contraste).
 
 export type ThemeId =
-  "videoclub" | "oscuro" | "neon" | "lcd" | "vaporwave" | "halloween" | "navidad";
+  "videoclub" | "oscuro" | "neon" | "lcd" | "vaporwave" | "byn" | "halloween" | "navidad";
 
 interface MonthDay {
   m: number;
@@ -213,6 +213,36 @@ export const THEMES: Theme[] = [
       "shadow-sticker": "3px 3px 0 rgb(45 226 230 / 0.45)",
       "wall-pattern":
         "radial-gradient(circle at 86% 120px, rgb(255 179 71 / 0.7) 0 56px, rgb(255 110 199 / 0.55) 57px 72px, transparent 73px) 0 0 / 100% 100% no-repeat, linear-gradient(to bottom, rgb(255 110 199 / 0.2), rgb(255 179 71 / 0.06) 280px, transparent 480px) 0 0 / 100% 100% no-repeat",
+    },
+  },
+  {
+    // Tele de tubo en blanco y negro: todo en grises, líneas de barrido finas sobre la pared, esquinas
+    // oscurecidas por la curvatura de la pantalla y un brillo de fósforo suave en rótulos y caja.
+    id: "byn",
+    name: "Blanco y negro",
+    tokens: {
+      wall: "#161616",
+      "wall-slat": "#1b1b1b",
+      "wall-ink": "#efefef",
+      "wall-ink-soft": "#a3a3a3",
+      shelf: "#333333",
+      "shelf-edge": "#5c5c5c",
+      card: "#cccccc",
+      "card-ink": "#111111",
+      "card-ink-soft": "#474747",
+      spine: "#0d0d0d",
+      highlight: "#f7f7f7",
+      "on-highlight": "#111111",
+      sticker: "#4a4a4a",
+      "on-sticker": "#ffffff",
+      band: "#8a8a8a",
+    },
+    extra: {
+      glow: "0 0 10px rgb(255 255 255 / 0.18)",
+      "shadow-box": "10px 10px 0 rgb(0 0 0 / 0.6)",
+      "shadow-sticker": "3px 3px 0 rgb(0 0 0 / 0.5)",
+      "wall-pattern":
+        "radial-gradient(ellipse at center, transparent 55%, rgb(0 0 0 / 0.55) 100%) 0 0 / 100% 100% no-repeat fixed, repeating-linear-gradient(to bottom, rgb(255 255 255 / 0.035) 0 1px, transparent 1px 3px) 0 0 / 100% 3px",
     },
   },
   {
